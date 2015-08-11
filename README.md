@@ -4,7 +4,7 @@ This is a library to allow the easy creation of Relay-compliant servers using
 the [GraphQL.js](https://github.com/graphql/graphql-js) reference implementation
 of a GraphQL server.
 
-[![Build Status](https://magnum.travis-ci.com/graphql/graphql-relay-js.svg?token=KWQyerQ76yNVcpKTihbJ&branch=master)](https://magnum.travis-ci.com/graphql/graphql-relay-js)
+[![Build Status](https://travis-ci.org/graphql/graphql-relay-js.svg)](https://travis-ci.org/graphql/graphql-relay-js)
 
 ## Getting Started
 
