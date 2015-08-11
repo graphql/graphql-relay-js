@@ -1,0 +1,60 @@
+{
+  "name": "graphql-relay",
+  "version": "0.1.0",
+  "description": "A library to help construct a graphql-js server supporting react-relay.",
+  "contributors": [
+    "Daniel Schafer <dschafer@fb.com>"
+  ],
+  "license": "BSD-3-Clause",
+  "homepage": "https://github.com/graphql/graphql-relay-js",
+  "bugs": {
+    "url": "https://github.com/graphql/graphql-relay-js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/graphql/graphql-relay-js.git"
+  },
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "./lib"
+  },
+  "files": [
+    "lib",
+    "README.md",
+    "LICENSE",
+    "PATENTS"
+  ],
+  "options": {
+    "mocha": "--require scripts/mocha-bootload src/**/__tests__/**/*.js"
+  },
+  "babel": {
+    "optional": ["runtime", "es7.asyncFunctions", "es7.objectRestSpread"]
+  },
+  "scripts": {
+    "prepublish": "npm test && npm run build",
+    "test": "npm run lint && npm run check && mocha $npm_package_options_mocha",
+    "testonly": "mocha $npm_package_options_mocha",
+    "lint": "eslint src",
+    "check": "flow check",
+    "build": "rm -rf lib/* && babel src --ignore __tests__ --optional runtime --out-dir lib",
+    "watch": "babel --optional runtime scripts/watch.js | node"
+  },
+  "dependencies": {
+    "babel-runtime": "~5.8.3"
+  },
+  "peerDependencies": {
+    "graphql": "~0.2.6"
+  },
+  "devDependencies": {
+    "babel": "5.8.3",
+    "babel-core": "5.8.3",
+    "babel-eslint": "4.0.5",
+    "chai": "3.0.0",
+    "chai-as-promised": "5.1.0",
+    "eslint": "0.24.0",
+    "flow-bin": "0.13.1",
+    "graphql": "0.2.6",
+    "mocha": "2.2.5",
+    "sane": "1.1.3"
+  }
+}

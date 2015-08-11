@@ -1,0 +1,10 @@
+[ignore]
+.*/coverage/.*
+.*/scripts/.*
+.*/node_modules/flow-bin/.*
+
+[include]
+
+[libs]
+
+[options]
