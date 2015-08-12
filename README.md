@@ -5,6 +5,7 @@ the [GraphQL.js](https://github.com/graphql/graphql-js) reference implementation
 of a GraphQL server.
 
 [![Build Status](https://travis-ci.org/graphql/graphql-relay-js.svg)](https://travis-ci.org/graphql/graphql-relay-js)
+[![Coverage Status](https://coveralls.io/repos/graphql/graphql-relay-js/badge.svg?branch=master&service=github)](https://coveralls.io/github/graphql/graphql-relay-js?branch=master)
 
 ## Getting Started
 
