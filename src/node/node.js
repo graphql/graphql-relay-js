@@ -16,7 +16,8 @@ import {
 
 import type {
   GraphQLFieldConfig,
-  GraphQLObjectType
+  GraphQLObjectType,
+  GraphQLResolveInfo
 } from 'graphql';
 
 import {
@@ -39,7 +40,7 @@ type typeResolverFn = (object: any) => ?GraphQLObjectType |
  * and a field config for a `node` root field.
  */
 export function nodeDefinitions(
-  idFetcher: ((id: string) => any),
+  idFetcher: ((id: string, info: GraphQLResolveInfo) => any),
   typeResolver: typeResolverFn
 ): GraphQLNodeDefinitions {
   var nodeInterface = new GraphQLInterfaceType({
