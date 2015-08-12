@@ -34,17 +34,11 @@ var userData = {
 };
 
 var {nodeField, nodeInterface} = nodeDefinitions(
-  async (id) => {
-    if (userData[id]) {
-      return userData[id];
-    }
-    return null;
+  (id) => {
+    return userData[id];
   },
-  (obj) => {
-    if (userData[obj.id]) {
-      return userType;
-    }
-    return null;
+  () => {
+    return userType;
   }
 );
 

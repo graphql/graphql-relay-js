@@ -53,20 +53,16 @@ var {nodeField, nodeInterface} = nodeDefinitions(
     var {type, id} = fromGlobalId(globalId);
     if (type === 'User') {
       return userData[id];
-    }
-    if (type === 'Photo') {
+    } else {
       return photoData[id];
     }
-    return null;
   },
   (obj) => {
     if (obj.id) {
       return userType;
-    }
-    if (obj.photoId) {
+    } else {
       return photoType;
     }
-    return null;
   }
 );
 

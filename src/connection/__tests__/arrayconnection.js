@@ -466,6 +466,22 @@ describe('connectionFromArray', () => {
   });
 
   describe('Handles cursor edge cases', () => {
+    it('Returns no elements if first is 0', () => {
+      var c = connectionFromArray(
+        letters,
+        {first: 0}
+      );
+      return expect(c).to.deep.equal({
+        edges: [],
+        pageInfo: {
+          startCursor: null,
+          endCursor: null,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        }
+      });
+    });
+
     it('Returns all elements if cursors are invalid', () => {
       var c = connectionFromArray(
         letters,

@@ -52,20 +52,16 @@ var {nodeField, nodeInterface} = nodeDefinitions(
     expect(info.schema).to.equal(schema);
     if (userData[id]) {
       return userData[id];
-    }
-    if (photoData[id]) {
+    } else {
       return photoData[id];
     }
-    return null;
   },
   (obj) => {
     if (userData[obj.id]) {
       return userType;
-    }
-    if (photoData[obj.id]) {
+    } else {
       return photoType;
     }
-    return null;
   }
 );
 

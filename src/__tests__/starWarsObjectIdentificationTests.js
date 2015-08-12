@@ -76,7 +76,7 @@ describe('Object Identification Tests', () => {
       expect(result).to.deep.equal({ data: expected });
     });
 
-    it('Correctly refetches the rebels', async () => {
+    it('Correctly refetches the empire', async () => {
       var query = `
         query EmpireRefetchQuery {
           node(id: "RmFjdGlvbjoy") {
@@ -91,6 +91,27 @@ describe('Object Identification Tests', () => {
         node: {
           id: 'RmFjdGlvbjoy',
           name: 'Galactic Empire'
+        }
+      };
+      var result = await graphql(StarWarsSchema, query);
+      expect(result).to.deep.equal({ data: expected });
+    });
+
+    it('Correctly refetches the X-Wing', async () => {
+      var query = `
+        query XWingRefetchQuery {
+          node(id: "U2hpcDox") {
+            id
+            ... on Ship {
+              name
+            }
+          }
+        }
+      `;
+      var expected = {
+        node: {
+          id: 'U2hpcDox',
+          name: 'X-Wing'
         }
       };
       var result = await graphql(StarWarsSchema, query);
