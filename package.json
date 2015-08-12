@@ -43,7 +43,7 @@
     "babel-runtime": "~5.8.3"
   },
   "peerDependencies": {
-    "graphql": "~0.2.6"
+    "graphql": "~0.3.0"
   },
   "devDependencies": {
     "babel": "5.8.3",
@@ -53,7 +53,7 @@
     "chai-as-promised": "5.1.0",
     "eslint": "0.24.0",
     "flow-bin": "0.13.1",
-    "graphql": "0.2.6",
+    "graphql": "0.3.0",
     "mocha": "2.2.5",
     "sane": "1.1.3"
   }

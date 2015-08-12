@@ -57,7 +57,7 @@ var schema = new GraphQLSchema({
 
 describe('mutationWithClientMutationId', () => {
   describe('Behaves correctly', () => {
-    it('Requires an argument', () => {
+    it('Requires an argument', async () => {
       var query = `
         mutation M {
           simpleMutation {
@@ -65,18 +65,9 @@ describe('mutationWithClientMutationId', () => {
           }
         }
       `;
-      var expected = {
-        errors: [{
-          locations: [
-            {
-              column: 11,
-              line: 3
-            }
-          ],
-          message: 'Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.',
-        }]
-      };
-      return expect(graphql(schema, query)).to.become(expected);
+      var result = await graphql(schema, query);
+      expect(result.errors.length).to.equal(1);
+      expect(result.errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
     });
 
     it('Returns the same client mutation ID', () => {
