@@ -1,6 +1,6 @@
 {
   "name": "graphql-relay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A library to help construct a graphql-js server supporting react-relay.",
   "contributors": [
     "Daniel Schafer <dschafer@fb.com>"
@@ -28,7 +28,11 @@
     "mocha": "--require scripts/mocha-bootload src/**/__tests__/**/*.js"
   },
   "babel": {
-    "optional": ["runtime", "es7.asyncFunctions", "es7.objectRestSpread"]
+    "optional": [
+      "runtime",
+      "es7.asyncFunctions",
+      "es7.objectRestSpread"
+    ]
   },
   "scripts": {
     "prepublish": "npm test && npm run build",
