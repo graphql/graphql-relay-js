@@ -64,7 +64,7 @@ export function nodeDefinitions(
         description: 'The ID of an object'
       }
     },
-    resolve: (obj, {id}) => idFetcher(id)
+    resolve: (obj, {id}, info) => idFetcher(id, info)
   };
 
   return {nodeInterface, nodeField};
