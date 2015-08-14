@@ -11,6 +11,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import {
+  GraphQLID,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
@@ -46,7 +47,7 @@ var userType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
     id: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GraphQLID),
     },
     name: {
       type: GraphQLString,
