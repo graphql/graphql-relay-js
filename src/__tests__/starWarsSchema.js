@@ -35,10 +35,11 @@ import {
 } from '../mutation/mutation.js';
 
 import {
-  rebels,
-  empire,
-  data,
-  getNewShipId,
+  getFaction,
+  getShip,
+  getRebels,
+  getEmpire,
+  createShip,
 } from './starWarsData.js';
 
 /**
@@ -125,7 +126,13 @@ import {
 var {nodeInterface, nodeField} = nodeDefinitions(
   (globalId) => {
     var {type, id} = fromGlobalId(globalId);
-    return data[type][id];
+    if (type === 'Faction') {
+      return getFaction(id);
+    } else if (type === 'Ship') {
+      return getShip(id);
+    } else {
+      return null;
+    }
   },
   (obj) => {
     return obj.ships ? factionType : shipType;
@@ -197,7 +204,7 @@ var factionType = new GraphQLObjectType({
       description: 'The ships used by the faction.',
       args: connectionArgs,
       resolve: (faction, args) => connectionFromArray(
-        faction.ships.map((id) => data.Ship[id]),
+        faction.ships.map((id) => getShip(id)),
         args
       ),
     }
@@ -221,11 +228,11 @@ var queryType = new GraphQLObjectType({
   fields: () => ({
     rebels: {
       type: factionType,
-      resolve: () => rebels,
+      resolve: () => getRebels(),
     },
     empire: {
       type: factionType,
-      resolve: () => empire,
+      resolve: () => getEmpire(),
     },
     node: nodeField
   })
@@ -261,20 +268,15 @@ var shipMutation = mutationWithClientMutationId({
   outputFields: {
     ship: {
       type: shipType,
-      resolve: (payload) => data['Ship'][payload.shipId]
+      resolve: (payload) => getShip(payload.shipId)
     },
     faction: {
       type: factionType,
-      resolve: (payload) => data['Faction'][payload.factionId]
+      resolve: (payload) => getFaction(payload.factionId)
     }
   },
   mutateAndGetPayload: ({shipName, factionId}) => {
-    var newShip = {
-      id: getNewShipId(),
-      name: shipName
-    };
-    data.Ship[newShip.id] = newShip;
-    data.Faction[factionId].ships.push(newShip.id);
+    var newShip = createShip(shipName, factionId);
     return {
       shipId: newShip.id,
       factionId: factionId,
