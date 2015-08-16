@@ -48,6 +48,11 @@ type ConnectionConfig = {
   connectionFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
 }
 
+type GraphQLConnectionDefinitions = {
+  edgeType: GraphQLObjectType,
+  connectionType: GraphQLObjectType
+}
+
 function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
 }
@@ -58,7 +63,7 @@ function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
  */
 export function connectionDefinitions(
   config: ConnectionConfig
-): GraphQLObjectType {
+): GraphQLConnectionDefinitions {
   var {name, nodeType} = config;
   var edgeFields = config.edgeFields || {};
   var connectionFields = config.connectionFields || {};
