@@ -17,11 +17,12 @@ import {
 
 import type {
   GraphQLFieldConfig,
-  GraphQLFieldConfigMap
+  GraphQLFieldConfigMap,
+  GraphQLResolveInfo
 } from 'graphql';
 
-type mutationFn = (object: Object) => Object |
-                  (object: Object) => Promise<Object>;
+type mutationFn = (object: Object, info: GraphQLResolveInfo) => Object |
+                  (object: Object, info: GraphQLResolveInfo) => Promise<Object>;
 
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
