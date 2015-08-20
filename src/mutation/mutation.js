@@ -81,8 +81,8 @@ export function mutationWithClientMutationId(
     args: {
       input: {type: new GraphQLNonNull(inputType)}
     },
-    resolve: (_, {input}, info) => {
-      return Promise.resolve(mutateAndGetPayload(input, info)).then(payload => {
+    resolve: (rootValue, {input}, info) => {
+      return Promise.resolve(mutateAndGetPayload(input, info, rootValue)).then(payload => {
         payload.clientMutationId = input.clientMutationId;
         return payload;
       });
