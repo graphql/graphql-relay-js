@@ -17,11 +17,12 @@ import {
 
 import type {
   GraphQLFieldConfig,
-  GraphQLFieldConfigMap
+  GraphQLFieldConfigMap,
+  GraphQLResolveInfo
 } from 'graphql';
 
-type mutationFn = (object: Object) => Object |
-                  (object: Object) => Promise<Object>;
+type mutationFn = (object: Object, info: GraphQLResolveInfo) => Object |
+                  (object: Object, info: GraphQLResolveInfo) => Promise<Object>;
 
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
@@ -80,8 +81,8 @@ export function mutationWithClientMutationId(
     args: {
       input: {type: new GraphQLNonNull(inputType)}
     },
-    resolve: (_, {input}) => {
-      return Promise.resolve(mutateAndGetPayload(input)).then(payload => {
+    resolve: (_, {input}, info) => {
+      return Promise.resolve(mutateAndGetPayload(input, info)).then(payload => {
         payload.clientMutationId = input.clientMutationId;
         return payload;
       });
