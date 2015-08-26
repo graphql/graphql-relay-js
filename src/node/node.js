@@ -93,10 +93,11 @@ export function toGlobalId(type: string, id: string): string {
  * used to create it.
  */
 export function fromGlobalId(globalId: string): ResolvedGlobalId {
-  var tokens = unbase64(globalId).split(':', 2);
+  var unbasedGlobalId = unbase64(globalId);
+  var delimiterPos = unbasedGlobalId.indexOf(':');
   return {
-    type: tokens[0],
-    id: tokens[1]
+    type: unbasedGlobalId.substring(0, delimiterPos),
+    id: unbasedGlobalId.substring(delimiterPos + 1)
   };
 }
 
