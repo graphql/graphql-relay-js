@@ -17,7 +17,7 @@ import {
 
 import type {
   GraphQLFieldConfig,
-  InputObjectFieldConfigMap,
+  InputObjectConfigFieldMap,
   GraphQLFieldConfigMap,
   GraphQLResolveInfo
 } from 'graphql';
@@ -41,7 +41,7 @@ type mutationFn = (object: Object, info: GraphQLResolveInfo) => Object |
  */
 type MutationConfig = {
   name: string,
-  inputFields: InputObjectFieldConfigMap,
+  inputFields: InputObjectConfigFieldMap,
   outputFields: GraphQLFieldConfigMap,
   mutateAndGetPayload: mutationFn,
 }
