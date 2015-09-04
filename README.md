@@ -17,7 +17,7 @@ An overview of GraphQL in general is available in the
 [Specification for GraphQL](https://github.com/facebook/graphql).
 
 This library is designed to work with the 
-the [GraphQL.js](https://github.com/graphql/graphql-js) reference implementation
+[GraphQL.js](https://github.com/graphql/graphql-js) reference implementation
 of a GraphQL server.
 
 An overview of the functionality that a Relay-compliant GraphQL server should
@@ -236,4 +236,4 @@ npm run watch
 in a terminal. This will watch the file system run lint, tests, and type
 checking automatically whenever you save a js file.
 
-To lint the JS files and type interface checks run `npm run lint`.
+To lint the JS files and run type interface checks run `npm run lint`.
