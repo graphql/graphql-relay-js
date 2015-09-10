@@ -58,18 +58,18 @@ export function mutationWithClientMutationId(
   config: MutationConfig
 ): GraphQLFieldConfig {
   var {name, inputFields, outputFields, mutateAndGetPayload} = config;
-  var augmentedInputFields = {
+  var augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
     clientMutationId: {
       type: new GraphQLNonNull(GraphQLString)
     }
-  };
-  var augmentedOutputFields = {
+  });
+  var augmentedOutputFields = () => ({
     ...resolveMaybeThunk(outputFields),
     clientMutationId: {
       type: new GraphQLNonNull(GraphQLString)
     }
-  };
+  });
 
   var outputType = new GraphQLObjectType({
     name: name + 'Payload',
