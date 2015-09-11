@@ -31,6 +31,21 @@ var simpleMutation = mutationWithClientMutationId({
   mutateAndGetPayload: () => ({result: 1})
 });
 
+var simpleMutationWithThunkFields = mutationWithClientMutationId({
+  name: 'SimpleMutationWithThunkFields',
+  inputFields: () => ({
+    inputData: {
+      type: GraphQLInt
+    }
+  }),
+  outputFields: () => ({
+    result: {
+      type: GraphQLInt
+    }
+  }),
+  mutateAndGetPayload: ({ inputData }) => ({result: inputData})
+});
+
 var simplePromiseMutation = mutationWithClientMutationId({
   name: 'SimplePromiseMutation',
   inputFields: {},
@@ -46,6 +61,7 @@ var mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     simpleMutation: simpleMutation,
+    simpleMutationWithThunkFields: simpleMutationWithThunkFields,
     simplePromiseMutation: simplePromiseMutation
   }
 });
@@ -89,6 +105,26 @@ describe('mutationWithClientMutationId()', () => {
     return expect(graphql(schema, query)).to.become(expected);
   });
 
+  it('Supports thunks as input and output fields', () => {
+    var query = `
+      mutation M {
+        simpleMutationWithThunkFields(input: {inputData: 1234, clientMutationId: "abc"}) {
+          result
+          clientMutationId
+        }
+      }
+    `;
+    var expected = {
+      data: {
+        simpleMutationWithThunkFields: {
+          result: 1234,
+          clientMutationId: 'abc'
+        }
+      }
+    };
+    return expect(graphql(schema, query)).to.become(expected);
+  });
+  
   it('supports promise mutations', () => {
     var query = `
       mutation M {
@@ -246,6 +282,26 @@ describe('mutationWithClientMutationId()', () => {
                 ],
                 type: {
                   name: 'SimpleMutationPayload',
+                  kind: 'OBJECT',
+                }
+              },
+              {
+                name: 'simpleMutationWithThunkFields',
+                args: [
+                  {
+                    name: 'input',
+                    type: {
+                      name: null,
+                      kind: 'NON_NULL',
+                      ofType: {
+                        name: 'SimpleMutationWithThunkFieldsInput',
+                        kind: 'INPUT_OBJECT'
+                      }
+                    },
+                  }
+                ],
+                type: {
+                  name: 'SimpleMutationWithThunkFieldsPayload',
                   kind: 'OBJECT',
                 }
               },
