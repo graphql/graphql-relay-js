@@ -89,7 +89,7 @@ export function toGlobalId(type: string, id: string): string {
 }
 
 /**
- * Takes the "global ID" created by toGlobalID, and retuns the type name and ID
+ * Takes the "global ID" created by toGlobalID, and returns the type name and ID
  * used to create it.
  */
 export function fromGlobalId(globalId: string): ResolvedGlobalId {
