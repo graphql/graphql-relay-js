@@ -95,7 +95,7 @@ this, it takes a function to resolve an ID to an object, and to determine
 the type of a given object.
  - `toGlobalId` takes a type name and an ID specific to that type name,
 and returns a "global ID" that is unique among all types.
- - `fromGlobalId` takes the "global ID" created by `toGlobalID`, and retuns
+ - `fromGlobalId` takes the "global ID" created by `toGlobalID`, and returns
 the type name and ID used to create it.
  - `globalIdField` creates the configuration for an `id` field on a node.
  - `pluralIdentifyingRootField` creates a field that accepts a list of
