@@ -17,7 +17,7 @@ An overview of GraphQL in general is available in the
 [Specification for GraphQL](https://github.com/facebook/graphql).
 
 This library is designed to work with the 
-the [GraphQL.js](https://github.com/graphql/graphql-js) reference implementation
+[GraphQL.js](https://github.com/graphql/graphql-js) reference implementation
 of a GraphQL server.
 
 An overview of the functionality that a Relay-compliant GraphQL server should
