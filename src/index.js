@@ -10,7 +10,7 @@
 // Helpers for creating connection types in the schema
 export {
   connectionArgs,
-  connectionDefinitions
+  connectionDefinitions,
 } from './connection/connection.js';
 
 // Helpers for creating connections from arrays
@@ -23,17 +23,17 @@ export {
 
 // Helper for creating mutations with client mutation IDs
 export {
-  mutationWithClientMutationId
+  mutationWithClientMutationId,
 } from './mutation/mutation.js';
 
 // Helper for creating node definitions
 export {
-  nodeDefinitions
+  nodeDefinitions,
 } from './node/node.js';
 
 // Utilities for creating global IDs in systems that don't have them.
 export {
   fromGlobalId,
+  globalIdField,
   toGlobalId,
-  globalIdField
 } from './node/node.js';

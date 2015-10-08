@@ -11,12 +11,12 @@
 import type {
   Connection,
   ConnectionArguments,
-  ConnectionCursor
+  ConnectionCursor,
 } from './connectiontypes';
 
 import {
   base64,
-  unbase64
+  unbase64,
 } from '../utils/base64.js';
 
 type ArraySliceMetaInfo = {
@@ -116,7 +116,7 @@ export function connectionFromArraySlice<T>(
   const lowerBound = after ? (afterOffset + 1) : 0;
   const upperBound = before ? beforeOffset : arrayLength;
   return {
-    edges: [],
+    edges,
     pageInfo: {
       startCursor: firstEdge ? firstEdge.cursor : null,
       endCursor: lastEdge ? lastEdge.cursor : null,
@@ -176,13 +176,9 @@ export function cursorForObjectInConnection<T>(
  * otherwise it will be the default.
  */
 function getOffset(cursor?: ?ConnectionCursor, defaultOffset: number): number {
-  if (cursor === undefined || cursor === null) {
+  if (cursor == null) {
     return defaultOffset;
   }
   var offset = cursorToOffset(cursor);
-  if (isNaN(offset)) {
-    return defaultOffset;
-  }
-  return offset;
+  return isNaN(offset) ? defaultOffset : offset;
 }
-
