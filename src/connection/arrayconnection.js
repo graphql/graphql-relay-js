@@ -68,18 +68,18 @@ export function connectionFromArraySlice<T>(
   args: ConnectionArguments,
   meta: ArraySliceMetaInfo
 ): Connection<T> {
-  const {after, before, first, last} = args;
-  const {sliceStart, arrayLength} = meta;
-  const sliceEnd = sliceStart + arraySlice.length;
-  const beforeOffset = getOffset(before, arrayLength);
-  const afterOffset = getOffset(after, -1);
+  var {after, before, first, last} = args;
+  var {sliceStart, arrayLength} = meta;
+  var sliceEnd = sliceStart + arraySlice.length;
+  var beforeOffset = getOffset(before, arrayLength);
+  var afterOffset = getOffset(after, -1);
 
-  let startOffset = Math.max(
+  var startOffset = Math.max(
     sliceStart - 1,
     afterOffset,
     -1
   ) + 1;
-  let endOffset = Math.min(
+  var endOffset = Math.min(
     sliceEnd,
     beforeOffset,
     arrayLength
@@ -98,7 +98,7 @@ export function connectionFromArraySlice<T>(
   }
 
   // If supplied slice is too large, trim it down before mapping over it.
-  let slice = arraySlice;
+  var slice = arraySlice;
   if (sliceStart < startOffset || sliceEnd > endOffset) {
     slice = arraySlice.slice(
       Math.max(startOffset, sliceStart),
@@ -106,15 +106,15 @@ export function connectionFromArraySlice<T>(
     );
   }
 
-  const edges = slice.map((value, index) => ({
+  var edges = slice.map((value, index) => ({
     cursor: offsetToCursor(startOffset + index),
     node: value,
   }));
 
-  const firstEdge = edges[0];
-  const lastEdge = edges[edges.length - 1];
-  const lowerBound = after ? (afterOffset + 1) : 0;
-  const upperBound = before ? beforeOffset : arrayLength;
+  var firstEdge = edges[0];
+  var lastEdge = edges[edges.length - 1];
+  var lowerBound = after ? (afterOffset + 1) : 0;
+  var upperBound = before ? beforeOffset : arrayLength;
   return {
     edges,
     pageInfo: {
