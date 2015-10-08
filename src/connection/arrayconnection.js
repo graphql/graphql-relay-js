@@ -19,6 +19,11 @@ import {
   unbase64
 } from '../utils/base64.js';
 
+type ArraySliceMetaInfo = {
+  sliceStart: number;
+  arrayLength: number;
+};
+
 /**
  * A simple function that accepts an array and connection arguments, and returns
  * a connection object for use in GraphQL. It uses array offsets as pagination,
@@ -28,53 +33,19 @@ export function connectionFromArray<T>(
   data: Array<T>,
   args: ConnectionArguments
 ): Connection<T> {
-  var edges = data.map(
-    (value, index) => {
-      return {cursor: offsetToCursor(index), node: value};
+  return connectionFromArraySlice(
+    data,
+    args,
+    {
+      sliceStart: 0,
+      arrayLength: data.length,
     }
   );
-  var {before, after, first, last} = args;
-
-  // Slice with cursors
-  var begin = Math.max(getOffset(after, -1), -1) + 1;
-  var end = Math.min(getOffset(before, edges.length + 1), edges.length + 1);
-  edges = edges.slice(begin, end);
-  if (edges.length === 0) {
-    return emptyConnection();
-  }
-
-  // Save the pre-slice cursors
-  var firstPresliceCursor = edges[0].cursor;
-  var lastPresliceCursor = edges[edges.length - 1].cursor;
-
-  // Slice with limits
-  if (first !== null && first !== undefined) {
-    edges = edges.slice(0, first);
-  }
-  if (last !== null && last !== undefined) {
-    edges = edges.slice(-last);
-  }
-  if (edges.length === 0) {
-    return emptyConnection();
-  }
-
-  // Construct the connection
-  var firstEdge = edges[0];
-  var lastEdge = edges[edges.length - 1];
-  return {
-    edges: edges,
-    pageInfo: {
-      startCursor: firstEdge.cursor,
-      endCursor: lastEdge.cursor,
-      hasPreviousPage: (firstEdge.cursor !== firstPresliceCursor),
-      hasNextPage: (lastEdge.cursor !== lastPresliceCursor)
-    }
-  };
 }
 
 /**
- * A version of the above that takes a promised array, and returns a promised
- * connection.
+ * A version of `connectionFromArray` that takes a promised array, and returns a
+ * promised connection.
  */
 export function connectionFromPromisedArray<T>(
   dataPromise: Promise<Array<T>>,
@@ -84,18 +55,89 @@ export function connectionFromPromisedArray<T>(
 }
 
 /**
- * Helper to get an empty connection.
+ * Given a slice (subset) of an array, returns a connection object for use in
+ * GraphQL.
+ *
+ * This function is similar to `connectionFromArray`, but is intended for use
+ * cases where you know the cardinality of the connection, consider it too large
+ * to materialize the entire array, and instead wish pass in a slice of the
+ * total result large enough to cover the range specified in `args`.
  */
-function emptyConnection<T>(): Connection<T> {
+export function connectionFromArraySlice<T>(
+  arraySlice: Array<T>,
+  args: ConnectionArguments,
+  meta: ArraySliceMetaInfo
+): Connection<T> {
+  const {after, before, first, last} = args;
+  const {sliceStart, arrayLength} = meta;
+  const sliceEnd = sliceStart + arraySlice.length;
+  const beforeOffset = getOffset(before, arrayLength);
+  const afterOffset = getOffset(after, -1);
+
+  let startOffset = Math.max(
+    sliceStart - 1,
+    afterOffset,
+    -1
+  ) + 1;
+  let endOffset = Math.min(
+    sliceEnd,
+    beforeOffset,
+    arrayLength
+  );
+  if (first != null) {
+    endOffset = Math.min(
+      endOffset,
+      startOffset + first
+    );
+  }
+  if (last != null) {
+    startOffset = Math.max(
+      startOffset,
+      endOffset - last
+    );
+  }
+
+  // If supplied slice is too large, trim it down before mapping over it.
+  let slice = arraySlice;
+  if (sliceStart < startOffset || sliceEnd > endOffset) {
+    slice = arraySlice.slice(
+      Math.max(startOffset, sliceStart),
+      Math.min(endOffset, sliceEnd)
+    );
+  }
+
+  const edges = slice.map((value, index) => ({
+    cursor: offsetToCursor(startOffset + index),
+    node: value,
+  }));
+
+  const firstEdge = edges[0];
+  const lastEdge = edges[edges.length - 1];
+  const lowerBound = after ? (afterOffset + 1) : 0;
+  const upperBound = before ? beforeOffset : arrayLength;
   return {
     edges: [],
     pageInfo: {
-      startCursor: null,
-      endCursor: null,
-      hasPreviousPage: false,
-      hasNextPage: false
-    }
+      startCursor: firstEdge ? firstEdge.cursor : null,
+      endCursor: lastEdge ? lastEdge.cursor : null,
+      hasPreviousPage: last != null ? startOffset > lowerBound : false,
+      hasNextPage: first != null ? endOffset < upperBound : false,
+    },
   };
+}
+
+/**
+ * A version of `connectionFromArraySlice` that takes a promised array slice,
+ * and returns a promised connection.
+ */
+export function connectionFromPromisedArraySlice<T>(
+  dataPromise: Promise<Array<T>>,
+  args: ConnectionArguments,
+  arrayInfo: ArraySliceMetaInfo
+): Promise<Connection<T>> {
+  return dataPromise.then(
+    data => connectionFromArraySlice(data, args, arrayInfo)
+  );
 }
 
 var PREFIX = 'arrayconnection:';
@@ -110,7 +152,7 @@ function offsetToCursor(offset: number): ConnectionCursor {
 /**
  * Rederives the offset from the cursor string.
  */
-function cursorToOffset(cursor: ConnectionCursor): number {
+export function cursorToOffset(cursor: ConnectionCursor): number {
   return parseInt(unbase64(cursor).substring(PREFIX.length), 10);
 }
 

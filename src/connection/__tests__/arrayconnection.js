@@ -477,7 +477,7 @@ describe('connectionFromArray', () => {
           startCursor: null,
           endCursor: null,
           hasPreviousPage: false,
-          hasNextPage: false,
+          hasNextPage: true,
         }
       });
     });
