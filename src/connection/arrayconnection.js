@@ -98,13 +98,10 @@ export function connectionFromArraySlice<T>(
   }
 
   // If supplied slice is too large, trim it down before mapping over it.
-  var slice = arraySlice;
-  if (sliceStart < startOffset || sliceEnd > endOffset) {
-    slice = arraySlice.slice(
-      Math.max(startOffset, sliceStart),
-      Math.min(endOffset, sliceEnd)
-    );
-  }
+  var slice = arraySlice.slice(
+    Math.max(startOffset - sliceStart, 0),
+    arraySlice.length - (sliceEnd - endOffset)
+  );
 
   var edges = slice.map((value, index) => ({
     cursor: offsetToCursor(startOffset + index),

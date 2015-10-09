@@ -657,93 +657,91 @@ describe('connectionFromArraySlice()', () => {
   var letters = ['A', 'B', 'C', 'D', 'E'];
 
   it('works with a just-right array slice', () => {
-      var c = connectionFromArraySlice(
-        letters.slice(1, 3),
+    var c = connectionFromArraySlice(
+      letters.slice(1, 3),
+      {
+        first: 2,
+        after: 'YXJyYXljb25uZWN0aW9uOjA=',
+      },
+      {
+        sliceStart: 1,
+        arrayLength: 5,
+      }
+    );
+    return expect(c).to.deep.equal({
+      edges: [
         {
-          first: 2,
-          after: 'YXJyYXljb25uZWN0aW9uOjA=',
+          node: 'B',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
         },
         {
-          sliceStart: 1,
-          arrayLength: 5,
-        }
-      );
-      return expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-        ],
-        pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          hasPreviousPage: false,
-          hasNextPage: true,
-        }
-      });
+          node: 'C',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        },
+      ],
+      pageInfo: {
+        startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        hasPreviousPage: false,
+        hasNextPage: true,
+      }
+    });
   });
 
   it('works with an oversized array slice', () => {
-    return
-      var c = connectionFromArraySlice(
-        letters.slice(1, 4),
+    var c = connectionFromArraySlice(
+      letters.slice(1, 4),
+      {
+        first: 1,
+        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+      },
+      {
+        sliceStart: 1,
+        arrayLength: 5,
+      }
+    );
+    return expect(c).to.deep.equal({
+      edges: [
         {
-          first: 1,
-          after: 'YXJyYXljb25uZWN0aW9uOjI=',
+          node: 'C',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         },
-        {
-          sliceStart: 1,
-          arrayLength: 5,
-        }
-      );
-      return expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-        ],
-        pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          hasPreviousPage: false,
-          hasNextPage: true,
-        }
-      });
+      ],
+      pageInfo: {
+        startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        hasPreviousPage: false,
+        hasNextPage: true,
+      }
+    });
   });
 
   it('works with an undersized array slice', () => {
-    return
-      var c = connectionFromArraySlice(
-        letters.slice(2, 3),
+    var c = connectionFromArraySlice(
+      letters.slice(2, 3),
+      {
+        first: 3,
+        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+      },
+      {
+        sliceStart: 2,
+        arrayLength: 5,
+      }
+    );
+    return expect(c).to.deep.equal({
+      edges: [
         {
-          first: 3,
-          after: 'YXJyYXljb25uZWN0aW9uOjE=',
+          node: 'C',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         },
-        {
-          sliceStart: 2,
-          arrayLength: 5,
-        }
-      );
-      return expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-        ],
-        pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          hasPreviousPage: false,
-          hasNextPage: true,
-        }
-      });
+      ],
+      pageInfo: {
+        startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        hasPreviousPage: false,
+        hasNextPage: true,
+      }
+    });
   });
 });
 
