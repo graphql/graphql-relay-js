@@ -71,8 +71,8 @@ export function connectionFromArraySlice<T>(
   var {after, before, first, last} = args;
   var {sliceStart, arrayLength} = meta;
   var sliceEnd = sliceStart + arraySlice.length;
-  var beforeOffset = getOffset(before, arrayLength);
-  var afterOffset = getOffset(after, -1);
+  var beforeOffset = getOffsetWithDefault(before, arrayLength);
+  var afterOffset = getOffsetWithDefault(after, -1);
 
   var startOffset = Math.max(
     sliceStart - 1,
@@ -172,7 +172,10 @@ export function cursorForObjectInConnection<T>(
  * to use; if the cursor contains a valid offset, that will be used,
  * otherwise it will be the default.
  */
-function getOffset(cursor?: ?ConnectionCursor, defaultOffset: number): number {
+export function getOffsetWithDefault(
+  cursor?: ?ConnectionCursor,
+  defaultOffset: number
+): number {
   if (cursor == null) {
     return defaultOffset;
   }

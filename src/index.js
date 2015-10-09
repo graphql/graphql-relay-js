@@ -21,6 +21,7 @@ export {
   connectionFromPromisedArraySlice,
   cursorForObjectInConnection,
   cursorToOffset,
+  getOffsetWithDefault,
 } from './connection/arrayconnection.js';
 
 // Helper for creating mutations with client mutation IDs
