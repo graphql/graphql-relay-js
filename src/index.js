@@ -16,7 +16,9 @@ export {
 // Helpers for creating connections from arrays
 export {
   connectionFromArray,
+  connectionFromArraySlice,
   connectionFromPromisedArray,
+  connectionFromPromisedArraySlice,
   cursorForObjectInConnection,
   cursorToOffset,
 } from './connection/arrayconnection.js';
