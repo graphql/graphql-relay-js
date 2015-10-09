@@ -13,11 +13,15 @@ import { expect } from 'chai';
 
 import {
   connectionFromArray,
+  connectionFromArraySlice,
+  connectionFromPromisedArray,
+  connectionFromPromisedArraySlice,
   cursorForObjectInConnection,
 } from '../arrayconnection';
 
-var letters = ['A', 'B', 'C', 'D', 'E'];
 describe('connectionFromArray', () => {
+  var letters = ['A', 'B', 'C', 'D', 'E'];
+
   describe('Handles basic slicing', () => {
     it('Returns all elements without filters', () => {
       var c = connectionFromArray(letters, {});
@@ -586,6 +590,190 @@ describe('connectionFromArray', () => {
     it('returns null, given an array and a non-member object', () => {
       var letterFCursor = cursorForObjectInConnection(letters, 'F');
       return expect(letterFCursor).to.be.null;
+    });
+  });
+});
+
+describe('connectionFromPromisedArray', () => {
+  var letters = Promise.resolve(['A', 'B', 'C', 'D', 'E']);
+
+  it('Returns all elements without filters', async () => {
+    var c = await connectionFromPromisedArray(letters, {});
+    return expect(c).to.deep.equal({
+      edges: [
+        {
+          node: 'A',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        },
+        {
+          node: 'B',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        },
+        {
+          node: 'C',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        },
+        {
+          node: 'D',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+        },
+        {
+          node: 'E',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        },
+      ],
+      pageInfo: {
+        startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        hasPreviousPage: false,
+        hasNextPage: false,
+      }
+    });
+  });
+
+  it('Respects a smaller first', async () => {
+    var c = await connectionFromPromisedArray(letters, {first: 2});
+    return expect(c).to.deep.equal({
+      edges: [
+        { node: 'A',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        },
+        {
+          node: 'B',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        },
+      ],
+      pageInfo: {
+        startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        hasPreviousPage: false,
+        hasNextPage: true,
+      }
+    });
+  });
+});
+
+describe('connectionFromArraySlice', () => {
+  var letters = ['A', 'B', 'C', 'D', 'E'];
+
+  it('Works with a just-right array slice', () => {
+      var c = connectionFromArraySlice(
+        letters.slice(1, 3),
+        {
+          first: 2,
+          after: 'YXJyYXljb25uZWN0aW9uOjA=',
+        },
+        {
+          sliceStart: 1,
+          arrayLength: 5,
+        }
+      );
+      return expect(c).to.deep.equal({
+        edges: [
+          {
+            node: 'B',
+            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+          },
+          {
+            node: 'C',
+            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          },
+        ],
+        pageInfo: {
+          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          hasPreviousPage: false,
+          hasNextPage: true,
+        }
+      });
+  });
+
+  it('Works with an oversized array slice', () => {
+    return
+      var c = connectionFromArraySlice(
+        letters.slice(1, 4),
+        {
+          first: 1,
+          after: 'YXJyYXljb25uZWN0aW9uOjI=',
+        },
+        {
+          sliceStart: 1,
+          arrayLength: 5,
+        }
+      );
+      return expect(c).to.deep.equal({
+        edges: [
+          {
+            node: 'C',
+            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          },
+        ],
+        pageInfo: {
+          startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          hasPreviousPage: false,
+          hasNextPage: true,
+        }
+      });
+  });
+
+  it('Works with an undersized array slice', () => {
+    return
+      var c = connectionFromArraySlice(
+        letters.slice(2, 3),
+        {
+          first: 3,
+          after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        },
+        {
+          sliceStart: 2,
+          arrayLength: 5,
+        }
+      );
+      return expect(c).to.deep.equal({
+        edges: [
+          {
+            node: 'C',
+            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          },
+        ],
+        pageInfo: {
+          startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          hasPreviousPage: false,
+          hasNextPage: true,
+        }
+      });
+  });
+});
+
+describe('connectionFromPromisedArraySlice', () => {
+  it('Respects a smaller first', async () => {
+    var letters = Promise.resolve(['A', 'B', 'C']);
+    var c = await connectionFromPromisedArraySlice(
+      letters,
+      {first: 2},
+      {
+        sliceStart: 0,
+        arrayLength: 5,
+      }
+    );
+    return expect(c).to.deep.equal({
+      edges: [
+        { node: 'A',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        },
+        {
+          node: 'B',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        },
+      ],
+      pageInfo: {
+        startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        hasPreviousPage: false,
+        hasNextPage: true,
+      }
     });
   });
 });
