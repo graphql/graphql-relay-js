@@ -54,8 +54,8 @@ var schema = new GraphQLSchema({
   query: queryType
 });
 
-describe('pluralIdentifyingRootField', () => {
-  it('Allows fetching', () => {
+describe('pluralIdentifyingRootField()', () => {
+  it('allows fetching', () => {
     var query = `{
       usernames(usernames:["dschafer", "leebyron", "schrockn"]) {
         username
@@ -82,7 +82,7 @@ describe('pluralIdentifyingRootField', () => {
     return expect(graphql(schema, query)).to.become({data: expected});
   });
 
-  it('Correctly introspects', () => {
+  it('correctly introspects', () => {
     var query = `{
       __schema {
         queryType {

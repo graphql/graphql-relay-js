@@ -55,64 +55,62 @@ var schema = new GraphQLSchema({
   mutation: mutation
 });
 
-describe('mutationWithClientMutationId', () => {
-  describe('Behaves correctly', () => {
-    it('Requires an argument', async () => {
-      var query = `
-        mutation M {
-          simpleMutation {
-            result
-          }
+describe('mutationWithClientMutationId()', () => {
+  it('requires an argument', async () => {
+    var query = `
+      mutation M {
+        simpleMutation {
+          result
         }
-      `;
-      var result = await graphql(schema, query);
-      expect(result.errors.length).to.equal(1);
-      expect(result.errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
-    });
-
-    it('Returns the same client mutation ID', () => {
-      var query = `
-        mutation M {
-          simpleMutation(input: {clientMutationId: "abc"}) {
-            result
-            clientMutationId
-          }
-        }
-      `;
-      var expected = {
-        data: {
-          simpleMutation: {
-            result: 1,
-            clientMutationId: 'abc'
-          }
-        }
-      };
-      return expect(graphql(schema, query)).to.become(expected);
-    });
-
-    it('Supports promise mutations', () => {
-      var query = `
-        mutation M {
-          simplePromiseMutation(input: {clientMutationId: "abc"}) {
-            result
-            clientMutationId
-          }
-        }
-      `;
-      var expected = {
-        data: {
-          simplePromiseMutation: {
-            result: 1,
-            clientMutationId: 'abc'
-          }
-        }
-      };
-      return expect(graphql(schema, query)).to.become(expected);
-    });
+      }
+    `;
+    var result = await graphql(schema, query);
+    expect(result.errors.length).to.equal(1);
+    expect(result.errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
   });
 
-  describe('Introspects correctly', () => {
-    it('Contains correct input', () => {
+  it('returns the same client mutation ID', () => {
+    var query = `
+      mutation M {
+        simpleMutation(input: {clientMutationId: "abc"}) {
+          result
+          clientMutationId
+        }
+      }
+    `;
+    var expected = {
+      data: {
+        simpleMutation: {
+          result: 1,
+          clientMutationId: 'abc'
+        }
+      }
+    };
+    return expect(graphql(schema, query)).to.become(expected);
+  });
+
+  it('supports promise mutations', () => {
+    var query = `
+      mutation M {
+        simplePromiseMutation(input: {clientMutationId: "abc"}) {
+          result
+          clientMutationId
+        }
+      }
+    `;
+    var expected = {
+      data: {
+        simplePromiseMutation: {
+          result: 1,
+          clientMutationId: 'abc'
+        }
+      }
+    };
+    return expect(graphql(schema, query)).to.become(expected);
+  });
+
+  describe('introspection', () => {
+    it('contains correct input', () => {
       var query = `{
         __type(name: "SimpleMutationInput") {
           name
@@ -153,7 +151,7 @@ describe('mutationWithClientMutationId', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Contains correct payload', () => {
+    it('contains correct payload', () => {
       var query = `{
         __type(name: "SimpleMutationPayload") {
           name
@@ -202,7 +200,7 @@ describe('mutationWithClientMutationId', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Contains correct field', () => {
+    it('contains correct field', () => {
       var query = `{
         __schema {
           mutationType {

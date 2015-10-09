@@ -15,232 +15,229 @@ import { graphql } from 'graphql';
 // 80+ char lines are useful in describe/it, so ignore in this file.
 /*eslint-disable max-len */
 
-describe('Connection Tests', () => {
-  describe('Fetching Tests', () => {
-    it('Correctly fetches the first ship of the rebels', async () => {
-      var query = `
-        query RebelsShipsQuery {
-          rebels {
-            name,
-            ships(first: 1) {
-              edges {
-                node {
-                  name
-                }
+describe('Star Wars connections', () => {
+  it('fetches the first ship of the rebels', async () => {
+    var query = `
+      query RebelsShipsQuery {
+        rebels {
+          name,
+          ships(first: 1) {
+            edges {
+              node {
+                name
               }
             }
           }
         }
-      `;
-      var expected = {
-        rebels: {
-          name: 'Alliance to Restore the Republic',
-          ships: {
-            edges: [
-              {
-                node: {
-                  name: 'X-Wing'
-                }
+      }
+    `;
+    var expected = {
+      rebels: {
+        name: 'Alliance to Restore the Republic',
+        ships: {
+          edges: [
+            {
+              node: {
+                name: 'X-Wing'
               }
-            ]
-          }
+            }
+          ]
         }
-      };
-      var result = await graphql(StarWarsSchema, query);
-      expect(result).to.deep.equal({ data: expected });
-    });
+      }
+    };
+    var result = await graphql(StarWarsSchema, query);
+    expect(result).to.deep.equal({ data: expected });
+  });
 
-    it('Correctly fetches the first two ships of the rebels with a cursor', async () => {
-      var query = `
-        query MoreRebelShipsQuery {
-          rebels {
-            name,
-            ships(first: 2) {
-              edges {
-                cursor,
-                node {
-                  name
-                }
+  it('fetches the first two ships of the rebels with a cursor', async () => {
+    var query = `
+      query MoreRebelShipsQuery {
+        rebels {
+          name,
+          ships(first: 2) {
+            edges {
+              cursor,
+              node {
+                name
               }
             }
           }
         }
-      `;
-      var expected = {
-        rebels: {
-          name: 'Alliance to Restore the Republic',
-          ships: {
-            edges: [
-              {
-                cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-                node: {
-                  name: 'X-Wing'
-                }
-              },
-              {
-                cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-                node: {
-                  name: 'Y-Wing'
-                }
+      }
+    `;
+    var expected = {
+      rebels: {
+        name: 'Alliance to Restore the Republic',
+        ships: {
+          edges: [
+            {
+              cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+              node: {
+                name: 'X-Wing'
               }
-            ]
-          }
+            },
+            {
+              cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+              node: {
+                name: 'Y-Wing'
+              }
+            }
+          ]
         }
-      };
-      var result = await graphql(StarWarsSchema, query);
-      expect(result).to.deep.equal({ data: expected });
-    });
+      }
+    };
+    var result = await graphql(StarWarsSchema, query);
+    expect(result).to.deep.equal({ data: expected });
+  });
 
-    it('Correctly fetches the next three ships of the rebels with a cursor', async () => {
-      var query = `
-        query EndOfRebelShipsQuery {
-          rebels {
-            name,
-            ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
-              edges {
-                cursor,
-                node {
-                  name
-                }
+  it('fetches the next three ships of the rebels with a cursor', async () => {
+    var query = `
+      query EndOfRebelShipsQuery {
+        rebels {
+          name,
+          ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
+            edges {
+              cursor,
+              node {
+                name
               }
             }
           }
         }
-      `;
-      var expected = {
-        rebels: {
-          name: 'Alliance to Restore the Republic',
-          ships: {
-            edges: [
-              {
-                cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-                node: {
-                  name: 'A-Wing'
-                }
-              },
-              {
-                cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-                node: {
-                  name: 'Millenium Falcon'
-                }
-              },
-              {
-                cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-                node: {
-                  name: 'Home One'
-                }
+      }
+    `;
+    var expected = {
+      rebels: {
+        name: 'Alliance to Restore the Republic',
+        ships: {
+          edges: [
+            {
+              cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+              node: {
+                name: 'A-Wing'
               }
-            ]
-          }
+            },
+            {
+              cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+              node: {
+                name: 'Millenium Falcon'
+              }
+            },
+            {
+              cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+              node: {
+                name: 'Home One'
+              }
+            }
+          ]
         }
-      };
-      var result = await graphql(StarWarsSchema, query);
-      expect(result).to.deep.equal({ data: expected });
-    });
+      }
+    };
+    var result = await graphql(StarWarsSchema, query);
+    expect(result).to.deep.equal({ data: expected });
+  });
 
-    it('Correctly fetches no ships of the rebels at the end of connection', async () => {
-      var query = `
-        query RebelsQuery {
-          rebels {
-            name,
-            ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjQ=") {
-              edges {
-                cursor,
-                node {
-                  name
-                }
+  it('fetches no ships of the rebels at the end of connection', async () => {
+    var query = `
+      query RebelsQuery {
+        rebels {
+          name,
+          ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjQ=") {
+            edges {
+              cursor,
+              node {
+                name
               }
             }
           }
         }
-      `;
-      var expected = {
-        rebels: {
-          name: 'Alliance to Restore the Republic',
-          ships: {
-            edges: []
-          }
+      }
+    `;
+    var expected = {
+      rebels: {
+        name: 'Alliance to Restore the Republic',
+        ships: {
+          edges: []
         }
-      };
-      var result = await graphql(StarWarsSchema, query);
-      expect(result).to.deep.equal({ data: expected });
-    });
+      }
+    };
+    var result = await graphql(StarWarsSchema, query);
+    expect(result).to.deep.equal({ data: expected });
+  });
 
-    it('Correctly identifies the end of the list', async () => {
-      var query = `
-        query EndOfRebelShipsQuery {
-          rebels {
-            name,
-            originalShips: ships(first: 2) {
-              edges {
-                node {
-                  name
-                }
-              }
-              pageInfo {
-                hasNextPage
+  it('identifies the end of the list', async () => {
+    var query = `
+      query EndOfRebelShipsQuery {
+        rebels {
+          name,
+          originalShips: ships(first: 2) {
+            edges {
+              node {
+                name
               }
             }
-            moreShips: ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
-              edges {
-                node {
-                  name
-                }
+            pageInfo {
+              hasNextPage
+            }
+          }
+          moreShips: ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
+            edges {
+              node {
+                name
               }
-              pageInfo {
-                hasNextPage
-              }
+            }
+            pageInfo {
+              hasNextPage
             }
           }
         }
-      `;
-      var expected = {
-        rebels: {
-          name: 'Alliance to Restore the Republic',
-          originalShips: {
-            edges: [
-              {
-                node: {
-                  name: 'X-Wing'
-                }
-              },
-              {
-                node: {
-                  name: 'Y-Wing'
-                }
+      }
+    `;
+    var expected = {
+      rebels: {
+        name: 'Alliance to Restore the Republic',
+        originalShips: {
+          edges: [
+            {
+              node: {
+                name: 'X-Wing'
               }
-            ],
-            pageInfo: {
-              hasNextPage: true
-            }
-          },
-          moreShips: {
-            edges: [
-              {
-                node: {
-                  name: 'A-Wing'
-                }
-              },
-              {
-                node: {
-                  name: 'Millenium Falcon'
-                }
-              },
-              {
-                node: {
-                  name: 'Home One'
-                }
+            },
+            {
+              node: {
+                name: 'Y-Wing'
               }
-            ],
-            pageInfo: {
-              hasNextPage: false
             }
+          ],
+          pageInfo: {
+            hasNextPage: true
+          }
+        },
+        moreShips: {
+          edges: [
+            {
+              node: {
+                name: 'A-Wing'
+              }
+            },
+            {
+              node: {
+                name: 'Millenium Falcon'
+              }
+            },
+            {
+              node: {
+                name: 'Home One'
+              }
+            }
+          ],
+          pageInfo: {
+            hasNextPage: false
           }
         }
-      };
-      var result = await graphql(StarWarsSchema, query);
-      expect(result).to.deep.equal({ data: expected });
-    });
-
+      }
+    };
+    var result = await graphql(StarWarsSchema, query);
+    expect(result).to.deep.equal({ data: expected });
   });
 });

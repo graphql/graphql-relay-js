@@ -15,8 +15,8 @@ import { graphql } from 'graphql';
 // 80+ char lines are useful in describe/it, so ignore in this file.
 /*eslint-disable max-len */
 
-describe('Mutation Tests', () => {
-  it('Correctly mutates the data set', async () => {
+describe('Star Wars mutations', () => {
+  it('mutates the data set', async () => {
     var mutation = `
       mutation AddBWingQuery($input: IntroduceShipInput!) {
         introduceShip(input: $input) {

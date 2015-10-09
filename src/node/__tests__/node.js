@@ -103,8 +103,8 @@ var schema = new GraphQLSchema({
 });
 
 describe('Node interface and fields', () => {
-  describe('Allows refetching', () => {
-    it('Gets the correct ID for users', () => {
+  describe('refetchability', () => {
+    it('gets the correct ID for users', () => {
       var query = `{
         node(id: "1") {
           id
@@ -119,7 +119,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Gets the correct ID for photos', () => {
+    it('gets the correct ID for photos', () => {
       var query = `{
         node(id: "4") {
           id
@@ -134,7 +134,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Gets the correct name for users', () => {
+    it('gets the correct name for users', () => {
       var query = `{
         node(id: "1") {
           id
@@ -153,7 +153,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Gets the correct width for photos', () => {
+    it('gets the correct width for photos', () => {
       var query = `{
         node(id: "4") {
           id
@@ -172,7 +172,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Gets the correct type name for users', () => {
+    it('gets the correct type name for users', () => {
       var query = `{
         node(id: "1") {
           id
@@ -189,7 +189,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Gets the correct width for photos', () => {
+    it('gets the correct width for photos', () => {
       var query = `{
         node(id: "4") {
           id
@@ -206,7 +206,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Ignores photo fragments on user', () => {
+    it('ignores photo fragments on user', () => {
       var query = `{
         node(id: "1") {
           id
@@ -224,7 +224,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Returns null for bad IDs', () => {
+    it('returns null for bad IDs', () => {
       var query = `{
         node(id: "5") {
           id
@@ -238,8 +238,8 @@ describe('Node interface and fields', () => {
     });
   });
 
-  describe('Correctly introspects', () => {
-    it('Has correct node interface', () => {
+  describe('introspection', () => {
+    it('has correct node interface', () => {
       var query = `{
         __type(name: "Node") {
           name
@@ -278,7 +278,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('Has correct node root field', () => {
+    it('has correct node root field', () => {
       var query = `{
         __schema {
           queryType {
