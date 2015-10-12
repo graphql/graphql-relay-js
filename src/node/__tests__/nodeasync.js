@@ -68,7 +68,7 @@ var schema = new GraphQLSchema({
 });
 
 describe('Node interface and fields with async object fetcher', () => {
-  it('Gets the correct ID for users', () => {
+  it('gets the correct ID for users', () => {
     var query = `{
       node(id: "1") {
         id
@@ -83,7 +83,7 @@ describe('Node interface and fields with async object fetcher', () => {
     return expect(graphql(schema, query)).to.become({data: expected});
   });
 
-  it('Gets the correct name for users', () => {
+  it('gets the correct name for users', () => {
     var query = `{
       node(id: "1") {
         id

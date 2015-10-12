@@ -103,8 +103,8 @@ var schema = new GraphQLSchema({
   query: queryType
 });
 
-describe('Global ID fields', () => {
-  it('Gives different IDs', () => {
+describe('global ID fields', () => {
+  it('gives different IDs', () => {
     var query = `{
       allObjects {
         id
@@ -130,7 +130,7 @@ describe('Global ID fields', () => {
     return expect(graphql(schema, query)).to.become({data: expected});
   });
 
-  it('Refetches the IDs', () => {
+  it('refetches the IDs', () => {
     var query = `{
       user: node(id: "VXNlcjox") {
         id

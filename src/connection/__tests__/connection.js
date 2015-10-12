@@ -80,8 +80,8 @@ var schema = new GraphQLSchema({
   query: queryType,
 });
 
-describe('connectionDefinition tests', () => {
-  it('Includes connection and edge fields', async () => {
+describe('connectionDefinition()', () => {
+  it('includes connection and edge fields', async () => {
     var query = `
       query FriendsQuery {
         user {
