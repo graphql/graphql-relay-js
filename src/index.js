@@ -22,6 +22,7 @@ export {
   cursorForObjectInConnection,
   cursorToOffset,
   getOffsetWithDefault,
+  offsetToCursor,
 } from './connection/arrayconnection.js';
 
 // Helper for creating mutations with client mutation IDs
