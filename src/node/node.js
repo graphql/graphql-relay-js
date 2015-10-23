@@ -103,7 +103,7 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
 
 /**
  * Creates the configuration for an id field on a node, using `toGlobalId` to
- * construct the ID from the provided typename. The type-specific ID is fetcher
+ * construct the ID from the provided typename. The type-specific ID is fetched
  * by calling idFetcher on the object, or if not provided, by accessing the `id`
  * property on the object.
  */
