@@ -12,16 +12,18 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql
+  graphql,
 } from 'graphql';
 
 import {
-  connectionFromArray
+  connectionFromArray,
 } from '../arrayconnection.js';
 
 import {
+  backwardConnectionArgs,
   connectionArgs,
-  connectionDefinitions
+  connectionDefinitions,
+  forwardConnectionArgs,
 } from '../connection.js';
 
 import { expect } from 'chai';
@@ -44,6 +46,16 @@ var userType = new GraphQLObjectType({
     friends: {
       type: friendConnection,
       args: connectionArgs,
+      resolve: (user, args) => connectionFromArray(allUsers, args),
+    },
+    friendsForward: {
+      type: friendConnection,
+      args: forwardConnectionArgs,
+      resolve: (user, args) => connectionFromArray(allUsers, args),
+    },
+    friendsBackward: {
+      type: friendConnection,
+      args: backwardConnectionArgs,
       resolve: (user, args) => connectionFromArray(allUsers, args),
     },
   }),
@@ -112,6 +124,78 @@ describe('connectionDefinition()', () => {
               friendshipTime: 'Yesterday',
               node: {
                 name: 'Nick'
+              }
+            },
+          ]
+        }
+      }
+    };
+    var result = await graphql(schema, query);
+    expect(result).to.deep.equal({ data: expected });
+  });
+
+  it('works with forwardConnectionArgs', async () => {
+    var query = `
+      query FriendsQuery {
+        user {
+          friendsForward(first: 2) {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+        }
+      }
+    `;
+    var expected = {
+      user: {
+        friendsForward: {
+          edges: [
+            {
+              node: {
+                name: 'Dan'
+              }
+            },
+            {
+              node: {
+                name: 'Nick'
+              }
+            },
+          ]
+        }
+      }
+    };
+    var result = await graphql(schema, query);
+    expect(result).to.deep.equal({ data: expected });
+  });
+
+  it('works with backwardConnectionArgs', async () => {
+    var query = `
+      query FriendsQuery {
+        user {
+          friendsBackward(last: 2) {
+            edges {
+              node {
+                name
+              }
+            }
+          }
+        }
+      }
+    `;
+    var expected = {
+      user: {
+        friendsBackward: {
+          edges: [
+            {
+              node: {
+                name: 'Joe'
+              }
+            },
+            {
+              node: {
+                name: 'Tim'
               }
             },
           ]

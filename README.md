@@ -45,8 +45,12 @@ Helper functions are provided for both building the GraphQL types
 for connections and for implementing the `resolve` method for fields
 returning those types.
 
- - `connectionArgs` returns the arguments that fields should provide when
-they return a connection type.
+ - `connectionArgs` returns the arguments that fields should provide when they
+return a connection type that supports bidirectional pagination.
+ - `forwardConnectionArgs` returns the arguments that fields should provide
+when they return a connection type that only supports forward pagination.
+ - `backwardConnectionArgs` returns the arguments that fields should provide
+when they return a connection type that only supports backward pagination.
  - `connectionDefinitions` returns a `connectionType` and its associated
 `edgeType`, given a name and a node type.
  - `connectionFromArray` is a helper method that takes an array and the
