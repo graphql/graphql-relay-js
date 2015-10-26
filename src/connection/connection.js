@@ -23,22 +23,38 @@ import type {
 } from 'graphql';
 
 /**
- * Returns a GraphQLFieldConfigArgumentMap appropriate to include
- * on a field whose return type is a connection type.
+ * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
+ * whose return type is a connection type with forward pagination.
  */
-export var connectionArgs: GraphQLFieldConfigArgumentMap = {
-  before: {
-    type: GraphQLString
-  },
+export var forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
   after: {
     type: GraphQLString
   },
   first: {
     type: GraphQLInt
   },
+};
+
+/**
+ * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
+ * whose return type is a connection type with backward pagination.
+ */
+export var backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
+  before: {
+    type: GraphQLString
+  },
   last: {
     type: GraphQLInt
   },
+};
+
+/**
+ * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
+ * whose return type is a connection type with bidirectional pagination.
+ */
+export var connectionArgs: GraphQLFieldConfigArgumentMap = {
+  ...forwardConnectionArgs,
+  ...backwardConnectionArgs,
 };
 
 type ConnectionConfig = {
