@@ -60,6 +60,8 @@ export var connectionArgs: GraphQLFieldConfigArgumentMap = {
 type ConnectionConfig = {
   name: string,
   nodeType: GraphQLObjectType,
+  resolveNode?: ?Function,
+  resolveCursor?: ?Function,
   edgeFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
   connectionFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
 }
@@ -83,16 +85,20 @@ export function connectionDefinitions(
   var {name, nodeType} = config;
   var edgeFields = config.edgeFields || {};
   var connectionFields = config.connectionFields || {};
+  var resolveNode = config.resolveNode;
+  var resolveCursor = config.resolveCursor;
   var edgeType = new GraphQLObjectType({
     name: name + 'Edge',
     description: 'An edge in a connection.',
     fields: () => ({
       node: {
         type: nodeType,
+        resolve: resolveNode,
         description: 'The item at the end of the edge',
       },
       cursor: {
         type: new GraphQLNonNull(GraphQLString),
+        resolve: resolveCursor,
         description: 'A cursor for use in pagination'
       },
       ...resolveMaybeThunk(edgeFields)

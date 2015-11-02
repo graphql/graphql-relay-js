@@ -30,11 +30,11 @@ import { expect } from 'chai';
 import { describe, it } from 'mocha';
 
 var allUsers = [
-  { name: 'Dan' },
-  { name: 'Nick' },
-  { name: 'Lee' },
-  { name: 'Joe' },
-  { name: 'Tim' },
+  { name: 'Dan', friends: [ 1, 2, 3, 4 ] },
+  { name: 'Nick', friends: [ 0, 2, 3, 4 ] },
+  { name: 'Lee', friends: [ 0, 1, 3, 4 ] },
+  { name: 'Joe', friends: [ 0, 1, 2, 4 ] },
+  { name: 'Tim', friends: [ 0, 1, 2, 3 ] },
 ];
 
 var userType = new GraphQLObjectType({
@@ -46,17 +46,17 @@ var userType = new GraphQLObjectType({
     friends: {
       type: friendConnection,
       args: connectionArgs,
-      resolve: (user, args) => connectionFromArray(allUsers, args),
+      resolve: (user, args) => connectionFromArray(user.friends, args),
     },
     friendsForward: {
       type: friendConnection,
       args: forwardConnectionArgs,
-      resolve: (user, args) => connectionFromArray(allUsers, args),
+      resolve: (user, args) => connectionFromArray(user.friends, args),
     },
     friendsBackward: {
       type: friendConnection,
       args: backwardConnectionArgs,
-      resolve: (user, args) => connectionFromArray(allUsers, args),
+      resolve: (user, args) => connectionFromArray(user.friends, args),
     },
   }),
 });
@@ -64,6 +64,7 @@ var userType = new GraphQLObjectType({
 var {connectionType: friendConnection} = connectionDefinitions({
   name: 'Friend',
   nodeType: userType,
+  resolveNode: edge => allUsers[edge.node],
   edgeFields: () => ({
     friendshipTime: {
       type: GraphQLString,
@@ -73,7 +74,7 @@ var {connectionType: friendConnection} = connectionDefinitions({
   connectionFields: () => ({
     totalCount: {
       type: GraphQLInt,
-      resolve: () => allUsers.length
+      resolve: () => allUsers.length - 1
     }
   }),
 });
@@ -112,18 +113,18 @@ describe('connectionDefinition()', () => {
     var expected = {
       user: {
         friends: {
-          totalCount: 5,
+          totalCount: 4,
           edges: [
             {
               friendshipTime: 'Yesterday',
               node: {
-                name: 'Dan'
+                name: 'Nick'
               }
             },
             {
               friendshipTime: 'Yesterday',
               node: {
-                name: 'Nick'
+                name: 'Lee'
               }
             },
           ]
@@ -154,12 +155,12 @@ describe('connectionDefinition()', () => {
           edges: [
             {
               node: {
-                name: 'Dan'
+                name: 'Nick'
               }
             },
             {
               node: {
-                name: 'Nick'
+                name: 'Lee'
               }
             },
           ]
