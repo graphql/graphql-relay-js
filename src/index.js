@@ -9,8 +9,10 @@
 
 // Helpers for creating connection types in the schema
 export {
+  backwardConnectionArgs,
   connectionArgs,
   connectionDefinitions,
+  forwardConnectionArgs,
 } from './connection/connection.js';
 
 // Helpers for creating connections from arrays
