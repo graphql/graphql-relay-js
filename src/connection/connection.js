@@ -58,7 +58,7 @@ export var connectionArgs: GraphQLFieldConfigArgumentMap = {
 };
 
 type ConnectionConfig = {
-  name: string,
+  name?: ?string,
   nodeType: GraphQLObjectType,
   resolveNode?: ?Function,
   resolveCursor?: ?Function,
@@ -82,7 +82,8 @@ function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
 export function connectionDefinitions(
   config: ConnectionConfig
 ): GraphQLConnectionDefinitions {
-  var {name, nodeType} = config;
+  var {nodeType} = config;
+  var name = config.name != null ? config.name : nodeType.name;
   var edgeFields = config.edgeFields || {};
   var connectionFields = config.connectionFields || {};
   var resolveNode = config.resolveNode;

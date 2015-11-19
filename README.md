@@ -52,7 +52,7 @@ when they return a connection type that only supports forward pagination.
  - `backwardConnectionArgs` returns the arguments that fields should provide
 when they return a connection type that only supports backward pagination.
  - `connectionDefinitions` returns a `connectionType` and its associated
-`edgeType`, given a name and a node type.
+`edgeType`, given a node type.
  - `connectionFromArray` is a helper method that takes an array and the
 arguments from `connectionArgs`, does pagination and filtering, and returns
 an object in the shape expected by a `connectionType`'s `resolve` function.
@@ -66,7 +66,7 @@ An example usage of these methods from the [test schema](src/__tests__/starWarsS
 
 ```js
 var {connectionType: ShipConnection} =
-  connectionDefinitions({name: 'Ship', nodeType: shipType});
+  connectionDefinitions({nodeType: shipType});
 var factionType = new GraphQLObjectType({
   name: 'Faction',
   fields: () => ({
@@ -83,10 +83,10 @@ var factionType = new GraphQLObjectType({
 ```
 
 This shows adding a `ships` field to the `Faction` object that is a connection.
-It uses `connectionDefinitions({name: 'Ship', nodeType: shipType})` to create
-the connection type, adds `connectionArgs` as arguments on this function, and
-then implements the resolve function by passing the array of ships and the
-arguments to `connectionFromArray`.
+It uses `connectionDefinitions({nodeType: shipType})` to create the connection
+type, adds `connectionArgs` as arguments on this function, and then implements
+the resolve function by passing the array of ships and the arguments to
+`connectionFromArray`.
 
 ### Object Identification
 
