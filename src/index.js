@@ -37,6 +37,11 @@ export {
   nodeDefinitions,
 } from './node/node.js';
 
+// Helper for creating plural identifying root fields
+export {
+  pluralIdentifyingRootField
+} from './node/plural.js'
+
 // Utilities for creating global IDs in systems that don't have them.
 export {
   fromGlobalId,
