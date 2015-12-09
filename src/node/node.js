@@ -109,15 +109,15 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
  */
 export function globalIdField(
   typeName?: ?string,
-  idFetcher?: (object: any) => string
+  idFetcher?: (object: any, info: GraphQLResolveInfo) => string
 ): GraphQLFieldConfig {
   return {
     name: 'id',
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
-    resolve: (obj, args, {parentType}) => toGlobalId(
-      typeName != null ? typeName : parentType.name,
-      idFetcher ? idFetcher(obj) : obj.id
+    resolve: (obj, args, info) => toGlobalId(
+      typeName != null ? typeName : info.parentType.name,
+      idFetcher ? idFetcher(obj, info) : obj.id
     )
   };
 }
