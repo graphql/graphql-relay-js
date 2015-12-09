@@ -49,12 +49,12 @@ var userType = new GraphQLObjectType({
       resolve: (user, args) => connectionFromArray(user.friends, args),
     },
     friendsForward: {
-      type: friendConnection,
+      type: userConnection,
       args: forwardConnectionArgs,
       resolve: (user, args) => connectionFromArray(user.friends, args),
     },
     friendsBackward: {
-      type: friendConnection,
+      type: userConnection,
       args: backwardConnectionArgs,
       resolve: (user, args) => connectionFromArray(user.friends, args),
     },
@@ -77,6 +77,11 @@ var {connectionType: friendConnection} = connectionDefinitions({
       resolve: () => allUsers.length - 1
     }
   }),
+});
+
+var {connectionType: userConnection} = connectionDefinitions({
+  nodeType: userType,
+  resolveNode: edge => allUsers[edge.node],
 });
 
 var queryType = new GraphQLObjectType({

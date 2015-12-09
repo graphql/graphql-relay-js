@@ -178,7 +178,7 @@ var shipType = new GraphQLObjectType({
  *   }
  */
 var {connectionType: shipConnection} =
-  connectionDefinitions({name: 'Ship', nodeType: shipType});
+  connectionDefinitions({nodeType: shipType});
 
 /**
  * We define our faction type, which implements the node interface.
