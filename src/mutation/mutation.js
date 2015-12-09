@@ -25,6 +25,10 @@ import type {
 type mutationFn = (object: Object, info: GraphQLResolveInfo) => Object |
                   (object: Object, info: GraphQLResolveInfo) => Promise<Object>;
 
+function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
+  return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
+}
+
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
  * to create a GraphQLFieldConfig for that mutation.
@@ -54,18 +58,18 @@ export function mutationWithClientMutationId(
   config: MutationConfig
 ): GraphQLFieldConfig {
   var {name, inputFields, outputFields, mutateAndGetPayload} = config;
-  var augmentedInputFields = {
-    ...inputFields,
+  var augmentedInputFields = () => ({
+    ...resolveMaybeThunk(inputFields),
     clientMutationId: {
       type: new GraphQLNonNull(GraphQLString)
     }
-  };
-  var augmentedOutputFields = {
-    ...outputFields,
+  });
+  var augmentedOutputFields = () => ({
+    ...resolveMaybeThunk(outputFields),
     clientMutationId: {
       type: new GraphQLNonNull(GraphQLString)
     }
-  };
+  });
 
   var outputType = new GraphQLObjectType({
     name: name + 'Payload',
