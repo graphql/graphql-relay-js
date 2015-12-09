@@ -406,7 +406,7 @@ describe('connectionFromArray()', () => {
       var c = connectionFromArray(
         letters,
         {
-          last: 3,
+          last: 4,
           after: 'YXJyYXljb25uZWN0aW9uOjA=',
           before: 'YXJyYXljb25uZWN0aW9uOjQ='
         }
