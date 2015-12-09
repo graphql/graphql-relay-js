@@ -124,7 +124,7 @@ describe('mutationWithClientMutationId()', () => {
     };
     return expect(graphql(schema, query)).to.become(expected);
   });
-  
+
   it('supports promise mutations', () => {
     var query = `
       mutation M {
