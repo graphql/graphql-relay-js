@@ -152,7 +152,7 @@ var shipType = new GraphQLObjectType({
   name: 'Ship',
   description: 'A ship in the Star Wars saga',
   fields: () => ({
-    id: globalIdField('Ship'),
+    id: globalIdField(),
     name: {
       type: GraphQLString,
       description: 'The name of the ship.',
@@ -194,7 +194,7 @@ var factionType = new GraphQLObjectType({
   name: 'Faction',
   description: 'A faction in the Star Wars saga',
   fields: () => ({
-    id: globalIdField('Faction'),
+    id: globalIdField(),
     name: {
       type: GraphQLString,
       description: 'The name of the faction.',

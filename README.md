@@ -122,7 +122,7 @@ var {nodeInterface, nodeField} = nodeDefinitions(
 var factionType = new GraphQLObjectType({
   name: 'Faction',
   fields: () => ({
-    id: globalIdField('Faction'),
+    id: globalIdField(),
   }),
   interfaces: [nodeInterface]
 });

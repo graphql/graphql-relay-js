@@ -48,20 +48,35 @@ var photoData = {
   },
 };
 
+var postData = {
+  '1': {  // eslint-disable-line quote-props
+    id: 1,
+    text: 'lorem'
+  },
+  '2': {  // eslint-disable-line quote-props
+    id: 2,
+    text: 'ipsum'
+  },
+};
+
 var {nodeField, nodeInterface} = nodeDefinitions(
   (globalId) => {
     var {type, id} = fromGlobalId(globalId);
     if (type === 'User') {
       return userData[id];
-    } else {
+    } else if (type === 'Photo') {
       return photoData[id];
+    } else {
+      return postData[id];
     }
   },
   (obj) => {
-    if (obj.id) {
+    if (obj.name) {
       return userType;
-    } else {
+    } else if (obj.photoId) {
       return photoType;
+    } else {
+      return postType;
     }
   }
 );
@@ -88,13 +103,28 @@ var photoType = new GraphQLObjectType({
   interfaces: [nodeInterface]
 });
 
+var postType = new GraphQLObjectType({
+  name: 'Post',
+  fields: () => ({
+    id: globalIdField(),
+    text: {
+      type: GraphQLString,
+    },
+  }),
+  interfaces: [nodeInterface]
+});
+
 var queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     node: nodeField,
     allObjects: {
       type: new GraphQLList(nodeInterface),
-      resolve: () => [userData[1], userData[2], photoData[1], photoData[2]]
+      resolve: () => [
+        userData[1], userData[2],
+        photoData[1], photoData[2],
+        postData[1], postData[2],
+      ]
     }
   })
 });
@@ -124,6 +154,12 @@ describe('global ID fields', () => {
         {
           id: 'UGhvdG86Mg=='
         },
+        {
+          id: 'UG9zdDox'
+        },
+        {
+          id: 'UG9zdDoy'
+        },
       ]
     };
 
@@ -143,6 +179,12 @@ describe('global ID fields', () => {
         ... on Photo {
           width
         }
+      },
+      post: node(id: "UG9zdDox") {
+        id
+        ... on Post {
+          text
+        }
       }
     }`;
     var expected = {
@@ -153,6 +195,10 @@ describe('global ID fields', () => {
       photo: {
         id: 'UGhvdG86MQ==',
         width: 300
+      },
+      post: {
+        id: 'UG9zdDox',
+        text: 'lorem'
       }
     };
 
