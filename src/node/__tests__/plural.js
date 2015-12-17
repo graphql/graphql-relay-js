@@ -42,9 +42,9 @@ var queryType = new GraphQLObjectType({
       description: 'Map from a username to the user',
       inputType: GraphQLString,
       outputType: userType,
-      resolveSingleInput: (username) => ({
+      resolveSingleInput: (username, {rootValue: {lang}}) => ({
         username: username,
-        url: 'www.facebook.com/' + username
+        url: 'www.facebook.com/' + username + '?lang=' + lang
       })
     })
   })
@@ -53,6 +53,8 @@ var queryType = new GraphQLObjectType({
 var schema = new GraphQLSchema({
   query: queryType
 });
+
+var rootVal = {lang: 'en'};
 
 describe('pluralIdentifyingRootField()', () => {
   it('allows fetching', () => {
@@ -66,20 +68,20 @@ describe('pluralIdentifyingRootField()', () => {
       usernames: [
         {
           username: 'dschafer',
-          url: 'www.facebook.com/dschafer'
+          url: 'www.facebook.com/dschafer?lang=en'
         },
         {
           username: 'leebyron',
-          url: 'www.facebook.com/leebyron'
+          url: 'www.facebook.com/leebyron?lang=en'
         },
         {
           username: 'schrockn',
-          url: 'www.facebook.com/schrockn'
+          url: 'www.facebook.com/schrockn?lang=en'
         },
       ]
     };
 
-    return expect(graphql(schema, query)).to.become({data: expected});
+    return expect(graphql(schema, query, rootVal)).to.become({data: expected});
   });
 
   it('correctly introspects', () => {
