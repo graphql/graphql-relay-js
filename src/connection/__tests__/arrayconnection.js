@@ -470,20 +470,22 @@ describe('connectionFromArray()', () => {
   });
 
   describe('cursor edge cases', () => {
-    it('returns no elements if first is 0', () => {
-      var c = connectionFromArray(
-        letters,
-        {first: 0}
-      );
-      return expect(c).to.deep.equal({
-        edges: [],
-        pageInfo: {
-          startCursor: null,
-          endCursor: null,
-          hasPreviousPage: false,
-          hasNextPage: true,
-        }
-      });
+    it('throws an error if first <= 0', () => {
+      expect(() => {
+        connectionFromArray(
+          letters,
+          {first: 0}
+        );
+      }).to.throw('Argument "first" must be an positive integer');
+    });
+
+    it('throws an error if last <= 0', () => {
+      expect(() => {
+        connectionFromArray(
+          letters,
+          {last: 0}
+        );
+      }).to.throw('Argument "last" must be an positive integer');
     });
 
     it('returns all elements if cursors are invalid', () => {
