@@ -31,6 +31,18 @@ var simpleMutation = mutationWithClientMutationId({
   mutateAndGetPayload: () => ({result: 1})
 });
 
+var simpleMutationWithDescription = mutationWithClientMutationId({
+  name: 'SimpleMutationWithDescription',
+  description: 'Simple Mutation Description',
+  inputFields: {},
+  outputFields: {
+    result: {
+      type: GraphQLInt
+    }
+  },
+  mutateAndGetPayload: () => ({result: 1})
+});
+
 var simpleMutationWithThunkFields = mutationWithClientMutationId({
   name: 'SimpleMutationWithThunkFields',
   inputFields: () => ({
@@ -61,6 +73,7 @@ var mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     simpleMutation: simpleMutation,
+    simpleMutationWithDescription: simpleMutationWithDescription,
     simpleMutationWithThunkFields: simpleMutationWithThunkFields,
     simplePromiseMutation: simplePromiseMutation
   }
@@ -286,6 +299,26 @@ describe('mutationWithClientMutationId()', () => {
                 }
               },
               {
+                name: 'simpleMutationWithDescription',
+                args: [
+                  {
+                    name: 'input',
+                    type: {
+                      name: null,
+                      kind: 'NON_NULL',
+                      ofType: {
+                        name: 'SimpleMutationWithDescriptionInput',
+                        kind: 'INPUT_OBJECT'
+                      }
+                    },
+                  }
+                ],
+                type: {
+                  name: 'SimpleMutationWithDescriptionPayload',
+                  kind: 'OBJECT',
+                }
+              },
+              {
                 name: 'simpleMutationWithThunkFields',
                 args: [
                   {
@@ -324,6 +357,45 @@ describe('mutationWithClientMutationId()', () => {
                   name: 'SimplePromiseMutationPayload',
                   kind: 'OBJECT',
                 }
+              },
+            ]
+          }
+        }
+      };
+
+      return expect(graphql(schema, query)).to.become({data: expected});
+    });
+
+    it('contains correct descriptions', () => {
+      var query = `{
+        __schema {
+          mutationType {
+            fields {
+              name
+              description
+            }
+          }
+        }
+      }`;
+      var expected = {
+        __schema: {
+          mutationType: {
+            fields: [
+              {
+                name: 'simpleMutation',
+                description: ''
+              },
+              {
+                name: 'simpleMutationWithDescription',
+                description: 'Simple Mutation Description'
+              },
+              {
+                name: 'simpleMutationWithThunkFields',
+                description: ''
+              },
+              {
+                name: 'simplePromiseMutation',
+                description: ''
               },
             ]
           }
