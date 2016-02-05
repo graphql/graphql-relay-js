@@ -58,8 +58,13 @@ type MutationConfig = {
 export function mutationWithClientMutationId(
   config: MutationConfig
 ): GraphQLFieldConfig {
-  var {name, inputFields, outputFields, mutateAndGetPayload} = config;
-  var description = config.description != null ? config.description : '';
+  var {
+    name,
+    inputFields,
+    outputFields,
+    mutateAndGetPayload,
+    description
+  } = config;
   var augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
     clientMutationId: {

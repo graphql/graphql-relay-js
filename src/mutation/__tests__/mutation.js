@@ -383,7 +383,7 @@ describe('mutationWithClientMutationId()', () => {
             fields: [
               {
                 name: 'simpleMutation',
-                description: ''
+                description: null
               },
               {
                 name: 'simpleMutationWithDescription',
@@ -391,11 +391,11 @@ describe('mutationWithClientMutationId()', () => {
               },
               {
                 name: 'simpleMutationWithThunkFields',
-                description: ''
+                description: null
               },
               {
                 name: 'simplePromiseMutation',
-                description: ''
+                description: null
               },
             ]
           }
