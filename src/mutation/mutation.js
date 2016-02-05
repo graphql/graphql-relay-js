@@ -84,7 +84,7 @@ export function mutationWithClientMutationId(
     fields: augmentedInputFields
   });
 
-  var mutationField = {
+  return {
     type: outputType,
     description: description,
     args: {
@@ -97,6 +97,4 @@ export function mutationWithClientMutationId(
       });
     }
   };
-
-  return mutationField;
 }
