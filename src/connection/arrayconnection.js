@@ -86,7 +86,7 @@ export function connectionFromArraySlice<T>(
   );
   if (typeof first === 'number') {
     if (first <= 0) {
-      throw new Error('Argument "first" must be an positive integer');
+      throw new Error('Argument "first" must be an non-negative integer');
     }
 
     endOffset = Math.min(
@@ -96,7 +96,7 @@ export function connectionFromArraySlice<T>(
   }
   if (typeof last === 'number') {
     if (last <= 0) {
-      throw new Error('Argument "last" must be an positive integer');
+      throw new Error('Argument "last" must be an non-negative integer');
     }
 
     startOffset = Math.max(
