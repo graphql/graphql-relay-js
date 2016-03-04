@@ -470,20 +470,20 @@ describe('connectionFromArray()', () => {
   });
 
   describe('cursor edge cases', () => {
-    it('throws an error if first <= 0', () => {
+    it('throws an error if first < 0', () => {
       expect(() => {
         connectionFromArray(
           letters,
-          {first: 0}
+          {first: -1}
         );
       }).to.throw('Argument "first" must be a non-negative integer');
     });
 
-    it('throws an error if last <= 0', () => {
+    it('throws an error if last < 0', () => {
       expect(() => {
         connectionFromArray(
           letters,
-          {last: 0}
+          {last: -1}
         );
       }).to.throw('Argument "last" must be a non-negative integer');
     });

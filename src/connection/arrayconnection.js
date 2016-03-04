@@ -85,7 +85,7 @@ export function connectionFromArraySlice<T>(
     arrayLength
   );
   if (typeof first === 'number') {
-    if (first <= 0) {
+    if (first < 0) {
       throw new Error('Argument "first" must be a non-negative integer');
     }
 
@@ -95,7 +95,7 @@ export function connectionFromArraySlice<T>(
     );
   }
   if (typeof last === 'number') {
-    if (last <= 0) {
+    if (last < 0) {
       throw new Error('Argument "last" must be a non-negative integer');
     }
 
