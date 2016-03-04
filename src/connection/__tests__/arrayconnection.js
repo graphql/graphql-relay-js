@@ -476,7 +476,7 @@ describe('connectionFromArray()', () => {
           letters,
           {first: 0}
         );
-      }).to.throw('Argument "first" must be an non-negative integer');
+      }).to.throw('Argument "first" must be a non-negative integer');
     });
 
     it('throws an error if last <= 0', () => {
@@ -485,7 +485,7 @@ describe('connectionFromArray()', () => {
           letters,
           {last: 0}
         );
-      }).to.throw('Argument "last" must be an non-negative integer');
+      }).to.throw('Argument "last" must be a non-negative integer');
     });
 
     it('returns all elements if cursors are invalid', () => {
