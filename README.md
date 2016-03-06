@@ -103,7 +103,7 @@ and returns a "global ID" that is unique among all types.
 the type name and ID used to create it.
  - `globalIdField` creates the configuration for an `id` field on a node.
  - `pluralIdentifyingRootField` creates a field that accepts a list of
-non-ID identifiers (like a username) and maps then to their corresponding
+non-ID identifiers (like a username) and maps them to their corresponding
 objects.
 
 An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
@@ -136,7 +136,7 @@ var queryType = new GraphQLObjectType({
 ```
 
 This uses `nodeDefinitions` to construct the `Node` interface and the `node`
-field; it uses `fromGlobalId` to resolve the IDs passed in in the implementation
+field; it uses `fromGlobalId` to resolve the IDs passed in the implementation
 of the function mapping ID to object. It then uses the `globalIdField` method to
 create the `id` field on `Faction`, which also ensures implements the
 `nodeInterface`. Finally, it adds the `node` field to the query type, using the
