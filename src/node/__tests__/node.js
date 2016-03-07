@@ -189,7 +189,7 @@ describe('Node interface and fields', () => {
       return expect(graphql(schema, query)).to.become({data: expected});
     });
 
-    it('gets the correct width for photos', () => {
+    it('gets the correct type name for photos', () => {
       var query = `{
         node(id: "4") {
           id
