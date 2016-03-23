@@ -9,7 +9,7 @@
  */
 
 // 80+ char lines are useful in describe/it, so ignore in this file.
-/*eslint-disable max-len */
+/* eslint-disable max-len */
 
 import { describe, it } from 'mocha';
 import { expect } from 'chai';

@@ -84,13 +84,13 @@ export function connectionFromArraySlice<T>(
     beforeOffset,
     arrayLength
   );
-  if (first != null) {
+  if (typeof first === 'number') {
     endOffset = Math.min(
       endOffset,
       startOffset + first
     );
   }
-  if (last != null) {
+  if (typeof last === 'number') {
     startOffset = Math.max(
       startOffset,
       endOffset - last
@@ -117,8 +117,10 @@ export function connectionFromArraySlice<T>(
     pageInfo: {
       startCursor: firstEdge ? firstEdge.cursor : null,
       endCursor: lastEdge ? lastEdge.cursor : null,
-      hasPreviousPage: last != null ? startOffset > lowerBound : false,
-      hasNextPage: first != null ? endOffset < upperBound : false,
+      hasPreviousPage:
+        typeof last === 'number' ? startOffset > lowerBound : false,
+      hasNextPage:
+        typeof first === 'number' ? endOffset < upperBound : false,
     },
   };
 }
@@ -176,7 +178,7 @@ export function getOffsetWithDefault(
   cursor?: ?ConnectionCursor,
   defaultOffset: number
 ): number {
-  if (cursor == null) {
+  if (typeof cursor !== 'string') {
     return defaultOffset;
   }
   var offset = cursorToOffset(cursor);

@@ -116,7 +116,7 @@ export function globalIdField(
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
     resolve: (obj, args, info) => toGlobalId(
-      typeName != null ? typeName : info.parentType.name,
+      typeName || info.parentType.name,
       idFetcher ? idFetcher(obj, info) : obj.id
     )
   };

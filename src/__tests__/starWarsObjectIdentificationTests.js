@@ -13,7 +13,7 @@ import { StarWarsSchema } from './starWarsSchema.js';
 import { graphql } from 'graphql';
 
 // 80+ char lines are useful in describe/it, so ignore in this file.
-/*eslint-disable max-len */
+/* eslint-disable max-len */
 
 describe('Star Wars object identification', () => {
   it('fetches the ID and name of the rebels', async () => {

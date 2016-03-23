@@ -83,7 +83,7 @@ export function connectionDefinitions(
   config: ConnectionConfig
 ): GraphQLConnectionDefinitions {
   var {nodeType} = config;
-  var name = config.name != null ? config.name : nodeType.name;
+  var name = config.name || nodeType.name;
   var edgeFields = config.edgeFields || {};
   var connectionFields = config.connectionFields || {};
   var resolveNode = config.resolveNode;
@@ -102,7 +102,7 @@ export function connectionDefinitions(
         resolve: resolveCursor,
         description: 'A cursor for use in pagination'
       },
-      ...resolveMaybeThunk(edgeFields)
+      ...(resolveMaybeThunk(edgeFields): any)
     }),
   });
 
@@ -118,7 +118,7 @@ export function connectionDefinitions(
         type: new GraphQLList(edgeType),
         description: 'Information to aid in pagination.'
       },
-      ...resolveMaybeThunk(connectionFields)
+      ...(resolveMaybeThunk(connectionFields): any)
     }),
   });
 
