@@ -49,7 +49,7 @@
     "babel-runtime": "~5.8.3"
   },
   "peerDependencies": {
-    "graphql": "~0.4.2"
+    "graphql": "~0.5.0"
   },
   "devDependencies": {
     "babel": "5.8.3",
