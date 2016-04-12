@@ -24,7 +24,8 @@ type PluralIdentifyingRootFieldConfig = {
   argName: string,
   inputType: GraphQLInputType,
   outputType: GraphQLOutputType,
-  resolveSingleInput: (input: any, info: GraphQLResolveInfo) => ?any,
+  resolveSingleInput:
+    (input: any, context: any, info: GraphQLResolveInfo) => ?any,
   description?: ?string,
 };
 
@@ -45,10 +46,12 @@ export function pluralIdentifyingRootField(
     description: config.description,
     type: new GraphQLList(config.outputType),
     args: inputArgs,
-    resolve: (obj, args, info) => {
+    resolve: (obj, args, context, info) => {
       var inputs = args[config.argName];
       return Promise.all(inputs.map(
-        input => Promise.resolve(config.resolveSingleInput(input, info))
+        input => Promise.resolve(
+          config.resolveSingleInput(input, context, info)
+        )
       ));
     }
   };

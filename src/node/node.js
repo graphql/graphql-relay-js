@@ -44,7 +44,7 @@ type typeResolverFn = (object: any) => ?GraphQLObjectType |
  * interface without a provided `resolveType` method.
  */
 export function nodeDefinitions(
-  idFetcher: ((id: string, info: GraphQLResolveInfo) => any),
+  idFetcher: ((id: string, context: any, info: GraphQLResolveInfo) => any),
   typeResolver?: ?typeResolverFn
 ): GraphQLNodeDefinitions {
   var nodeInterface = new GraphQLInterfaceType({
@@ -69,7 +69,7 @@ export function nodeDefinitions(
         description: 'The ID of an object'
       }
     },
-    resolve: (obj, {id}, info) => idFetcher(id, info)
+    resolve: (obj, {id}, context, info) => idFetcher(id, context, info),
   };
 
   return {nodeInterface, nodeField};
@@ -109,15 +109,15 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
  */
 export function globalIdField(
   typeName?: ?string,
-  idFetcher?: (object: any, info: GraphQLResolveInfo) => string
+  idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string
 ): GraphQLFieldConfig {
   return {
     name: 'id',
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
-    resolve: (obj, args, info) => toGlobalId(
+    resolve: (obj, args, context, info) => toGlobalId(
       typeName || info.parentType.name,
-      idFetcher ? idFetcher(obj, info) : obj.id
+      idFetcher ? idFetcher(obj, context, info) : obj.id
     )
   };
 }
