@@ -50,7 +50,7 @@ describe('Star Wars mutations', () => {
         clientMutationId: 'abcde',
       }
     };
-    var result = await graphql(StarWarsSchema, mutation, null, params);
+    var result = await graphql(StarWarsSchema, mutation, null, null, params);
     expect(result).to.deep.equal({ data: expected });
   });
 });
