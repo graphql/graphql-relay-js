@@ -22,8 +22,9 @@ import type {
   GraphQLResolveInfo
 } from 'graphql';
 
-type mutationFn = (object: Object, info: GraphQLResolveInfo) => Object |
-                  (object: Object, info: GraphQLResolveInfo) => Promise<Object>;
+type mutationFn =
+  (object: Object, ctx: Object, info: GraphQLResolveInfo) => Object |
+  (object: Object, ctx: Object, info: GraphQLResolveInfo) => Promise<Object>;
 
 function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
