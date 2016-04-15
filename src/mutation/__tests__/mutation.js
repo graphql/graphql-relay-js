@@ -57,12 +57,24 @@ var simplePromiseMutation = mutationWithClientMutationId({
   mutateAndGetPayload: () => Promise.resolve({result: 1})
 });
 
+var simpleRootValueMutation = mutationWithClientMutationId({
+  name: 'SimpleRootValueMutation',
+  inputFields: {},
+  outputFields: {
+    result: {
+      type: GraphQLInt
+    }
+  },
+  mutateAndGetPayload: (params, context, {rootValue}) => (rootValue)
+});
+
 var mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     simpleMutation: simpleMutation,
     simpleMutationWithThunkFields: simpleMutationWithThunkFields,
-    simplePromiseMutation: simplePromiseMutation
+    simplePromiseMutation: simplePromiseMutation,
+    simpleRootValueMutation: simpleRootValueMutation
   }
 });
 
@@ -143,6 +155,26 @@ describe('mutationWithClientMutationId()', () => {
       }
     };
     return expect(graphql(schema, query)).to.become(expected);
+  });
+
+  it('can access rootValue', () => {
+    var query = `
+      mutation M {
+        simpleRootValueMutation(input: {clientMutationId: "abc"}) {
+          result
+          clientMutationId
+        }
+      }
+    `;
+    var expected = {
+      data: {
+        simpleRootValueMutation: {
+          result: 1,
+          clientMutationId: 'abc'
+        }
+      }
+    };
+    return expect(graphql(schema, query, {result: 1})).to.become(expected);
   });
 
   describe('introspection', () => {
@@ -322,6 +354,26 @@ describe('mutationWithClientMutationId()', () => {
                 ],
                 type: {
                   name: 'SimplePromiseMutationPayload',
+                  kind: 'OBJECT',
+                }
+              },
+              {
+                name: 'simpleRootValueMutation',
+                args: [
+                  {
+                    name: 'input',
+                    type: {
+                      name: null,
+                      kind: 'NON_NULL',
+                      ofType: {
+                        name: 'SimpleRootValueMutationInput',
+                        kind: 'INPUT_OBJECT'
+                      }
+                    },
+                  }
+                ],
+                type: {
+                  name: 'SimpleRootValueMutationPayload',
                   kind: 'OBJECT',
                 }
               },
