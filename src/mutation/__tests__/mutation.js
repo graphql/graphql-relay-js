@@ -188,10 +188,6 @@ describe('mutationWithClientMutationId()', () => {
             type {
               name
               kind
-              ofType {
-                name
-                kind
-              }
             }
           }
         }
@@ -204,12 +200,8 @@ describe('mutationWithClientMutationId()', () => {
             {
               name: 'clientMutationId',
               type: {
-                name: null,
-                kind: 'NON_NULL',
-                ofType: {
-                  name: 'String',
-                  kind: 'SCALAR'
-                }
+                name: 'String',
+                kind: 'SCALAR'
               }
             }
           ]
@@ -229,10 +221,6 @@ describe('mutationWithClientMutationId()', () => {
             type {
               name
               kind
-              ofType {
-                name
-                kind
-              }
             }
           }
         }
@@ -247,18 +235,13 @@ describe('mutationWithClientMutationId()', () => {
               type: {
                 name: 'Int',
                 kind: 'SCALAR',
-                ofType: null
               }
             },
             {
               name: 'clientMutationId',
               type: {
-                name: null,
-                kind: 'NON_NULL',
-                ofType: {
-                  name: 'String',
-                  kind: 'SCALAR'
-                }
+                name: 'String',
+                kind: 'SCALAR'
               }
             }
           ]

@@ -101,13 +101,13 @@ import {
  * }
  *
  * input IntroduceShipInput {
- *   clientMutationId: string!
+ *   clientMutationId: string
  *   shipName: string!
  *   factionId: ID!
  * }
  *
- * input IntroduceShipPayload {
- *   clientMutationId: string!
+ * type IntroduceShipPayload {
+ *   clientMutationId: string
  *   ship: Ship
  *   faction: Faction
  * }
@@ -244,13 +244,13 @@ var queryType = new GraphQLObjectType({
  *
  * It creates these two types implicitly:
  *   input IntroduceShipInput {
- *     clientMutationId: string!
+ *     clientMutationId: string
  *     shipName: string!
  *     factionId: ID!
  *   }
  *
- *   input IntroduceShipPayload {
- *     clientMutationId: string!
+ *   type IntroduceShipPayload {
+ *     clientMutationId: string
  *     ship: Ship
  *     faction: Faction
  *   }

@@ -62,13 +62,13 @@ export function mutationWithClientMutationId(
   var augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
     clientMutationId: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     }
   });
   var augmentedOutputFields = () => ({
     ...resolveMaybeThunk(outputFields),
     clientMutationId: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: GraphQLString
     }
   });
 
