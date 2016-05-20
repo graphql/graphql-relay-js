@@ -92,7 +92,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       }
     `;
-    var result = await graphql(schema, query);
+    var result:any = await graphql(schema, query);
     expect(result.errors.length).to.equal(1);
     expect(result.errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
   });
