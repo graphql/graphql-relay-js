@@ -13,7 +13,7 @@ describe('base64 conversion', () => {
   it('converts from utf-8 to base64', () => {
     return expect(base64(exampleUtf8)).to.equal(exampleBase64);
   });
-  
+
   it('converts from base64 to utf-8', () => {
     return expect(unbase64(exampleBase64)).to.equal(exampleUtf8);
   });
