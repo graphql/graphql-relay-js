@@ -16,7 +16,7 @@ import flowBinPath from 'flow-bin';
 process.env.PATH += ':./node_modules/.bin';
 
 var cmd = resolvePath(__dirname);
-var srcDir = resolvePath(cmd, './src');
+var srcDir = resolvePath(cmd, '../src');
 
 function exec(command, options) {
   return new Promise(function (resolve, reject) {
@@ -119,7 +119,6 @@ function parseFiles(filepaths) {
   return Promise.all(filepaths.map(filepath => {
     if (isJS(filepath) && !isTest(filepath)) {
       return exec('babel', [
-        '--optional', 'runtime',
         '--out-file', '/dev/null',
         srcPath(filepath)
       ]);
