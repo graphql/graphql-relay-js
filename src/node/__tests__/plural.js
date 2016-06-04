@@ -48,10 +48,11 @@ var queryType = new GraphQLObjectType({
       description: 'Map from a username to the user',
       inputType: GraphQLString,
       outputType: userType,
-      // $FlowFixMe : rootValue Graphql(mixed) -> relay(object)
-      resolveSingleInput: (username, context, {rootValue: {lang}}) => ({
+      // rootValue Graphql(mixed) -> relay(object)
+      // :any to ignore type check in test.
+      resolveSingleInput: (username, context, {rootValue}) => ({
         username: username,
-        url: 'www.facebook.com/' + username + '?lang=' + lang
+        url: 'www.facebook.com/' + username + '?lang=' + (rootValue:any).lang
       })
     })
   })

@@ -25,6 +25,12 @@ import {
   unbase64
 } from '../utils/base64.js';
 
+import {
+  graph,
+  pro
+} from 'flow-dynamic';
+const {argsCheck, sourceCheck} = graph;
+
 type GraphQLNodeDefinitions = {
   nodeInterface: GraphQLInterfaceType,
   nodeField: GraphQLFieldConfig
@@ -58,6 +64,8 @@ export function nodeDefinitions(
     resolveType: typeResolver
   });
 
+
+
   var nodeField = {
     name: 'node',
     description: 'Fetches an object given its ID',
@@ -68,7 +76,11 @@ export function nodeDefinitions(
         description: 'The ID of an object'
       }
     },
-    resolve: (obj, {id}, context, info) => idFetcher(id, context, info),
+    //  type NodeArgs = {id:string};
+    resolve: argsCheck(
+      args => ({id: pro.isString(args.id) }),
+      (obj, args, context, info) => idFetcher(args.id, context, info)
+    )
   };
 
   return {nodeInterface, nodeField};
@@ -114,9 +126,12 @@ export function globalIdField(
     name: 'id',
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
-    resolve: (obj, args, context, info) => toGlobalId(
-      typeName || info.parentType.name,
-      idFetcher ? idFetcher(obj, context, info) : obj.id
+    resolve: sourceCheck(
+      obj => pro.isObject(obj),
+      (obj, args, context, info) => toGlobalId(
+        typeName || info.parentType.name,
+        idFetcher ? idFetcher(obj, context, info) : obj.id
+      )
     )
   };
 }

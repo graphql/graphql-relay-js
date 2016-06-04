@@ -65,7 +65,8 @@ var simpleRootValueMutation = mutationWithClientMutationId({
       type: GraphQLInt
     }
   },
-  mutateAndGetPayload: (params, context, {rootValue}) => (rootValue)
+  // :any to ignore type check in test.
+  mutateAndGetPayload: (params, context, {rootValue}) => ((rootValue:any))
 });
 
 var mutation = new GraphQLObjectType({

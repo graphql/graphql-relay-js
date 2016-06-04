@@ -22,6 +22,12 @@ import type {
   GraphQLResolveInfo
 } from 'graphql';
 
+import {
+  graph,
+  pro
+} from 'flow-dynamic';
+const {argsCheck} = graph;
+
 type mutationFn = (object: Object, ctx: mixed, info: GraphQLResolveInfo) =>
   ( Object | Promise<Object> );
 
@@ -86,12 +92,16 @@ export function mutationWithClientMutationId(
     args: {
       input: {type: new GraphQLNonNull(inputType)}
     },
-    resolve: (_, {input}, context, info) => {
-      return Promise.resolve(mutateAndGetPayload(input, context, info))
-        .then(payload => {
-          payload.clientMutationId = input.clientMutationId;
-          return payload;
-        });
-    }
+    resolve: argsCheck(
+      args => ({
+        input: pro.isObject(args.input)
+      }),
+      (_, {input}, context, info) => {
+        return Promise.resolve(mutateAndGetPayload(input, context, info))
+          .then(payload => {
+            payload.clientMutationId = input.clientMutationId;
+            return payload;
+          });
+      })
   };
 }

@@ -23,6 +23,12 @@ import type {
   GraphQLInputObjectType
 } from 'graphql';
 
+import {
+  graph,
+  pro
+} from 'flow-dynamic';
+const {argsCheck} = graph;
+
 type PluralIdentifyingRootFieldConfig = {
   argName: string,
   inputType: GraphQLInputType,
@@ -47,14 +53,16 @@ export function pluralIdentifyingRootField(
     description: config.description,
     type: new GraphQLList(config.outputType),
     args: inputArgs,
-    resolve: (obj, args, context, info) => {
-      var inputs = args[config.argName];
-      return Promise.all(inputs.map(
-        input => Promise.resolve(
-          config.resolveSingleInput(input, context, info)
-        )
-      ));
-    }
+    resolve: argsCheck( args => pro.isObject(args),
+      (obj, args, context, info) => {
+        var inputs = args[config.argName];
+        return Promise.all(inputs.map(
+          input => Promise.resolve(
+            config.resolveSingleInput(input, context, info)
+          )
+        ));
+      }
+    )
   };
 }
 
