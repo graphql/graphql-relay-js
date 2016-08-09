@@ -105,6 +105,7 @@ export function connectionDefinitions(
       ...(resolveMaybeThunk(edgeFields): any)
     }),
   });
+  edgeType.ofType = nodeType;
 
   var connectionType = new GraphQLObjectType({
     name: name + 'Connection',
@@ -121,6 +122,7 @@ export function connectionDefinitions(
       ...(resolveMaybeThunk(connectionFields): any)
     }),
   });
+  connectionType.ofType = nodeType;
 
   return {edgeType, connectionType};
 }
