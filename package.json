@@ -29,8 +29,8 @@
   },
   "scripts": {
     "prepublish": "npm test && npm run build",
-    "test": "npm run lint && npm run check && mocha $npm_package_options_mocha",
-    "testonly": "mocha $npm_package_options_mocha",
+    "test": "npm run lint && npm run check && npm run testonly",
+    "testonly": "babel-node ./node_modules/.bin/_mocha $npm_package_options_mocha",
     "lint": "eslint src",
     "check": "flow check",
     "build": "rm -rf lib/* && babel src --ignore __tests__ --out-dir lib",
