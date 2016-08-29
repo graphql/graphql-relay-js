@@ -1,5 +1,8 @@
 {
   "parser": "babel-eslint",
+  "plugins": [
+    "flowtype"
+  ],
   "arrowFunctions": true,
   "blockBindings": true,
   "classes": true,
@@ -248,6 +251,22 @@
     ],
     "wrap-regex": 0,
     "no-var": 0,
-    "max-len": [2, 80, 4]
+    "max-len": [2, 80, 4],
+    "flowtype/define-flow-type": 2,
+    "flowtype/space-after-type-colon": [
+      1,
+      "always"
+    ],
+    "flowtype/space-before-type-colon": [
+      2,
+      "never"
+    ],
+    "flowtype/use-flow-type": 2,
+    "flowtype/valid-syntax": 2
+  },
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
   }
 }
