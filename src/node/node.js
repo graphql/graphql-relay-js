@@ -25,13 +25,18 @@ import {
   unbase64
 } from '../utils/base64.js';
 
+import {
+  graph,
+  pro
+} from 'flow-dynamic';
+const {argsCheck, sourceCheck} = graph;
+
 type GraphQLNodeDefinitions = {
   nodeInterface: GraphQLInterfaceType,
   nodeField: GraphQLFieldConfig
 }
 
-type typeResolverFn = (object: any) => ?GraphQLObjectType |
-                      (object: any) => ?Promise<GraphQLObjectType>;
+type typeResolverFn = (object: any) => ?GraphQLObjectType;
 
 /**
  * Given a function to map from an ID to an underlying object, and a function
@@ -45,7 +50,7 @@ type typeResolverFn = (object: any) => ?GraphQLObjectType |
  */
 export function nodeDefinitions(
   idFetcher: ((id: string, context: any, info: GraphQLResolveInfo) => any),
-  typeResolver?: ?typeResolverFn
+  typeResolver?: typeResolverFn
 ): GraphQLNodeDefinitions {
   var nodeInterface = new GraphQLInterfaceType({
     name: 'Node',
@@ -59,6 +64,8 @@ export function nodeDefinitions(
     resolveType: typeResolver
   });
 
+
+
   var nodeField = {
     name: 'node',
     description: 'Fetches an object given its ID',
@@ -69,7 +76,11 @@ export function nodeDefinitions(
         description: 'The ID of an object'
       }
     },
-    resolve: (obj, {id}, context, info) => idFetcher(id, context, info),
+    //  type NodeArgs = {id:string};
+    resolve: argsCheck(
+      args => ({id: pro.isString(args.id) }),
+      (obj, args, context, info) => idFetcher(args.id, context, info)
+    )
   };
 
   return {nodeInterface, nodeField};
@@ -115,9 +126,12 @@ export function globalIdField(
     name: 'id',
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
-    resolve: (obj, args, context, info) => toGlobalId(
-      typeName || info.parentType.name,
-      idFetcher ? idFetcher(obj, context, info) : obj.id
+    resolve: sourceCheck(
+      obj => pro.isObject(obj),
+      (obj, args, context, info) => toGlobalId(
+        typeName || info.parentType.name,
+        idFetcher ? idFetcher(obj, context, info) : obj.id
+      )
     )
   };
 }

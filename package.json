@@ -59,6 +59,8 @@
     "eslint": "2.10.2",
     "eslint-plugin-flowtype": "^2.11.4",
     "flow-bin": "0.25.0",
+    "flow-dynamic": "^0.0.9",
+    "flow-graphql": "^0.6.4",
     "graphql": "0.6.0",
     "isparta": "4.0.0",
     "mocha": "2.5.3",

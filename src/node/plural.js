@@ -17,8 +17,17 @@ import type {
   GraphQLFieldConfig,
   GraphQLInputType,
   GraphQLOutputType,
-  GraphQLResolveInfo
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLEnumType,
+  GraphQLInputObjectType
 } from 'graphql';
+
+import {
+  graph,
+  pro
+} from 'flow-dynamic';
+const {argsCheck} = graph;
 
 type PluralIdentifyingRootFieldConfig = {
   argName: string,
@@ -36,9 +45,7 @@ export function pluralIdentifyingRootField(
   inputArgs[config.argName] = {
     type: new GraphQLNonNull(
             new GraphQLList(
-              new GraphQLNonNull(
-                config.inputType
-              )
+              nonNull(config.inputType)
             )
           )
   };
@@ -46,13 +53,29 @@ export function pluralIdentifyingRootField(
     description: config.description,
     type: new GraphQLList(config.outputType),
     args: inputArgs,
-    resolve: (obj, args, context, info) => {
-      var inputs = args[config.argName];
-      return Promise.all(inputs.map(
-        input => Promise.resolve(
-          config.resolveSingleInput(input, context, info)
-        )
-      ));
-    }
+    resolve: argsCheck( args => pro.isObject(args),
+      (obj, args, context, info) => {
+        var inputs = args[config.argName];
+        return Promise.all(inputs.map(
+          input => Promise.resolve(
+            config.resolveSingleInput(input, context, info)
+          )
+        ));
+      }
+    )
   };
+}
+
+type NonNullInputType = GraphQLNonNull<
+    GraphQLScalarType |
+    GraphQLEnumType |
+    GraphQLInputObjectType |
+    GraphQLList<GraphQLInputType> >;
+
+export function nonNull(type:GraphQLInputType):NonNullInputType {
+  if ( type instanceof GraphQLNonNull) {
+    return type;
+  } else {
+    return new GraphQLNonNull(type);
+  }
 }

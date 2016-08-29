@@ -15,11 +15,17 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
+  GraphQLInputObjectType,
+  GraphQLScalarType,
+  GraphQLEnumType,
+  GraphQLList,
+  GraphQLNonNull,
   graphql
 } from 'graphql';
 
 import {
-  pluralIdentifyingRootField
+  pluralIdentifyingRootField,
+  nonNull
 } from '../plural';
 
 var userType = new GraphQLObjectType({
@@ -42,9 +48,11 @@ var queryType = new GraphQLObjectType({
       description: 'Map from a username to the user',
       inputType: GraphQLString,
       outputType: userType,
-      resolveSingleInput: (username, context, {rootValue: {lang}}) => ({
+      // rootValue Graphql(mixed) -> relay(object)
+      // :any to ignore type check in test.
+      resolveSingleInput: (username, context, {rootValue}) => ({
         username: username,
-        url: 'www.facebook.com/' + username + '?lang=' + lang
+        url: 'www.facebook.com/' + username + '?lang=' + (rootValue:any).lang
       })
     })
   })
@@ -155,5 +163,62 @@ describe('pluralIdentifyingRootField()', () => {
     };
 
     return expect(graphql(schema, query)).to.become({data: expected});
+  });
+});
+
+describe('nonNull()', () => {
+  function qlScalar() {
+    return new GraphQLScalarType({
+      name: 'scalar',
+      serialize: String,
+      description: 'test'
+    });
+  }
+
+  it('covert GraphQLInputObjectType to NonNull type', () => {
+    const inputType = new GraphQLInputObjectType({
+      name: 'input',
+      fields: {
+        test: {
+          type: qlScalar()
+        }
+      }
+    });
+    const result = nonNull(inputType);
+    expect(result).to.be.an.instanceof(GraphQLNonNull);
+    expect(result.ofType).to.deep.equal(inputType);
+  });
+
+  it('covert GraphQLScalarType to NonNull type', () => {
+    const scalarType = qlScalar();
+    const result = nonNull(scalarType);
+    expect(result).to.be.an.instanceof(GraphQLNonNull);
+    expect(result.ofType).to.deep.equal(scalarType);
+  });
+
+  it('covert GraphQLEnumType to NonNull type', () => {
+    const enumType = new GraphQLEnumType({
+      name: 'EM',
+      values: {
+        E: { value: 0},
+        M: { value: 1}
+      }
+    });
+    const result = nonNull(enumType);
+    expect(result).to.be.an.instanceof(GraphQLNonNull);
+    expect(result.ofType).to.deep.equal(enumType);
+  });
+
+  it('covert GraphQLList to NonNull type', () => {
+    const listType = new GraphQLList(GraphQLString);
+    const result = nonNull(listType);
+    expect(result).to.be.an.instanceof(GraphQLNonNull);
+    expect(result.ofType).to.deep.equal(listType);
+  });
+
+  it('does nothing to GraphQLNonNull Type', () => {
+    const nonNullType = new GraphQLNonNull(GraphQLString);
+    const result = nonNull(nonNullType);
+    expect(result).to.deep.equal(nonNullType);
   });
 });

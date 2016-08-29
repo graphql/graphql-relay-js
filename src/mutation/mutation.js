@@ -22,9 +22,14 @@ import type {
   GraphQLResolveInfo
 } from 'graphql';
 
-type mutationFn =
-  (object: Object, ctx: Object, info: GraphQLResolveInfo) => Object |
-  (object: Object, ctx: Object, info: GraphQLResolveInfo) => Promise<Object>;
+import {
+  graph,
+  pro
+} from 'flow-dynamic';
+const {argsCheck} = graph;
+
+type mutationFn = (object: Object, ctx: mixed, info: GraphQLResolveInfo) =>
+  ( Object | Promise<Object> );
 
 function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
@@ -87,12 +92,16 @@ export function mutationWithClientMutationId(
     args: {
       input: {type: new GraphQLNonNull(inputType)}
     },
-    resolve: (_, {input}, context, info) => {
-      return Promise.resolve(mutateAndGetPayload(input, context, info))
-        .then(payload => {
-          payload.clientMutationId = input.clientMutationId;
-          return payload;
-        });
-    }
+    resolve: argsCheck(
+      args => ({
+        input: pro.isObject(args.input)
+      }),
+      (_, {input}, context, info) => {
+        return Promise.resolve(mutateAndGetPayload(input, context, info))
+          .then(payload => {
+            payload.clientMutationId = input.clientMutationId;
+            return payload;
+          });
+      })
   };
 }
