@@ -25,7 +25,7 @@ npm install graphql-relay
 
 When building a schema for [GraphQL.js](https://github.com/graphql/graphql-js), the provided library functions can be used to simplify the creation of Relay patterns.
 
-### Connections 
+### Connections
 
 Helper functions are provided for both building the GraphQL types for connections and for implementing the `resolve` method for fields returning those types.
 
