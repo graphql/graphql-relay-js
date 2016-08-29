@@ -62,7 +62,9 @@ resolves to the expected shape by `connectionType`.
  - `cursorForObjectInConnection` is a helper method that takes an array and a
 member object, and returns a cursor for use in the mutation payload.
 - `offsetToCursor` takes the index of a member object in an array and
-returns a cursor for use in the mutation payload.
+returns an opaque cursor for use in the mutation payload.
+- `cursorToOffset` takes an opaque cursor (created with `offsetToCursor`)
+and returns the corresponding array index.
 
 An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
 
