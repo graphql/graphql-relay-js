@@ -20,7 +20,7 @@ An overview of the functionality that a Relay-compliant GraphQL server should pr
 Install Relay Library for GraphQL.js
 
 ```sh
-npm install graphql-relay
+npm install graphql graphql-relay
 ```
 
 When building a schema for [GraphQL.js](https://github.com/graphql/graphql-js), the provided library functions can be used to simplify the creation of Relay patterns.
