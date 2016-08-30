@@ -85,12 +85,20 @@ export function connectionFromArraySlice<T>(
     arrayLength
   );
   if (typeof first === 'number') {
+    if (first < 0) {
+      throw new Error('Argument "first" must be a non-negative integer');
+    }
+
     endOffset = Math.min(
       endOffset,
       startOffset + first
     );
   }
   if (typeof last === 'number') {
+    if (last < 0) {
+      throw new Error('Argument "last" must be a non-negative integer');
+    }
+
     startOffset = Math.max(
       startOffset,
       endOffset - last
