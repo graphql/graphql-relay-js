@@ -45,22 +45,22 @@
     "graphql": "^0.5.0 || ^0.6.0 || ^0.7.0"
   },
   "devDependencies": {
-    "babel-cli": "6.9.0",
-    "babel-core": "6.9.0",
-    "babel-eslint": "6.0.4",
-    "babel-plugin-transform-flow-strip-types": "6.8.0",
-    "babel-plugin-transform-runtime": "6.9.0",
-    "babel-preset-es2015": "6.9.0",
-    "babel-preset-stage-2": "6.5.0",
+    "babel-cli": "6.16.0",
+    "babel-core": "6.17.0",
+    "babel-eslint": "7.0.0",
+    "babel-plugin-transform-flow-strip-types": "6.14.0",
+    "babel-plugin-transform-runtime": "6.15.0",
+    "babel-preset-es2015": "6.16.0",
+    "babel-preset-stage-2": "6.17.0",
     "chai": "3.5.0",
-    "chai-as-promised": "5.3.0",
-    "coveralls": "2.11.9",
-    "eslint": "2.10.2",
-    "eslint-plugin-flowtype": "2.11.4",
-    "flow-bin": "0.25.0",
-    "graphql": "0.7.0",
+    "chai-as-promised": "6.0.0",
+    "coveralls": "2.11.14",
+    "eslint": "3.7.1",
+    "eslint-plugin-flowtype": "2.20.0",
+    "flow-bin": "0.33.0",
+    "graphql": "0.7.2",
     "isparta": "4.0.0",
-    "mocha": "2.5.3",
-    "sane": "1.3.4"
+    "mocha": "3.1.1",
+    "sane": "1.4.1"
   }
 }
