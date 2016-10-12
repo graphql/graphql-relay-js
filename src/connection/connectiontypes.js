@@ -29,6 +29,7 @@ export type PageInfo = {
 export type Connection<T> = {
   edges: Array<Edge<T>>;
   pageInfo: PageInfo;
+  totalCount: number;
 }
 
 /**

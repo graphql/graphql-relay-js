@@ -122,6 +122,7 @@ export function connectionFromArraySlice<T>(
   var upperBound = before ? beforeOffset : arrayLength;
   return {
     edges,
+    totalCount: arrayLength,
     pageInfo: {
       startCursor: firstEdge ? firstEdge.cursor : null,
       endCursor: lastEdge ? lastEdge.cursor : null,

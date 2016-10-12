@@ -48,6 +48,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -69,6 +70,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -103,6 +105,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -125,6 +128,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -159,6 +163,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -186,6 +191,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -215,6 +221,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -240,6 +247,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -269,6 +277,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -298,6 +307,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -331,6 +341,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -364,6 +375,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -393,6 +405,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -426,6 +439,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -459,6 +473,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -516,6 +531,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -556,6 +572,7 @@ describe('connectionFromArray()', () => {
             cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
           },
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
           endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -573,6 +590,7 @@ describe('connectionFromArray()', () => {
       return expect(c).to.deep.equal({
         edges: [
         ],
+        totalCount: 5,
         pageInfo: {
           startCursor: null,
           endCursor: null,
@@ -624,6 +642,7 @@ describe('connectionFromPromisedArray()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -645,6 +664,7 @@ describe('connectionFromPromisedArray()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -681,6 +701,7 @@ describe('connectionFromArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -713,6 +734,7 @@ describe('connectionFromArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -741,6 +763,7 @@ describe('connectionFromArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -769,6 +792,7 @@ describe('connectionFromArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
@@ -801,6 +825,7 @@ describe('connectionFromArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -833,6 +858,7 @@ describe('connectionFromArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -861,6 +887,7 @@ describe('connectionFromArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
@@ -892,6 +919,7 @@ describe('connectionFromPromisedArraySlice()', () => {
           cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
         },
       ],
+      totalCount: 5,
       pageInfo: {
         startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
         endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',

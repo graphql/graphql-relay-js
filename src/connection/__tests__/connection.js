@@ -8,7 +8,6 @@
  */
 
 import {
-  GraphQLInt,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
@@ -69,12 +68,6 @@ var {connectionType: friendConnection} = connectionDefinitions({
     friendshipTime: {
       type: GraphQLString,
       resolve: () => 'Yesterday'
-    }
-  }),
-  connectionFields: () => ({
-    totalCount: {
-      type: GraphQLInt,
-      resolve: () => allUsers.length - 1
     }
   }),
 });

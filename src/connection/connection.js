@@ -110,6 +110,10 @@ export function connectionDefinitions(
     name: name + 'Connection',
     description: 'A connection to a list of items.',
     fields: () => ({
+      totalCount: {
+        type: new GraphQLNonNull(GraphQLInt),
+        description: 'The total number of items in the list.'
+      },
       pageInfo: {
         type: new GraphQLNonNull(pageInfoType),
         description: 'Information to aid in pagination.'
