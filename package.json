@@ -57,7 +57,7 @@
     "coveralls": "2.11.9",
     "eslint": "2.10.2",
     "eslint-plugin-flowtype": "2.11.4",
-    "flow-bin": "0.25.0",
+    "flow-bin": "0.34.0",
     "graphql": "0.7.0",
     "isparta": "4.0.0",
     "mocha": "2.5.3",
