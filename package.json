@@ -28,7 +28,7 @@
     "mocha": "src/**/__tests__/**/*.js"
   },
   "scripts": {
-    "prepublish": "npm test && npm run build",
+    "prepublish": "./resources/prepublish.sh",
     "test": "npm run lint && npm run check && npm run testonly",
     "testonly": "babel-node ./node_modules/.bin/_mocha $npm_package_options_mocha",
     "lint": "eslint src",
