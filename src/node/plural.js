@@ -34,13 +34,17 @@ type PluralIdentifyingRootFieldConfig = {
 
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig
-): GraphQLFieldConfig {
+): GraphQLFieldConfig<*, *> {
   const inputArgs = {};
+  let inputType = config.inputType;
+  if (inputType instanceof GraphQLNonNull) {
+    inputType = inputType.ofType;
+  }
   inputArgs[config.argName] = {
     type: new GraphQLNonNull(
       new GraphQLList(
         new GraphQLNonNull(
-          config.inputType
+          inputType
         )
       )
     )

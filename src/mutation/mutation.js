@@ -17,9 +17,10 @@ import {
 
 import type {
   GraphQLFieldConfig,
-  InputObjectConfigFieldMap,
+  GraphQLInputFieldConfigMap,
   GraphQLFieldConfigMap,
-  GraphQLResolveInfo
+  GraphQLResolveInfo,
+  Thunk,
 } from 'graphql';
 
 type mutationFn = (
@@ -28,7 +29,7 @@ type mutationFn = (
   info: GraphQLResolveInfo
 ) => Promise<any> | any;
 
-function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
+function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
 }
 
@@ -48,8 +49,8 @@ function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
  */
 type MutationConfig = {
   name: string,
-  inputFields: InputObjectConfigFieldMap,
-  outputFields: GraphQLFieldConfigMap,
+  inputFields: Thunk<GraphQLInputFieldConfigMap>,
+  outputFields: Thunk<GraphQLFieldConfigMap<*, *>>,
   mutateAndGetPayload: mutationFn,
 };
 
@@ -59,7 +60,7 @@ type MutationConfig = {
  */
 export function mutationWithClientMutationId(
   config: MutationConfig
-): GraphQLFieldConfig {
+): GraphQLFieldConfig<*, *> {
   const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),

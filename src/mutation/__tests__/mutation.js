@@ -99,12 +99,17 @@ describe('mutationWithClientMutationId()', () => {
         }
       }
     `;
-    const result = await graphql(schema, query);
-    expect(result.errors.length).to.equal(1);
-    expect(result.errors[0].message).to.equal(
-      'Field "simpleMutation" argument "input" of type "SimpleMutationInput!" ' +
-      'is required but not provided.'
-    );
+    expect(await graphql(schema, query)).to.deep.equal({
+      errors: [
+        {
+          message:
+            'Field "simpleMutation" argument "input" of type ' +
+            '"SimpleMutationInput!" is required but not provided.',
+          locations: [ { line: 3, column: 9 } ],
+          path: undefined
+        }
+      ]
+    });
   });
 
   it('returns the same client mutation ID', async () => {

@@ -21,6 +21,7 @@ import type {
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldConfigMap,
   GraphQLFieldResolver,
+  Thunk,
 } from 'graphql';
 
 /**
@@ -63,8 +64,8 @@ type ConnectionConfig = {
   nodeType: GraphQLObjectType,
   resolveNode?: ?GraphQLFieldResolver<*, *>,
   resolveCursor?: ?GraphQLFieldResolver<*, *>,
-  edgeFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
-  connectionFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
+  edgeFields?: ?Thunk<GraphQLFieldConfigMap<*, *>>,
+  connectionFields?: ?Thunk<GraphQLFieldConfigMap<*, *>>,
 };
 
 type GraphQLConnectionDefinitions = {
@@ -72,7 +73,7 @@ type GraphQLConnectionDefinitions = {
   connectionType: GraphQLObjectType
 };
 
-function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
+function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
 }
 

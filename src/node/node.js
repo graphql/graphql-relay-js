@@ -16,8 +16,8 @@ import {
 
 import type {
   GraphQLFieldConfig,
-  GraphQLObjectType,
-  GraphQLResolveInfo
+  GraphQLResolveInfo,
+  GraphQLTypeResolver
 } from 'graphql';
 
 import {
@@ -27,12 +27,8 @@ import {
 
 type GraphQLNodeDefinitions = {
   nodeInterface: GraphQLInterfaceType,
-  nodeField: GraphQLFieldConfig
+  nodeField: GraphQLFieldConfig<*, *>
 };
-
-type typeResolverFn = (
-  object: any
-) => ?GraphQLObjectType | ?Promise<GraphQLObjectType>;
 
 /**
  * Given a function to map from an ID to an underlying object, and a function
@@ -44,9 +40,9 @@ type typeResolverFn = (
  * handled with the `isTypeOf` method on object types, as with any GraphQL
  * interface without a provided `resolveType` method.
  */
-export function nodeDefinitions(
-  idFetcher: ((id: string, context: any, info: GraphQLResolveInfo) => any),
-  typeResolver?: ?typeResolverFn
+export function nodeDefinitions<TContext>(
+  idFetcher: ((id: string, context: TContext, info: GraphQLResolveInfo) => any),
+  typeResolver?: ?GraphQLTypeResolver<*, TContext>
 ): GraphQLNodeDefinitions {
   const nodeInterface = new GraphQLInterfaceType({
     name: 'Node',
@@ -70,10 +66,10 @@ export function nodeDefinitions(
         description: 'The ID of an object'
       }
     },
-    resolve: (obj, {id}, context, info) => idFetcher(id, context, info),
+    resolve: (obj, { id }, context, info) => idFetcher(id, context, info),
   };
 
-  return {nodeInterface, nodeField};
+  return { nodeInterface, nodeField };
 }
 
 type ResolvedGlobalId = {
@@ -111,7 +107,7 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
 export function globalIdField(
   typeName?: ?string,
   idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string
-): GraphQLFieldConfig {
+): GraphQLFieldConfig<*, *> {
   return {
     name: 'id',
     description: 'The ID of an object',
