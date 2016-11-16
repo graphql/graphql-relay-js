@@ -1,17 +1,24 @@
 language: node_js
 
+# https://github.com/nodejs/LTS
 node_js:
-  - "stable"
-  - "4"
-  - "iojs"
-  - "0.12"
-  - "0.10"
+  - '7'
+  - '6'
+  - '4'
+  - '0.12'
+
+git:
+  depth: 5
+
+cache:
+  directories:
+    - ~/.npm
 
 before_install:
   - npm config set spin false --global
 
 script:
-  - npm run lint && npm run check && (if [[ "$TRAVIS_JOB_NUMBER" == *.1 ]]; then npm run cover:lcov; else npm run testonly; fi)
+  - if [[ "$TRAVIS_JOB_NUMBER" == *.1 ]]; then npm run lint && npm run check && npm run cover:lcov; else npm run testonly; fi
 
 after_success:
   - if [[ "$TRAVIS_JOB_NUMBER" == *.1 ]]; then cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js; fi
