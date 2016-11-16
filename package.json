@@ -38,9 +38,6 @@
     "cover": "babel-node node_modules/.bin/isparta cover --root src --report html node_modules/.bin/_mocha -- $npm_package_options_mocha",
     "cover:lcov": "babel-node node_modules/.bin/isparta cover --root src --report lcovonly node_modules/.bin/_mocha -- $npm_package_options_mocha"
   },
-  "dependencies": {
-    "babel-runtime": "^6.9.0"
-  },
   "peerDependencies": {
     "graphql": "^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b"
   },
