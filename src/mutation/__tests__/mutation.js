@@ -31,6 +31,18 @@ const simpleMutation = mutationWithClientMutationId({
   mutateAndGetPayload: () => ({result: 1})
 });
 
+const simpleMutationWithDescription = mutationWithClientMutationId({
+  name: 'SimpleMutationWithDescription',
+  description: 'Simple Mutation Description',
+  inputFields: {},
+  outputFields: {
+    result: {
+      type: GraphQLInt
+    }
+  },
+  mutateAndGetPayload: () => ({result: 1})
+});
+
 const simpleMutationWithThunkFields = mutationWithClientMutationId({
   name: 'SimpleMutationWithThunkFields',
   inputFields: () => ({
@@ -79,6 +91,7 @@ const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
     simpleMutation,
+    simpleMutationWithDescription,
     simpleMutationWithThunkFields,
     simplePromiseMutation,
     simpleRootValueMutation,
@@ -323,6 +336,26 @@ describe('mutationWithClientMutationId()', () => {
                   }
                 },
                 {
+                  name: 'simpleMutationWithDescription',
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: null,
+                        kind: 'NON_NULL',
+                        ofType: {
+                          name: 'SimpleMutationWithDescriptionInput',
+                          kind: 'INPUT_OBJECT'
+                        }
+                      },
+                    }
+                  ],
+                  type: {
+                    name: 'SimpleMutationWithDescriptionPayload',
+                    kind: 'OBJECT',
+                  }
+                },
+                {
                   name: 'simpleMutationWithThunkFields',
                   args: [
                     {
@@ -382,6 +415,50 @@ describe('mutationWithClientMutationId()', () => {
                     kind: 'OBJECT',
                   }
                 },
+              ]
+            }
+          }
+        }
+      });
+    });
+
+    it('contains correct descriptions', async () => {
+      const query = `{
+        __schema {
+          mutationType {
+            fields {
+              name
+              description
+            }
+          }
+        }
+      }`;
+
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          __schema: {
+            mutationType: {
+              fields: [
+                {
+                  name: 'simpleMutation',
+                  description: null
+                },
+                {
+                  name: 'simpleMutationWithDescription',
+                  description: 'Simple Mutation Description'
+                },
+                {
+                  name: 'simpleMutationWithThunkFields',
+                  description: null
+                },
+                {
+                  name: 'simplePromiseMutation',
+                  description: null
+                },
+                {
+                  name: 'simpleRootValueMutation',
+                  description: null
+                }
               ]
             }
           }
