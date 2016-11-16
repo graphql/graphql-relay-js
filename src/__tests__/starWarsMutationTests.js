@@ -17,7 +17,7 @@ import { graphql } from 'graphql';
 
 describe('Star Wars mutations', () => {
   it('mutates the data set', async () => {
-    var mutation = `
+    const mutation = `
       mutation AddBWingQuery($input: IntroduceShipInput!) {
         introduceShip(input: $input) {
           ship {
@@ -31,14 +31,14 @@ describe('Star Wars mutations', () => {
         }
       }
     `;
-    var params = {
+    const params = {
       input: {
         shipName: 'B-Wing',
         factionId: '1',
         clientMutationId: 'abcde',
       }
     };
-    var expected = {
+    const expected = {
       introduceShip: {
         ship: {
           id: 'U2hpcDo5',
@@ -50,7 +50,7 @@ describe('Star Wars mutations', () => {
         clientMutationId: 'abcde',
       }
     };
-    var result = await graphql(StarWarsSchema, mutation, null, null, params);
+    const result = await graphql(StarWarsSchema, mutation, null, null, params);
     expect(result).to.deep.equal({ data: expected });
   });
 });

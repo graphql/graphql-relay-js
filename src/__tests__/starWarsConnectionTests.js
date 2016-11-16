@@ -17,7 +17,7 @@ import { graphql } from 'graphql';
 
 describe('Star Wars connections', () => {
   it('fetches the first ship of the rebels', async () => {
-    var query = `
+    const query = `
       query RebelsShipsQuery {
         rebels {
           name,
@@ -31,7 +31,7 @@ describe('Star Wars connections', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       rebels: {
         name: 'Alliance to Restore the Republic',
         ships: {
@@ -45,12 +45,12 @@ describe('Star Wars connections', () => {
         }
       }
     };
-    var result = await graphql(StarWarsSchema, query);
+    const result = await graphql(StarWarsSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches the first two ships of the rebels with a cursor', async () => {
-    var query = `
+    const query = `
       query MoreRebelShipsQuery {
         rebels {
           name,
@@ -65,7 +65,7 @@ describe('Star Wars connections', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       rebels: {
         name: 'Alliance to Restore the Republic',
         ships: {
@@ -86,12 +86,12 @@ describe('Star Wars connections', () => {
         }
       }
     };
-    var result = await graphql(StarWarsSchema, query);
+    const result = await graphql(StarWarsSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches the next three ships of the rebels with a cursor', async () => {
-    var query = `
+    const query = `
       query EndOfRebelShipsQuery {
         rebels {
           name,
@@ -106,7 +106,7 @@ describe('Star Wars connections', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       rebels: {
         name: 'Alliance to Restore the Republic',
         ships: {
@@ -133,12 +133,12 @@ describe('Star Wars connections', () => {
         }
       }
     };
-    var result = await graphql(StarWarsSchema, query);
+    const result = await graphql(StarWarsSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches no ships of the rebels at the end of connection', async () => {
-    var query = `
+    const query = `
       query RebelsQuery {
         rebels {
           name,
@@ -153,7 +153,7 @@ describe('Star Wars connections', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       rebels: {
         name: 'Alliance to Restore the Republic',
         ships: {
@@ -161,12 +161,12 @@ describe('Star Wars connections', () => {
         }
       }
     };
-    var result = await graphql(StarWarsSchema, query);
+    const result = await graphql(StarWarsSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('identifies the end of the list', async () => {
-    var query = `
+    const query = `
       query EndOfRebelShipsQuery {
         rebels {
           name,
@@ -193,7 +193,7 @@ describe('Star Wars connections', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       rebels: {
         name: 'Alliance to Restore the Republic',
         originalShips: {
@@ -237,7 +237,7 @@ describe('Star Wars connections', () => {
         }
       }
     };
-    var result = await graphql(StarWarsSchema, query);
+    const result = await graphql(StarWarsSchema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 });

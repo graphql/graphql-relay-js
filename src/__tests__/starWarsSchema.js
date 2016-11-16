@@ -123,18 +123,17 @@ import {
  * The first method is the way we resolve an ID to its object. The second is the
  * way we resolve an object that implements node to its type.
  */
-var {nodeInterface, nodeField} = nodeDefinitions(
-  (globalId) => {
-    var {type, id} = fromGlobalId(globalId);
+const { nodeInterface, nodeField } = nodeDefinitions(
+  globalId => {
+    const { type, id } = fromGlobalId(globalId);
     if (type === 'Faction') {
       return getFaction(id);
-    } else if (type === 'Ship') {
+    }
+    if (type === 'Ship') {
       return getShip(id);
-    } else {
-      return null;
     }
   },
-  (obj) => {
+  obj => {
     return obj.ships ? factionType : shipType;
   }
 );
@@ -148,17 +147,17 @@ var {nodeInterface, nodeField} = nodeDefinitions(
  *     name: String
  *   }
  */
-var shipType = new GraphQLObjectType({
+const shipType = new GraphQLObjectType({
   name: 'Ship',
   description: 'A ship in the Star Wars saga',
+  interfaces: [ nodeInterface ],
   fields: () => ({
     id: globalIdField(),
     name: {
       type: GraphQLString,
       description: 'The name of the ship.',
     },
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
 /**
@@ -177,8 +176,8 @@ var shipType = new GraphQLObjectType({
  *     node: Ship
  *   }
  */
-var {connectionType: shipConnection} =
-  connectionDefinitions({nodeType: shipType});
+const { connectionType: shipConnection } =
+  connectionDefinitions({ nodeType: shipType });
 
 /**
  * We define our faction type, which implements the node interface.
@@ -190,9 +189,10 @@ var {connectionType: shipConnection} =
  *     ships: ShipConnection
  *   }
  */
-var factionType = new GraphQLObjectType({
+const factionType = new GraphQLObjectType({
   name: 'Faction',
   description: 'A faction in the Star Wars saga',
+  interfaces: [ nodeInterface ],
   fields: () => ({
     id: globalIdField(),
     name: {
@@ -204,12 +204,11 @@ var factionType = new GraphQLObjectType({
       description: 'The ships used by the faction.',
       args: connectionArgs,
       resolve: (faction, args) => connectionFromArray(
-        faction.ships.map((id) => getShip(id)),
+        faction.ships.map(getShip),
         args
       ),
     }
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
 /**
@@ -223,7 +222,7 @@ var factionType = new GraphQLObjectType({
  *     node(id: String!): Node
  *   }
  */
-var queryType = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     rebels: {
@@ -255,7 +254,7 @@ var queryType = new GraphQLObjectType({
  *     faction: Faction
  *   }
  */
-var shipMutation = mutationWithClientMutationId({
+const shipMutation = mutationWithClientMutationId({
   name: 'IntroduceShip',
   inputFields: {
     shipName: {
@@ -268,18 +267,18 @@ var shipMutation = mutationWithClientMutationId({
   outputFields: {
     ship: {
       type: shipType,
-      resolve: (payload) => getShip(payload.shipId)
+      resolve: payload => getShip(payload.shipId)
     },
     faction: {
       type: factionType,
-      resolve: (payload) => getFaction(payload.factionId)
+      resolve: payload => getFaction(payload.factionId)
     }
   },
-  mutateAndGetPayload: ({shipName, factionId}) => {
-    var newShip = createShip(shipName, factionId);
+  mutateAndGetPayload: ({ shipName, factionId }) => {
+    const newShip = createShip(shipName, factionId);
     return {
       shipId: newShip.id,
-      factionId: factionId,
+      factionId,
     };
   }
 });
@@ -293,7 +292,7 @@ var shipMutation = mutationWithClientMutationId({
  *     introduceShip(input IntroduceShipInput!): IntroduceShipPayload
  *   }
  */
-var mutationType = new GraphQLObjectType({
+const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
     introduceShip: shipMutation
@@ -304,7 +303,7 @@ var mutationType = new GraphQLObjectType({
  * Finally, we construct our schema (whose starting query type is the query
  * type we defined above) and export it.
  */
-export var StarWarsSchema = new GraphQLSchema({
+export const StarWarsSchema = new GraphQLSchema({
   query: queryType,
   mutation: mutationType
 });

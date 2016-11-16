@@ -14,13 +14,13 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'graphql';
+import { GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql } from 'graphql';
 
 import {
   mutationWithClientMutationId
 } from '../mutation';
 
-var simpleMutation = mutationWithClientMutationId({
+const simpleMutation = mutationWithClientMutationId({
   name: 'SimpleMutation',
   inputFields: {},
   outputFields: {
@@ -31,7 +31,7 @@ var simpleMutation = mutationWithClientMutationId({
   mutateAndGetPayload: () => ({result: 1})
 });
 
-var simpleMutationWithThunkFields = mutationWithClientMutationId({
+const simpleMutationWithThunkFields = mutationWithClientMutationId({
   name: 'SimpleMutationWithThunkFields',
   inputFields: () => ({
     inputData: {
@@ -43,10 +43,10 @@ var simpleMutationWithThunkFields = mutationWithClientMutationId({
       type: GraphQLInt
     }
   }),
-  mutateAndGetPayload: ({ inputData }) => ({result: inputData})
+  mutateAndGetPayload: ({ inputData }) => ({ result: inputData })
 });
 
-var simplePromiseMutation = mutationWithClientMutationId({
+const simplePromiseMutation = mutationWithClientMutationId({
   name: 'SimplePromiseMutation',
   inputFields: {},
   outputFields: {
@@ -57,7 +57,7 @@ var simplePromiseMutation = mutationWithClientMutationId({
   mutateAndGetPayload: () => Promise.resolve({result: 1})
 });
 
-var simpleRootValueMutation = mutationWithClientMutationId({
+const simpleRootValueMutation = mutationWithClientMutationId({
   name: 'SimpleRootValueMutation',
   inputFields: {},
   outputFields: {
@@ -68,37 +68,47 @@ var simpleRootValueMutation = mutationWithClientMutationId({
   mutateAndGetPayload: (params, context, {rootValue}) => (rootValue)
 });
 
-var mutation = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
+  name: 'Query',
+  fields: () => ({
+    query: { type: queryType }
+  })
+});
+
+const mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    simpleMutation: simpleMutation,
-    simpleMutationWithThunkFields: simpleMutationWithThunkFields,
-    simplePromiseMutation: simplePromiseMutation,
-    simpleRootValueMutation: simpleRootValueMutation
+    simpleMutation,
+    simpleMutationWithThunkFields,
+    simplePromiseMutation,
+    simpleRootValueMutation,
   }
 });
 
-var schema = new GraphQLSchema({
-  query: mutation,
-  mutation: mutation
+const schema = new GraphQLSchema({
+  query: queryType,
+  mutation: mutationType
 });
 
 describe('mutationWithClientMutationId()', () => {
   it('requires an argument', async () => {
-    var query = `
+    const query = `
       mutation M {
         simpleMutation {
           result
         }
       }
     `;
-    var result = await graphql(schema, query);
+    const result = await graphql(schema, query);
     expect(result.errors.length).to.equal(1);
-    expect(result.errors[0].message).to.equal('Field \"simpleMutation\" argument \"input\" of type \"SimpleMutationInput!\" is required but not provided.');
+    expect(result.errors[0].message).to.equal(
+      'Field "simpleMutation" argument "input" of type "SimpleMutationInput!" ' +
+      'is required but not provided.'
+    );
   });
 
-  it('returns the same client mutation ID', () => {
-    var query = `
+  it('returns the same client mutation ID', async () => {
+    const query = `
       mutation M {
         simpleMutation(input: {clientMutationId: "abc"}) {
           result
@@ -106,39 +116,42 @@ describe('mutationWithClientMutationId()', () => {
         }
       }
     `;
-    var expected = {
+
+    expect(await graphql(schema, query)).to.deep.equal({
       data: {
         simpleMutation: {
           result: 1,
           clientMutationId: 'abc'
         }
       }
-    };
-    return expect(graphql(schema, query)).to.become(expected);
+    });
   });
 
-  it('Supports thunks as input and output fields', () => {
-    var query = `
+  it('Supports thunks as input and output fields', async () => {
+    const query = `
       mutation M {
-        simpleMutationWithThunkFields(input: {inputData: 1234, clientMutationId: "abc"}) {
+        simpleMutationWithThunkFields(input: {
+          inputData: 1234,
+          clientMutationId: "abc"
+        }) {
           result
           clientMutationId
         }
       }
     `;
-    var expected = {
+
+    expect(await graphql(schema, query)).to.deep.equal({
       data: {
         simpleMutationWithThunkFields: {
           result: 1234,
           clientMutationId: 'abc'
         }
       }
-    };
-    return expect(graphql(schema, query)).to.become(expected);
+    });
   });
 
-  it('supports promise mutations', () => {
-    var query = `
+  it('supports promise mutations', async () => {
+    const query = `
       mutation M {
         simplePromiseMutation(input: {clientMutationId: "abc"}) {
           result
@@ -146,19 +159,19 @@ describe('mutationWithClientMutationId()', () => {
         }
       }
     `;
-    var expected = {
+
+    expect(await graphql(schema, query)).to.deep.equal({
       data: {
         simplePromiseMutation: {
           result: 1,
           clientMutationId: 'abc'
         }
       }
-    };
-    return expect(graphql(schema, query)).to.become(expected);
+    });
   });
 
-  it('can access rootValue', () => {
-    var query = `
+  it('can access rootValue', async () => {
+    const query = `
       mutation M {
         simpleRootValueMutation(input: {clientMutationId: "abc"}) {
           result
@@ -166,20 +179,20 @@ describe('mutationWithClientMutationId()', () => {
         }
       }
     `;
-    var expected = {
+
+    expect(await graphql(schema, query, { result: 1 })).to.deep.equal({
       data: {
         simpleRootValueMutation: {
           result: 1,
           clientMutationId: 'abc'
         }
       }
-    };
-    return expect(graphql(schema, query, {result: 1})).to.become(expected);
+    });
   });
 
   describe('introspection', () => {
-    it('contains correct input', () => {
-      var query = `{
+    it('contains correct input', async () => {
+      const query = `{
         __type(name: "SimpleMutationInput") {
           name
           kind
@@ -192,27 +205,28 @@ describe('mutationWithClientMutationId()', () => {
           }
         }
       }`;
-      var expected = {
-        __type: {
-          name: 'SimpleMutationInput',
-          kind: 'INPUT_OBJECT',
-          inputFields: [
-            {
-              name: 'clientMutationId',
-              type: {
-                name: 'String',
-                kind: 'SCALAR'
-              }
-            }
-          ]
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          __type: {
+            name: 'SimpleMutationInput',
+            kind: 'INPUT_OBJECT',
+            inputFields: [
+              {
+                name: 'clientMutationId',
+                type: {
+                  name: 'String',
+                  kind: 'SCALAR'
+                }
+              }
+            ]
+          }
+        }
+      });
     });
 
-    it('contains correct payload', () => {
-      var query = `{
+    it('contains correct payload', async () => {
+      const query = `{
         __type(name: "SimpleMutationPayload") {
           name
           kind
@@ -225,34 +239,35 @@ describe('mutationWithClientMutationId()', () => {
           }
         }
       }`;
-      var expected = {
-        __type: {
-          name: 'SimpleMutationPayload',
-          kind: 'OBJECT',
-          fields: [
-            {
-              name: 'result',
-              type: {
-                name: 'Int',
-                kind: 'SCALAR',
-              }
-            },
-            {
-              name: 'clientMutationId',
-              type: {
-                name: 'String',
-                kind: 'SCALAR'
-              }
-            }
-          ]
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          __type: {
+            name: 'SimpleMutationPayload',
+            kind: 'OBJECT',
+            fields: [
+              {
+                name: 'result',
+                type: {
+                  name: 'Int',
+                  kind: 'SCALAR',
+                }
+              },
+              {
+                name: 'clientMutationId',
+                type: {
+                  name: 'String',
+                  kind: 'SCALAR'
+                }
+              }
+            ]
+          }
+        }
+      });
     });
 
-    it('contains correct field', () => {
-      var query = `{
+    it('contains correct field', async () => {
+      const query = `{
         __schema {
           mutationType {
             fields {
@@ -276,96 +291,97 @@ describe('mutationWithClientMutationId()', () => {
           }
         }
       }`;
-      var expected = {
-        __schema: {
-          mutationType: {
-            fields: [
-              {
-                name: 'simpleMutation',
-                args: [
-                  {
-                    name: 'input',
-                    type: {
-                      name: null,
-                      kind: 'NON_NULL',
-                      ofType: {
-                        name: 'SimpleMutationInput',
-                        kind: 'INPUT_OBJECT'
-                      }
-                    },
+
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          __schema: {
+            mutationType: {
+              fields: [
+                {
+                  name: 'simpleMutation',
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: null,
+                        kind: 'NON_NULL',
+                        ofType: {
+                          name: 'SimpleMutationInput',
+                          kind: 'INPUT_OBJECT'
+                        }
+                      },
+                    }
+                  ],
+                  type: {
+                    name: 'SimpleMutationPayload',
+                    kind: 'OBJECT',
                   }
-                ],
-                type: {
-                  name: 'SimpleMutationPayload',
-                  kind: 'OBJECT',
-                }
-              },
-              {
-                name: 'simpleMutationWithThunkFields',
-                args: [
-                  {
-                    name: 'input',
-                    type: {
-                      name: null,
-                      kind: 'NON_NULL',
-                      ofType: {
-                        name: 'SimpleMutationWithThunkFieldsInput',
-                        kind: 'INPUT_OBJECT'
-                      }
-                    },
+                },
+                {
+                  name: 'simpleMutationWithThunkFields',
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: null,
+                        kind: 'NON_NULL',
+                        ofType: {
+                          name: 'SimpleMutationWithThunkFieldsInput',
+                          kind: 'INPUT_OBJECT'
+                        }
+                      },
+                    }
+                  ],
+                  type: {
+                    name: 'SimpleMutationWithThunkFieldsPayload',
+                    kind: 'OBJECT',
                   }
-                ],
-                type: {
-                  name: 'SimpleMutationWithThunkFieldsPayload',
-                  kind: 'OBJECT',
-                }
-              },
-              {
-                name: 'simplePromiseMutation',
-                args: [
-                  {
-                    name: 'input',
-                    type: {
-                      name: null,
-                      kind: 'NON_NULL',
-                      ofType: {
-                        name: 'SimplePromiseMutationInput',
-                        kind: 'INPUT_OBJECT'
-                      }
-                    },
+                },
+                {
+                  name: 'simplePromiseMutation',
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: null,
+                        kind: 'NON_NULL',
+                        ofType: {
+                          name: 'SimplePromiseMutationInput',
+                          kind: 'INPUT_OBJECT'
+                        }
+                      },
+                    }
+                  ],
+                  type: {
+                    name: 'SimplePromiseMutationPayload',
+                    kind: 'OBJECT',
                   }
-                ],
-                type: {
-                  name: 'SimplePromiseMutationPayload',
-                  kind: 'OBJECT',
-                }
-              },
-              {
-                name: 'simpleRootValueMutation',
-                args: [
-                  {
-                    name: 'input',
-                    type: {
-                      name: null,
-                      kind: 'NON_NULL',
-                      ofType: {
-                        name: 'SimpleRootValueMutationInput',
-                        kind: 'INPUT_OBJECT'
-                      }
-                    },
+                },
+                {
+                  name: 'simpleRootValueMutation',
+                  args: [
+                    {
+                      name: 'input',
+                      type: {
+                        name: null,
+                        kind: 'NON_NULL',
+                        ofType: {
+                          name: 'SimpleRootValueMutationInput',
+                          kind: 'INPUT_OBJECT'
+                        }
+                      },
+                    }
+                  ],
+                  type: {
+                    name: 'SimpleRootValueMutationPayload',
+                    kind: 'OBJECT',
                   }
-                ],
-                type: {
-                  name: 'SimpleRootValueMutationPayload',
-                  kind: 'OBJECT',
-                }
-              },
-            ]
+                },
+              ]
+            }
           }
         }
-      };
-
-      return expect(graphql(schema, query)).to.become({data: expected});
+      });
     });
   });
 });

@@ -68,18 +68,18 @@ export function connectionFromArraySlice<T>(
   args: ConnectionArguments,
   meta: ArraySliceMetaInfo
 ): Connection<T> {
-  var {after, before, first, last} = args;
-  var {sliceStart, arrayLength} = meta;
-  var sliceEnd = sliceStart + arraySlice.length;
-  var beforeOffset = getOffsetWithDefault(before, arrayLength);
-  var afterOffset = getOffsetWithDefault(after, -1);
+  const { after, before, first, last } = args;
+  const { sliceStart, arrayLength } = meta;
+  const sliceEnd = sliceStart + arraySlice.length;
+  const beforeOffset = getOffsetWithDefault(before, arrayLength);
+  const afterOffset = getOffsetWithDefault(after, -1);
 
-  var startOffset = Math.max(
+  let startOffset = Math.max(
     sliceStart - 1,
     afterOffset,
     -1
   ) + 1;
-  var endOffset = Math.min(
+  let endOffset = Math.min(
     sliceEnd,
     beforeOffset,
     arrayLength
@@ -106,20 +106,20 @@ export function connectionFromArraySlice<T>(
   }
 
   // If supplied slice is too large, trim it down before mapping over it.
-  var slice = arraySlice.slice(
+  const slice = arraySlice.slice(
     Math.max(startOffset - sliceStart, 0),
     arraySlice.length - (sliceEnd - endOffset)
   );
 
-  var edges = slice.map((value, index) => ({
+  const edges = slice.map((value, index) => ({
     cursor: offsetToCursor(startOffset + index),
     node: value,
   }));
 
-  var firstEdge = edges[0];
-  var lastEdge = edges[edges.length - 1];
-  var lowerBound = after ? (afterOffset + 1) : 0;
-  var upperBound = before ? beforeOffset : arrayLength;
+  const firstEdge = edges[0];
+  const lastEdge = edges[edges.length - 1];
+  const lowerBound = after ? (afterOffset + 1) : 0;
+  const upperBound = before ? beforeOffset : arrayLength;
   return {
     edges,
     pageInfo: {
@@ -147,7 +147,7 @@ export function connectionFromPromisedArraySlice<T>(
   );
 }
 
-var PREFIX = 'arrayconnection:';
+const PREFIX = 'arrayconnection:';
 
 /**
  * Creates the cursor string from an offset.
@@ -170,7 +170,7 @@ export function cursorForObjectInConnection<T>(
   data: Array<T>,
   object: T
 ): ?ConnectionCursor {
-  var offset = data.indexOf(object);
+  const offset = data.indexOf(object);
   if (offset === -1) {
     return null;
   }
@@ -189,6 +189,6 @@ export function getOffsetWithDefault(
   if (typeof cursor !== 'string') {
     return defaultOffset;
   }
-  var offset = cursorToOffset(cursor);
+  const offset = cursorToOffset(cursor);
   return isNaN(offset) ? defaultOffset : offset;
 }

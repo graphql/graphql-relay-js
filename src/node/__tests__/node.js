@@ -25,48 +25,51 @@ import {
   nodeDefinitions
 } from '../node';
 
-var userData = {
-  '1': {  // eslint-disable-line quote-props
+const userData = {
+  '1': {
     id: 1,
     name: 'John Doe'
   },
-  '2': {  // eslint-disable-line quote-props
+  '2': {
     id: 2,
     name: 'Jane Smith'
   },
 };
 
-var photoData = {
-  '3': {  // eslint-disable-line quote-props
+const photoData = {
+  '3': {
     id: 3,
     width: 300
   },
-  '4': {  // eslint-disable-line quote-props
+  '4': {
     id: 4,
     width: 400
   },
 };
 
-var {nodeField, nodeInterface} = nodeDefinitions(
+const { nodeField, nodeInterface } = nodeDefinitions(
   (id, context, info) => {
     expect(info.schema).to.equal(schema);
     if (userData[id]) {
       return userData[id];
-    } else {
+    }
+    if (photoData[id]) {
       return photoData[id];
     }
   },
-  (obj) => {
+  obj => {
     if (userData[obj.id]) {
       return userType;
-    } else {
+    }
+    if (photoData[obj.id]) {
       return photoType;
     }
   }
 );
 
-var userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: 'User',
+  interfaces: [ nodeInterface ],
   fields: () => ({
     id: {
       type: new GraphQLNonNull(GraphQLID),
@@ -74,12 +77,12 @@ var userType = new GraphQLObjectType({
     name: {
       type: GraphQLString,
     },
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
-var photoType = new GraphQLObjectType({
+const photoType = new GraphQLObjectType({
   name: 'Photo',
+  interfaces: [ nodeInterface ],
   fields: () => ({
     id: {
       type: new GraphQLNonNull(GraphQLID),
@@ -87,56 +90,57 @@ var photoType = new GraphQLObjectType({
     width: {
       type: GraphQLInt,
     },
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
-var queryType = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     node: nodeField
   })
 });
 
-var schema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: queryType,
-  types: [userType, photoType]
+  types: [ userType, photoType ]
 });
 
 describe('Node interface and fields', () => {
   describe('refetchability', () => {
-    it('gets the correct ID for users', () => {
-      var query = `{
+    it('gets the correct ID for users', async () => {
+      const query = `{
         node(id: "1") {
           id
         }
       }`;
-      var expected = {
-        node: {
-          id: '1',
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: {
+            id: '1',
+          }
+        }
+      });
     });
 
-    it('gets the correct ID for photos', () => {
-      var query = `{
+    it('gets the correct ID for photos', async () => {
+      const query = `{
         node(id: "4") {
           id
         }
       }`;
-      var expected = {
-        node: {
-          id: '4',
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: {
+            id: '4',
+          }
+        }
+      });
     });
 
-    it('gets the correct name for users', () => {
-      var query = `{
+    it('gets the correct name for users', async () => {
+      const query = `{
         node(id: "1") {
           id
           ... on User {
@@ -144,18 +148,19 @@ describe('Node interface and fields', () => {
           }
         }
       }`;
-      var expected = {
-        node: {
-          id: '1',
-          name: 'John Doe',
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: {
+            id: '1',
+            name: 'John Doe',
+          }
+        }
+      });
     });
 
-    it('gets the correct width for photos', () => {
-      var query = `{
+    it('gets the correct width for photos', async () => {
+      const query = `{
         node(id: "4") {
           id
           ... on Photo {
@@ -163,52 +168,55 @@ describe('Node interface and fields', () => {
           }
         }
       }`;
-      var expected = {
-        node: {
-          id: '4',
-          width: 400,
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: {
+            id: '4',
+            width: 400,
+          }
+        }
+      });
     });
 
-    it('gets the correct type name for users', () => {
-      var query = `{
+    it('gets the correct type name for users', async () => {
+      const query = `{
         node(id: "1") {
           id
           __typename
         }
       }`;
-      var expected = {
-        node: {
-          id: '1',
-          __typename: 'User',
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: {
+            id: '1',
+            __typename: 'User',
+          }
+        }
+      });
     });
 
-    it('gets the correct type name for photos', () => {
-      var query = `{
+    it('gets the correct type name for photos', async () => {
+      const query = `{
         node(id: "4") {
           id
           __typename
         }
       }`;
-      var expected = {
-        node: {
-          id: '4',
-          __typename: 'Photo',
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: {
+            id: '4',
+            __typename: 'Photo',
+          }
+        }
+      });
     });
 
-    it('ignores photo fragments on user', () => {
-      var query = `{
+    it('ignores photo fragments on user', async () => {
+      const query = `{
         node(id: "1") {
           id
           ... on Photo {
@@ -216,32 +224,34 @@ describe('Node interface and fields', () => {
           }
         }
       }`;
-      var expected = {
-        node: {
-          id: '1',
-        }
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: {
+            id: '1',
+          }
+        }
+      });
     });
 
-    it('returns null for bad IDs', () => {
-      var query = `{
+    it('returns null for bad IDs', async () => {
+      const query = `{
         node(id: "5") {
           id
         }
       }`;
-      var expected = {
-        node: null
-      };
 
-      return expect(graphql(schema, query)).to.become({data: expected});
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          node: null
+        }
+      });
     });
   });
 
   describe('introspection', () => {
-    it('has correct node interface', () => {
-      var query = `{
+    it('has correct node interface', async () => {
+      const query = `{
         __type(name: "Node") {
           name
           kind
@@ -257,30 +267,31 @@ describe('Node interface and fields', () => {
           }
         }
       }`;
-      var expected = {
-        __type: {
-          name: 'Node',
-          kind: 'INTERFACE',
-          fields: [
-            {
-              name: 'id',
-              type: {
-                kind: 'NON_NULL',
-                ofType: {
-                  name: 'ID',
-                  kind: 'SCALAR'
+
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          __type: {
+            name: 'Node',
+            kind: 'INTERFACE',
+            fields: [
+              {
+                name: 'id',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    name: 'ID',
+                    kind: 'SCALAR'
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         }
-      };
-
-      return expect(graphql(schema, query)).to.become({data: expected});
+      });
     });
 
-    it('has correct node root field', () => {
-      var query = `{
+    it('has correct node root field', async () => {
+      const query = `{
         __schema {
           queryType {
             fields {
@@ -303,35 +314,36 @@ describe('Node interface and fields', () => {
           }
         }
       }`;
-      var expected = {
-        __schema: {
-          queryType: {
-            fields: [
-              {
-                name: 'node',
-                type: {
-                  name: 'Node',
-                  kind: 'INTERFACE'
-                },
-                args: [
-                  {
-                    name: 'id',
-                    type: {
-                      kind: 'NON_NULL',
-                      ofType: {
-                        name: 'ID',
-                        kind: 'SCALAR'
+
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          __schema: {
+            queryType: {
+              fields: [
+                {
+                  name: 'node',
+                  type: {
+                    name: 'Node',
+                    kind: 'INTERFACE'
+                  },
+                  args: [
+                    {
+                      name: 'id',
+                      type: {
+                        kind: 'NON_NULL',
+                        ofType: {
+                          name: 'ID',
+                          kind: 'SCALAR'
+                        }
                       }
                     }
-                  }
-                ]
-              }
-            ]
+                  ]
+                }
+              ]
+            }
           }
         }
-      };
-
-      return expect(graphql(schema, query)).to.become({data: expected});
+      });
     });
   });
 });

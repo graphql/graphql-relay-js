@@ -13,81 +13,81 @@
  * JSON objects in a more complex demo.
  */
 
-var xwing = {
+const xwing = {
   id: '1',
   name: 'X-Wing',
 };
 
-var ywing = {
+const ywing = {
   id: '2',
   name: 'Y-Wing',
 };
 
-var awing = {
+const awing = {
   id: '3',
   name: 'A-Wing',
 };
 
 // Yeah, technically it's Corellian. But it flew in the service of the rebels,
 // so for the purposes of this demo it's a rebel ship.
-var falcon = {
+const falcon = {
   id: '4',
   name: 'Millenium Falcon',
 };
 
-var homeOne = {
+const homeOne = {
   id: '5',
   name: 'Home One',
 };
 
-var tieFighter = {
+const tieFighter = {
   id: '6',
   name: 'TIE Fighter',
 };
 
-var tieInterceptor = {
+const tieInterceptor = {
   id: '7',
   name: 'TIE Interceptor',
 };
 
-var executor = {
+const executor = {
   id: '8',
   name: 'Executor',
 };
 
-var rebels = {
+const rebels = {
   id: '1',
   name: 'Alliance to Restore the Republic',
-  ships: ['1', '2', '3', '4', '5']
+  ships: [ '1', '2', '3', '4', '5' ]
 };
 
-var empire = {
+const empire = {
   id: '2',
   name: 'Galactic Empire',
-  ships: ['6', '7', '8']
+  ships: [ '6', '7', '8' ]
 };
 
-var data = {
+const data = {
   Faction: {
-    1: rebels,
-    2: empire
+    '1': rebels,
+    '2': empire
   },
   Ship: {
-    1: xwing,
-    2: ywing,
-    3: awing,
-    4: falcon,
-    5: homeOne,
-    6: tieFighter,
-    7: tieInterceptor,
-    8: executor
+    '1': xwing,
+    '2': ywing,
+    '3': awing,
+    '4': falcon,
+    '5': homeOne,
+    '6': tieFighter,
+    '7': tieInterceptor,
+    '8': executor
   }
 };
 
-var nextShip = 9;
+let nextShip = 9;
 export function createShip(shipName, factionId) {
-  var newShip = {
-    id: '' + (nextShip++),
+  const newShip = {
+    id: String(nextShip++),
     name: shipName
   };
   data.Ship[newShip.id] = newShip;

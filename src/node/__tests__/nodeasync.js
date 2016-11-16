@@ -23,19 +23,19 @@ import {
   nodeDefinitions
 } from '../node';
 
-var userData = {
-  1: {
+const userData = {
+  '1': {
     id: 1,
     name: 'John Doe'
   },
-  2: {
+  '2': {
     id: 2,
     name: 'Jane Smith'
   },
 };
 
-var {nodeField, nodeInterface} = nodeDefinitions(
-  (id) => {
+const { nodeField, nodeInterface } = nodeDefinitions(
+  id => {
     return userData[id];
   },
   () => {
@@ -43,8 +43,9 @@ var {nodeField, nodeInterface} = nodeDefinitions(
   }
 );
 
-var userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: 'User',
+  interfaces: [ nodeInterface ],
   fields: () => ({
     id: {
       type: new GraphQLNonNull(GraphQLID),
@@ -52,40 +53,40 @@ var userType = new GraphQLObjectType({
     name: {
       type: GraphQLString,
     },
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
-var queryType = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     node: nodeField
   })
 });
 
-var schema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: queryType,
-  types: [userType]
+  types: [ userType ]
 });
 
 describe('Node interface and fields with async object fetcher', () => {
-  it('gets the correct ID for users', () => {
-    var query = `{
+  it('gets the correct ID for users', async () => {
+    const query = `{
       node(id: "1") {
         id
       }
     }`;
-    var expected = {
-      node: {
-        id: '1',
-      }
-    };
 
-    return expect(graphql(schema, query)).to.become({data: expected});
+    return expect(await graphql(schema, query)).to.deep.equal({
+      data: {
+        node: {
+          id: '1',
+        }
+      }
+    });
   });
 
-  it('gets the correct name for users', () => {
-    var query = `{
+  it('gets the correct name for users', async () => {
+    const query = `{
       node(id: "1") {
         id
         ... on User {
@@ -93,13 +94,14 @@ describe('Node interface and fields with async object fetcher', () => {
         }
       }
     }`;
-    var expected = {
-      node: {
-        id: '1',
-        name: 'John Doe',
-      }
-    };
 
-    return expect(graphql(schema, query)).to.become({data: expected});
+    return expect(await graphql(schema, query)).to.deep.equal({
+      data: {
+        node: {
+          id: '1',
+          name: 'John Doe',
+        }
+      }
+    });
   });
 });

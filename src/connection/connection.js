@@ -19,14 +19,15 @@ import {
 
 import type {
   GraphQLFieldConfigArgumentMap,
-  GraphQLFieldConfigMap
+  GraphQLFieldConfigMap,
+  GraphQLFieldResolver,
 } from 'graphql';
 
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with forward pagination.
  */
-export var forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
+export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
   after: {
     type: GraphQLString
   },
@@ -39,7 +40,7 @@ export var forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with backward pagination.
  */
-export var backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
+export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
   before: {
     type: GraphQLString
   },
@@ -52,7 +53,7 @@ export var backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with bidirectional pagination.
  */
-export var connectionArgs: GraphQLFieldConfigArgumentMap = {
+export const connectionArgs: GraphQLFieldConfigArgumentMap = {
   ...forwardConnectionArgs,
   ...backwardConnectionArgs,
 };
@@ -60,16 +61,16 @@ export var connectionArgs: GraphQLFieldConfigArgumentMap = {
 type ConnectionConfig = {
   name?: ?string,
   nodeType: GraphQLObjectType,
-  resolveNode?: ?Function,
-  resolveCursor?: ?Function,
+  resolveNode?: ?GraphQLFieldResolver<*, *>,
+  resolveCursor?: ?GraphQLFieldResolver<*, *>,
   edgeFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
   connectionFields?: ?(() => GraphQLFieldConfigMap) | ?GraphQLFieldConfigMap,
-}
+};
 
 type GraphQLConnectionDefinitions = {
   edgeType: GraphQLObjectType,
   connectionType: GraphQLObjectType
-}
+};
 
 function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
@@ -82,13 +83,13 @@ function resolveMaybeThunk<T>(thingOrThunk: T | () => T): T {
 export function connectionDefinitions(
   config: ConnectionConfig
 ): GraphQLConnectionDefinitions {
-  var {nodeType} = config;
-  var name = config.name || nodeType.name;
-  var edgeFields = config.edgeFields || {};
-  var connectionFields = config.connectionFields || {};
-  var resolveNode = config.resolveNode;
-  var resolveCursor = config.resolveCursor;
-  var edgeType = new GraphQLObjectType({
+  const {nodeType} = config;
+  const name = config.name || nodeType.name;
+  const edgeFields = config.edgeFields || {};
+  const connectionFields = config.connectionFields || {};
+  const resolveNode = config.resolveNode;
+  const resolveCursor = config.resolveCursor;
+  const edgeType = new GraphQLObjectType({
     name: name + 'Edge',
     description: 'An edge in a connection.',
     fields: () => ({
@@ -106,7 +107,7 @@ export function connectionDefinitions(
     }),
   });
 
-  var connectionType = new GraphQLObjectType({
+  const connectionType = new GraphQLObjectType({
     name: name + 'Connection',
     description: 'A connection to a list of items.',
     fields: () => ({
@@ -128,7 +129,7 @@ export function connectionDefinitions(
 /**
  * The common page info type used by all connections.
  */
-var pageInfoType = new GraphQLObjectType({
+const pageInfoType = new GraphQLObjectType({
   name: 'PageInfo',
   description: 'Information about pagination in a connection.',
   fields: () => ({

@@ -22,7 +22,7 @@ import {
   pluralIdentifyingRootField
 } from '../plural';
 
-var userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
     username: {
@@ -34,7 +34,7 @@ var userType = new GraphQLObjectType({
   }),
 });
 
-var queryType = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     usernames: pluralIdentifyingRootField({
@@ -42,50 +42,51 @@ var queryType = new GraphQLObjectType({
       description: 'Map from a username to the user',
       inputType: GraphQLString,
       outputType: userType,
-      resolveSingleInput: (username, context, {rootValue: {lang}}) => ({
-        username: username,
+      resolveSingleInput: (username, { lang }) => ({
+        username,
         url: 'www.facebook.com/' + username + '?lang=' + lang
       })
     })
   })
 });
 
-var schema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: queryType
 });
 
-var rootVal = {lang: 'en'};
+const context = { lang: 'en' };
 
 describe('pluralIdentifyingRootField()', () => {
-  it('allows fetching', () => {
-    var query = `{
-      usernames(usernames:["dschafer", "leebyron", "schrockn"]) {
+  it('allows fetching', async () => {
+    const query = `{
+      usernames(usernames:[ "dschafer", "leebyron", "schrockn" ]) {
         username
         url
       }
     }`;
-    var expected = {
-      usernames: [
-        {
-          username: 'dschafer',
-          url: 'www.facebook.com/dschafer?lang=en'
-        },
-        {
-          username: 'leebyron',
-          url: 'www.facebook.com/leebyron?lang=en'
-        },
-        {
-          username: 'schrockn',
-          url: 'www.facebook.com/schrockn?lang=en'
-        },
-      ]
-    };
 
-    return expect(graphql(schema, query, rootVal)).to.become({data: expected});
+    return expect(await graphql(schema, query, null, context)).to.deep.equal({
+      data: {
+        usernames: [
+          {
+            username: 'dschafer',
+            url: 'www.facebook.com/dschafer?lang=en'
+          },
+          {
+            username: 'leebyron',
+            url: 'www.facebook.com/leebyron?lang=en'
+          },
+          {
+            username: 'schrockn',
+            url: 'www.facebook.com/schrockn?lang=en'
+          },
+        ]
+      }
+    });
   });
 
-  it('correctly introspects', () => {
-    var query = `{
+  it('correctly introspects', async () => {
+    const query = `{
       __schema {
         queryType {
           fields {
@@ -117,43 +118,44 @@ describe('pluralIdentifyingRootField()', () => {
         }
       }
     }`;
-    var expected = {
-      __schema: {
-        queryType: {
-          fields: [
-            {
-              name: 'usernames',
-              args: [
-                {
-                  name: 'usernames',
-                  type: {
-                    kind: 'NON_NULL',
-                    ofType: {
-                      kind: 'LIST',
+
+    return expect(await graphql(schema, query)).to.deep.equal({
+      data: {
+        __schema: {
+          queryType: {
+            fields: [
+              {
+                name: 'usernames',
+                args: [
+                  {
+                    name: 'usernames',
+                    type: {
+                      kind: 'NON_NULL',
                       ofType: {
-                        kind: 'NON_NULL',
+                        kind: 'LIST',
                         ofType: {
-                          name: 'String',
-                          kind: 'SCALAR',
+                          kind: 'NON_NULL',
+                          ofType: {
+                            name: 'String',
+                            kind: 'SCALAR',
+                          }
                         }
                       }
                     }
                   }
-                }
-              ],
-              type: {
-                kind: 'LIST',
-                ofType: {
-                  name: 'User',
-                  kind: 'OBJECT',
+                ],
+                type: {
+                  kind: 'LIST',
+                  ofType: {
+                    name: 'User',
+                    kind: 'OBJECT',
+                  }
                 }
               }
-            }
-          ]
+            ]
+          }
         }
       }
-    };
-
-    return expect(graphql(schema, query)).to.become({data: expected});
+    });
   });
 });

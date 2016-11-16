@@ -20,11 +20,11 @@ import {
 } from '../arrayconnection';
 
 describe('connectionFromArray()', () => {
-  var letters = ['A', 'B', 'C', 'D', 'E'];
+  const letters = [ 'A', 'B', 'C', 'D', 'E' ];
 
   describe('basic slicing', () => {
     it('returns all elements without filters', () => {
-      var c = connectionFromArray(letters, {});
+      const c = connectionFromArray(letters, {});
       return expect(c).to.deep.equal({
         edges: [
           {
@@ -58,7 +58,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects a smaller first', () => {
-      var c = connectionFromArray(letters, {first: 2});
+      const c = connectionFromArray(letters, {first: 2});
       return expect(c).to.deep.equal({
         edges: [
           { node: 'A',
@@ -79,7 +79,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects an overly large first', () => {
-      var c = connectionFromArray(letters, {first: 10});
+      const c = connectionFromArray(letters, {first: 10});
       return expect(c).to.deep.equal({
         edges: [
           {
@@ -113,7 +113,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects a smaller last', () => {
-      var c = connectionFromArray(letters, {last: 2});
+      const c = connectionFromArray(letters, {last: 2});
       return expect(c).to.deep.equal({
         edges: [
           {
@@ -135,7 +135,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects an overly large last', () => {
-      var c = connectionFromArray(letters, {last: 10});
+      const c = connectionFromArray(letters, {last: 10});
       return expect(c).to.deep.equal({
         edges: [
           {
@@ -171,7 +171,7 @@ describe('connectionFromArray()', () => {
 
   describe('pagination', () => {
     it('respects first and after', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {first: 2, after: 'YXJyYXljb25uZWN0aW9uOjE='}
       );
@@ -196,7 +196,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after with long first', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {first: 10, after: 'YXJyYXljb25uZWN0aW9uOjE='}
       );
@@ -225,7 +225,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and before', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {last: 2, before: 'YXJyYXljb25uZWN0aW9uOjM='}
       );
@@ -250,7 +250,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and before with long last', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {last: 10, before: 'YXJyYXljb25uZWN0aW9uOjM='}
       );
@@ -279,7 +279,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after and before, too few', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {
           first: 2,
@@ -308,7 +308,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after and before, too many', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {
           first: 4,
@@ -341,7 +341,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after and before, exactly right', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {
           first: 3,
@@ -374,7 +374,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and after and before, too few', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {
           last: 2,
@@ -403,7 +403,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and after and before, too many', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {
           last: 4,
@@ -436,7 +436,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and after and before, exactly right', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {
           last: 3,
@@ -489,7 +489,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns all elements if cursors are invalid', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {before: 'invalid', after: 'invalid'}
       );
@@ -526,7 +526,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns all elements if cursors are on the outside', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {
           before: 'YXJyYXljb25uZWN0aW9uOjYK',
@@ -566,7 +566,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns no elements if cursors cross', () => {
-      var c = connectionFromArray(
+      const c = connectionFromArray(
         letters,
         {before: 'YXJyYXljb25uZWN0aW9uOjI=', after: 'YXJyYXljb25uZWN0aW9uOjQ='}
       );
@@ -585,22 +585,22 @@ describe('connectionFromArray()', () => {
 
   describe('cursorForObjectInConnection()', () => {
     it('returns an edge\'s cursor, given an array and a member object', () => {
-      var letterBCursor = cursorForObjectInConnection(letters, 'B');
+      const letterBCursor = cursorForObjectInConnection(letters, 'B');
       return expect(letterBCursor).to.equal('YXJyYXljb25uZWN0aW9uOjE=');
     });
 
     it('returns null, given an array and a non-member object', () => {
-      var letterFCursor = cursorForObjectInConnection(letters, 'F');
+      const letterFCursor = cursorForObjectInConnection(letters, 'F');
       return expect(letterFCursor).to.be.null;
     });
   });
 });
 
 describe('connectionFromPromisedArray()', () => {
-  var letters = Promise.resolve(['A', 'B', 'C', 'D', 'E']);
+  const letters = Promise.resolve([ 'A', 'B', 'C', 'D', 'E' ]);
 
   it('returns all elements without filters', async () => {
-    var c = await connectionFromPromisedArray(letters, {});
+    const c = await connectionFromPromisedArray(letters, {});
     return expect(c).to.deep.equal({
       edges: [
         {
@@ -634,7 +634,7 @@ describe('connectionFromPromisedArray()', () => {
   });
 
   it('respects a smaller first', async () => {
-    var c = await connectionFromPromisedArray(letters, {first: 2});
+    const c = await connectionFromPromisedArray(letters, {first: 2});
     return expect(c).to.deep.equal({
       edges: [
         { node: 'A',
@@ -656,10 +656,10 @@ describe('connectionFromPromisedArray()', () => {
 });
 
 describe('connectionFromArraySlice()', () => {
-  var letters = ['A', 'B', 'C', 'D', 'E'];
+  const letters = [ 'A', 'B', 'C', 'D', 'E' ];
 
   it('works with a just-right array slice', () => {
-    var c = connectionFromArraySlice(
+    const c = connectionFromArraySlice(
       letters.slice(1, 3),
       {
         first: 2,
@@ -691,7 +691,7 @@ describe('connectionFromArraySlice()', () => {
   });
 
   it('works with an oversized array slice ("left" side)', () => {
-    var c = connectionFromArraySlice(
+    const c = connectionFromArraySlice(
       letters.slice(0, 3),
       {
         first: 2,
@@ -723,7 +723,7 @@ describe('connectionFromArraySlice()', () => {
   });
 
   it('works with an oversized array slice ("right" side)', () => {
-    var c = connectionFromArraySlice(
+    const c = connectionFromArraySlice(
       letters.slice(2, 4),
       {
         first: 1,
@@ -751,7 +751,7 @@ describe('connectionFromArraySlice()', () => {
   });
 
   it('works with an oversized array slice (both sides)', () => {
-    var c = connectionFromArraySlice(
+    const c = connectionFromArraySlice(
       letters.slice(1, 4),
       {
         first: 1,
@@ -779,7 +779,7 @@ describe('connectionFromArraySlice()', () => {
   });
 
   it('works with an undersized array slice ("left" side)', () => {
-    var c = connectionFromArraySlice(
+    const c = connectionFromArraySlice(
       letters.slice(3, 5),
       {
         first: 3,
@@ -811,7 +811,7 @@ describe('connectionFromArraySlice()', () => {
   });
 
   it('works with an undersized array slice ("right" side)', () => {
-    var c = connectionFromArraySlice(
+    const c = connectionFromArraySlice(
       letters.slice(2, 4),
       {
         first: 3,
@@ -843,7 +843,7 @@ describe('connectionFromArraySlice()', () => {
   });
 
   it('works with an undersized array slice (both sides)', () => {
-    var c = connectionFromArraySlice(
+    const c = connectionFromArraySlice(
       letters.slice(3, 4),
       {
         first: 3,
@@ -873,8 +873,8 @@ describe('connectionFromArraySlice()', () => {
 
 describe('connectionFromPromisedArraySlice()', () => {
   it('respects a smaller first', async () => {
-    var letters = Promise.resolve(['A', 'B', 'C']);
-    var c = await connectionFromPromisedArraySlice(
+    const letters = Promise.resolve([ 'A', 'B', 'C' ]);
+    const c = await connectionFromPromisedArraySlice(
       letters,
       {first: 2},
       {

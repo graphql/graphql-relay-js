@@ -29,7 +29,7 @@ import {
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 
-var allUsers = [
+const allUsers = [
   { name: 'Dan', friends: [ 1, 2, 3, 4 ] },
   { name: 'Nick', friends: [ 0, 2, 3, 4 ] },
   { name: 'Lee', friends: [ 0, 1, 3, 4 ] },
@@ -37,7 +37,7 @@ var allUsers = [
   { name: 'Tim', friends: [ 0, 1, 2, 3 ] },
 ];
 
-var userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
     name: {
@@ -61,7 +61,7 @@ var userType = new GraphQLObjectType({
   }),
 });
 
-var {connectionType: friendConnection} = connectionDefinitions({
+const {connectionType: friendConnection} = connectionDefinitions({
   name: 'Friend',
   nodeType: userType,
   resolveNode: edge => allUsers[edge.node],
@@ -79,12 +79,12 @@ var {connectionType: friendConnection} = connectionDefinitions({
   }),
 });
 
-var {connectionType: userConnection} = connectionDefinitions({
+const {connectionType: userConnection} = connectionDefinitions({
   nodeType: userType,
   resolveNode: edge => allUsers[edge.node],
 });
 
-var queryType = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     user: {
@@ -94,13 +94,13 @@ var queryType = new GraphQLObjectType({
   })
 });
 
-var schema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: queryType,
 });
 
 describe('connectionDefinition()', () => {
   it('includes connection and edge fields', async () => {
-    var query = `
+    const query = `
       query FriendsQuery {
         user {
           friends(first: 2) {
@@ -115,7 +115,7 @@ describe('connectionDefinition()', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       user: {
         friends: {
           totalCount: 4,
@@ -136,12 +136,12 @@ describe('connectionDefinition()', () => {
         }
       }
     };
-    var result = await graphql(schema, query);
+    const result = await graphql(schema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('works with forwardConnectionArgs', async () => {
-    var query = `
+    const query = `
       query FriendsQuery {
         user {
           friendsForward(first: 2) {
@@ -154,7 +154,7 @@ describe('connectionDefinition()', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       user: {
         friendsForward: {
           edges: [
@@ -172,12 +172,12 @@ describe('connectionDefinition()', () => {
         }
       }
     };
-    var result = await graphql(schema, query);
+    const result = await graphql(schema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 
   it('works with backwardConnectionArgs', async () => {
-    var query = `
+    const query = `
       query FriendsQuery {
         user {
           friendsBackward(last: 2) {
@@ -190,7 +190,7 @@ describe('connectionDefinition()', () => {
         }
       }
     `;
-    var expected = {
+    const expected = {
       user: {
         friendsBackward: {
           edges: [
@@ -208,7 +208,7 @@ describe('connectionDefinition()', () => {
         }
       }
     };
-    var result = await graphql(schema, query);
+    const result = await graphql(schema, query);
     expect(result).to.deep.equal({ data: expected });
   });
 });

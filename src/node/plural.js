@@ -24,30 +24,33 @@ type PluralIdentifyingRootFieldConfig = {
   argName: string,
   inputType: GraphQLInputType,
   outputType: GraphQLOutputType,
-  resolveSingleInput:
-    (input: any, context: any, info: GraphQLResolveInfo) => ?any,
+  resolveSingleInput: (
+    input: any,
+    context: any,
+    info: GraphQLResolveInfo
+  ) => ?any,
   description?: ?string,
 };
 
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig
 ): GraphQLFieldConfig {
-  var inputArgs = {};
+  const inputArgs = {};
   inputArgs[config.argName] = {
     type: new GraphQLNonNull(
-            new GraphQLList(
-              new GraphQLNonNull(
-                config.inputType
-              )
-            )
-          )
+      new GraphQLList(
+        new GraphQLNonNull(
+          config.inputType
+        )
+      )
+    )
   };
   return {
     description: config.description,
     type: new GraphQLList(config.outputType),
     args: inputArgs,
-    resolve: (obj, args, context, info) => {
-      var inputs = args[config.argName];
+    resolve(obj, args, context, info) {
+      const inputs = args[config.argName];
       return Promise.all(inputs.map(
         input => Promise.resolve(
           config.resolveSingleInput(input, context, info)

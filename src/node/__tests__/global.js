@@ -26,95 +26,99 @@ import {
   nodeDefinitions,
 } from '../node';
 
-var userData = {
-  '1': {  // eslint-disable-line quote-props
+const userData = {
+  '1': {
     id: 1,
     name: 'John Doe'
   },
-  '2': {  // eslint-disable-line quote-props
+  '2': {
     id: 2,
     name: 'Jane Smith'
   },
 };
 
-var photoData = {
-  '1': {  // eslint-disable-line quote-props
+const photoData = {
+  '1': {
     photoId: 1,
     width: 300
   },
-  '2': {  // eslint-disable-line quote-props
+  '2': {
     photoId: 2,
     width: 400
   },
 };
 
-var postData = {
-  '1': {  // eslint-disable-line quote-props
+const postData = {
+  '1': {
     id: 1,
     text: 'lorem'
   },
-  '2': {  // eslint-disable-line quote-props
+  '2': {
     id: 2,
     text: 'ipsum'
   },
 };
 
-var {nodeField, nodeInterface} = nodeDefinitions(
-  (globalId) => {
-    var {type, id} = fromGlobalId(globalId);
+const { nodeField, nodeInterface } = nodeDefinitions(
+  globalId => {
+    const { type, id } = fromGlobalId(globalId);
     if (type === 'User') {
       return userData[id];
-    } else if (type === 'Photo') {
+    }
+    if (type === 'Photo') {
       return photoData[id];
-    } else {
+    }
+    if (type === 'Post') {
       return postData[id];
     }
   },
-  (obj) => {
+  obj => {
     if (obj.name) {
       return userType;
-    } else if (obj.photoId) {
+    }
+    if (obj.photoId) {
       return photoType;
-    } else {
+    }
+    if (obj.text) {
       return postType;
     }
   }
 );
 
-var userType = new GraphQLObjectType({
+const userType = new GraphQLObjectType({
   name: 'User',
+  interfaces: [ nodeInterface ],
   fields: () => ({
     id: globalIdField('User'),
     name: {
       type: GraphQLString,
     },
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
-var photoType = new GraphQLObjectType({
+const photoType = new GraphQLObjectType({
   name: 'Photo',
+  interfaces: [ nodeInterface ],
   fields: () => ({
-    id: globalIdField('Photo', (obj) => obj.photoId),
+    id: globalIdField('Photo', obj => obj.photoId),
     width: {
       type: GraphQLInt,
     },
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
-var postType = new GraphQLObjectType({
+const postType = new GraphQLObjectType({
   name: 'Post',
+  interfaces: [ nodeInterface ],
   fields: () => ({
     id: globalIdField(),
     text: {
       type: GraphQLString,
     },
-  }),
-  interfaces: [nodeInterface]
+  })
 });
 
-var queryType = new GraphQLObjectType({
+const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     node: nodeField,
@@ -129,46 +133,48 @@ var queryType = new GraphQLObjectType({
   })
 });
 
-var schema = new GraphQLSchema({
+const schema = new GraphQLSchema({
   query: queryType,
-  types: [userType, photoType, postType]
+  types: [ userType, photoType, postType ]
 });
 
 describe('global ID fields', () => {
-  it('gives different IDs', () => {
-    var query = `{
+
+  it('gives different IDs', async () => {
+    const query = `{
       allObjects {
         id
       }
     }`;
-    var expected = {
-      allObjects: [
-        {
-          id: 'VXNlcjox'
-        },
-        {
-          id: 'VXNlcjoy'
-        },
-        {
-          id: 'UGhvdG86MQ=='
-        },
-        {
-          id: 'UGhvdG86Mg=='
-        },
-        {
-          id: 'UG9zdDox'
-        },
-        {
-          id: 'UG9zdDoy'
-        },
-      ]
-    };
 
-    return expect(graphql(schema, query)).to.become({data: expected});
+    expect(await graphql(schema, query)).to.deep.equal({
+      data: {
+        allObjects: [
+          {
+            id: 'VXNlcjox'
+          },
+          {
+            id: 'VXNlcjoy'
+          },
+          {
+            id: 'UGhvdG86MQ=='
+          },
+          {
+            id: 'UGhvdG86Mg=='
+          },
+          {
+            id: 'UG9zdDox'
+          },
+          {
+            id: 'UG9zdDoy'
+          },
+        ]
+      }
+    });
   });
 
-  it('refetches the IDs', () => {
-    var query = `{
+  it('refetches the IDs', async () => {
+    const query = `{
       user: node(id: "VXNlcjox") {
         id
         ... on User {
@@ -188,21 +194,22 @@ describe('global ID fields', () => {
         }
       }
     }`;
-    var expected = {
-      user: {
-        id: 'VXNlcjox',
-        name: 'John Doe'
-      },
-      photo: {
-        id: 'UGhvdG86MQ==',
-        width: 300
-      },
-      post: {
-        id: 'UG9zdDox',
-        text: 'lorem'
-      }
-    };
 
-    return expect(graphql(schema, query)).to.become({data: expected});
+    expect(await graphql(schema, query)).to.deep.equal({
+      data: {
+        user: {
+          id: 'VXNlcjox',
+          name: 'John Doe'
+        },
+        photo: {
+          id: 'UGhvdG86MQ==',
+          width: 300
+        },
+        post: {
+          id: 'UG9zdDox',
+          text: 'lorem'
+        }
+      }
+    });
   });
 });

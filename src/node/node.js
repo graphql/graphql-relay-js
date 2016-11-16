@@ -28,10 +28,11 @@ import {
 type GraphQLNodeDefinitions = {
   nodeInterface: GraphQLInterfaceType,
   nodeField: GraphQLFieldConfig
-}
+};
 
-type typeResolverFn = (object: any) => ?GraphQLObjectType |
-                      (object: any) => ?Promise<GraphQLObjectType>;
+type typeResolverFn = (
+  object: any
+) => ?GraphQLObjectType | ?Promise<GraphQLObjectType>;
 
 /**
  * Given a function to map from an ID to an underlying object, and a function
@@ -47,7 +48,7 @@ export function nodeDefinitions(
   idFetcher: ((id: string, context: any, info: GraphQLResolveInfo) => any),
   typeResolver?: ?typeResolverFn
 ): GraphQLNodeDefinitions {
-  var nodeInterface = new GraphQLInterfaceType({
+  const nodeInterface = new GraphQLInterfaceType({
     name: 'Node',
     description: 'An object with an ID',
     fields: () => ({
@@ -59,7 +60,7 @@ export function nodeDefinitions(
     resolveType: typeResolver
   });
 
-  var nodeField = {
+  const nodeField = {
     name: 'node',
     description: 'Fetches an object given its ID',
     type: nodeInterface,
@@ -78,14 +79,14 @@ export function nodeDefinitions(
 type ResolvedGlobalId = {
   type: string,
   id: string
-}
+};
 
 /**
  * Takes a type name and an ID specific to that type name, and returns a
  * "global ID" that is unique among all types.
  */
 export function toGlobalId(type: string, id: string): string {
-  return base64([type, id].join(':'));
+  return base64([ type, id ].join(':'));
 }
 
 /**
@@ -93,8 +94,8 @@ export function toGlobalId(type: string, id: string): string {
  * used to create it.
  */
 export function fromGlobalId(globalId: string): ResolvedGlobalId {
-  var unbasedGlobalId = unbase64(globalId);
-  var delimiterPos = unbasedGlobalId.indexOf(':');
+  const unbasedGlobalId = unbase64(globalId);
+  const delimiterPos = unbasedGlobalId.indexOf(':');
   return {
     type: unbasedGlobalId.substring(0, delimiterPos),
     id: unbasedGlobalId.substring(delimiterPos + 1)
