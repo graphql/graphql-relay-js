@@ -43,6 +43,18 @@ const simpleMutationWithDescription = mutationWithClientMutationId({
   mutateAndGetPayload: () => ({result: 1})
 });
 
+const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
+  name: 'SimpleMutationWithDeprecationReason',
+  inputFields: {},
+  outputFields: {
+    result: {
+      type: GraphQLInt
+    }
+  },
+  mutateAndGetPayload: () => ({result: 1}),
+  deprecationReason: 'Just because'
+});
+
 const simpleMutationWithThunkFields = mutationWithClientMutationId({
   name: 'SimpleMutationWithThunkFields',
   inputFields: () => ({
@@ -92,6 +104,7 @@ const mutationType = new GraphQLObjectType({
   fields: {
     simpleMutation,
     simpleMutationWithDescription,
+    simpleMutationWithDeprecationReason,
     simpleMutationWithThunkFields,
     simplePromiseMutation,
     simpleRootValueMutation,
@@ -145,7 +158,7 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
-  it('Supports thunks as input and output fields', async () => {
+  it('supports thunks as input and output fields', async () => {
     const query = `
       mutation M {
         simpleMutationWithThunkFields(input: {
@@ -458,6 +471,61 @@ describe('mutationWithClientMutationId()', () => {
                 {
                   name: 'simpleRootValueMutation',
                   description: null
+                }
+              ]
+            }
+          }
+        }
+      });
+    });
+
+    it('contains correct deprecation reasons', async () => {
+      const query = `{
+        __schema {
+          mutationType {
+            fields(includeDeprecated: true) {
+              name
+              isDeprecated
+              deprecationReason
+            }
+          }
+        }
+      }`;
+
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          __schema: {
+            mutationType: {
+              fields: [
+                {
+                  name: 'simpleMutation',
+                  isDeprecated: false,
+                  deprecationReason: null
+                },
+                {
+                  name: 'simpleMutationWithDescription',
+                  isDeprecated: false,
+                  deprecationReason: null
+                },
+                {
+                  name: 'simpleMutationWithDeprecationReason',
+                  isDeprecated: true,
+                  deprecationReason: 'Just because',
+                },
+                {
+                  name: 'simpleMutationWithThunkFields',
+                  isDeprecated: false,
+                  deprecationReason: null
+                },
+                {
+                  name: 'simplePromiseMutation',
+                  isDeprecated: false,
+                  deprecationReason: null
+                },
+                {
+                  name: 'simpleRootValueMutation',
+                  isDeprecated: false,
+                  deprecationReason: null
                 }
               ]
             }
