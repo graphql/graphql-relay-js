@@ -47,7 +47,7 @@ const photoData = {
   },
 };
 
-const { nodeField, nodeInterface } = nodeDefinitions(
+const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
   (id, context, info) => {
     expect(info.schema).to.equal(schema);
     if (userData[id]) {
@@ -96,7 +96,8 @@ const photoType = new GraphQLObjectType({
 const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    node: nodeField
+    node: nodeField,
+    nodes: nodesField
   })
 });
 
@@ -123,6 +124,27 @@ describe('Node interface and fields', () => {
       });
     });
 
+    it('gets the correct IDs for users', async () => {
+      const query = `{
+        nodes(ids: ["1", "2"]) {
+          id
+        }
+      }`;
+
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          nodes: [
+            {
+              id: '1'
+            },
+            {
+              id: '2'
+            }
+          ]
+        }
+      });
+    });
+
     it('gets the correct ID for photos', async () => {
       const query = `{
         node(id: "4") {
@@ -135,6 +157,48 @@ describe('Node interface and fields', () => {
           node: {
             id: '4',
           }
+        }
+      });
+    });
+
+    it('gets the correct IDs for photos', async () => {
+      const query = `{
+        nodes(ids: ["3", "4"]) {
+          id
+        }
+      }`;
+
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          nodes: [
+            {
+              id: '3'
+            },
+            {
+              id: '4'
+            }
+          ]
+        }
+      });
+    });
+
+    it('gets the correct IDs for multiple types', async () => {
+      const query = `{
+        nodes(ids: ["1", "3"]) {
+          id
+        }
+      }`;
+
+      expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          nodes: [
+            {
+              id: '1'
+            },
+            {
+              id: '3'
+            }
+          ]
         }
       });
     });
@@ -247,6 +311,25 @@ describe('Node interface and fields', () => {
         }
       });
     });
+
+    it('returns nulls for bad IDs', async () => {
+      const query = `{
+        nodes(ids: ["3", "5"]) {
+          id
+        }
+      }`;
+
+      return expect(await graphql(schema, query)).to.deep.equal({
+        data: {
+          nodes: [
+            {
+              id: '3'
+            },
+            null
+          ]
+        }
+      });
+    });
   });
 
   describe('introspection', () => {
@@ -290,7 +373,7 @@ describe('Node interface and fields', () => {
       });
     });
 
-    it('has correct node root field', async () => {
+    it('has correct node and nodes root fields', async () => {
       const query = `{
         __schema {
           queryType {
@@ -334,6 +417,25 @@ describe('Node interface and fields', () => {
                         ofType: {
                           name: 'ID',
                           kind: 'SCALAR'
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  name: 'nodes',
+                  type: {
+                    name: null,
+                    kind: 'NON_NULL'
+                  },
+                  args: [
+                    {
+                      name: 'ids',
+                      type: {
+                        kind: 'NON_NULL',
+                        ofType: {
+                          name: null,
+                          kind: 'LIST'
                         }
                       }
                     }

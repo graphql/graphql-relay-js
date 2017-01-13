@@ -10,6 +10,7 @@
 
 import {
   GraphQLInterfaceType,
+  GraphQLList,
   GraphQLNonNull,
   GraphQLID
 } from 'graphql';
@@ -27,7 +28,8 @@ import {
 
 type GraphQLNodeDefinitions = {
   nodeInterface: GraphQLInterfaceType,
-  nodeField: GraphQLFieldConfig<*, *>
+  nodeField: GraphQLFieldConfig<*, *>,
+  nodesField: GraphQLFieldConfig<*, *>
 };
 
 /**
@@ -69,7 +71,37 @@ export function nodeDefinitions<TContext>(
     resolve: (obj, { id }, context, info) => idFetcher(id, context, info),
   };
 
-  return { nodeInterface, nodeField };
+  const nodesField = {
+    name: 'nodes',
+    description: 'Fetches objects given their IDs',
+    type: new GraphQLNonNull(
+      new GraphQLList(
+        nodeInterface
+      )
+    ),
+    args: {
+      ids: {
+        type: new GraphQLNonNull(
+          new GraphQLList(
+            new GraphQLNonNull(
+              GraphQLID
+            )
+          )
+        ),
+        description: 'The IDs of objects'
+      }
+    },
+    resolve: (obj, { ids }, context, info) =>
+      Promise.all(
+        ids.map(id =>
+          Promise.resolve(
+            idFetcher(id, context, info)
+          )
+        )
+      )
+  };
+
+  return { nodeInterface, nodeField, nodesField };
 }
 
 type ResolvedGlobalId = {
