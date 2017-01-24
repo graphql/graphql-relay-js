@@ -50,6 +50,7 @@ function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
 type MutationConfig = {
   name: string,
   description?: string,
+  deprecationReason?: string,
   inputFields: Thunk<GraphQLInputFieldConfigMap>,
   outputFields: Thunk<GraphQLFieldConfigMap<*, *>>,
   mutateAndGetPayload: mutationFn,
@@ -65,6 +66,7 @@ export function mutationWithClientMutationId(
   const {
     name,
     description,
+    deprecationReason,
     inputFields,
     outputFields,
     mutateAndGetPayload
@@ -95,6 +97,7 @@ export function mutationWithClientMutationId(
   return {
     type: outputType,
     description,
+    deprecationReason,
     args: {
       input: {type: new GraphQLNonNull(inputType)}
     },
