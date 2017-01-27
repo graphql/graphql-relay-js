@@ -39,7 +39,7 @@
     "cover:lcov": "babel-node node_modules/.bin/isparta cover --root src --report lcovonly node_modules/.bin/_mocha -- $npm_package_options_mocha"
   },
   "peerDependencies": {
-    "graphql": "^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || 0.9.0"
+    "graphql": "^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0"
   },
   "devDependencies": {
     "babel-cli": "6.18.0",
@@ -72,7 +72,7 @@
     "eslint-plugin-babel": "3.3.0",
     "eslint-plugin-flowtype": "2.25.0",
     "flow-bin": "0.35.0",
-    "graphql": "0.9.0",
+    "graphql": "0.9.1",
     "isparta": "4.0.0",
     "mocha": "3.1.2",
     "sane": "1.4.1"
