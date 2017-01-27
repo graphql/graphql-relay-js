@@ -9,9 +9,7 @@ node_js:
 git:
   depth: 5
 
-cache:
-  directories:
-    - ~/.npm
+cache: yarn
 
 before_install:
   - npm config set spin false --global
