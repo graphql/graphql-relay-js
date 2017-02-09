@@ -29,13 +29,13 @@ When building a schema for [GraphQL.js](https://github.com/graphql/graphql-js), 
 
 Helper functions are provided for both building the GraphQL types for connections and for implementing the `resolve` method for fields returning those types.
 
- - `connectionArgs` returns the arguments that fields should provide when they return a connection type that supports bidirectional pagination.
- - `forwardConnectionArgs` returns the arguments that fields should provide when they return a connection type that only supports forward pagination.
- - `backwardConnectionArgs` returns the arguments that fields should provide when they return a connection type that only supports backward pagination.
- - `connectionDefinitions` returns a `connectionType` and its associated `edgeType`, given a node type.
- - `connectionFromArray` is a helper method that takes an array and the arguments from `connectionArgs`, does pagination and filtering, and returns an object in the shape expected by a `connectionType`'s `resolve` function.
- - `connectionFromPromisedArray` is similar to `connectionFromArray`, but it takes a promise that resolves to an array, and returns a promise that resolves to the expected shape by `connectionType`.
- - `cursorForObjectInConnection` is a helper method that takes an array and a member object, and returns a cursor for use in the mutation payload.
+- `connectionArgs` returns the arguments that fields should provide when they return a connection type that supports bidirectional pagination.
+- `forwardConnectionArgs` returns the arguments that fields should provide when they return a connection type that only supports forward pagination.
+- `backwardConnectionArgs` returns the arguments that fields should provide when they return a connection type that only supports backward pagination.
+- `connectionDefinitions` returns a `connectionType` and its associated `edgeType`, given a node type.
+- `connectionFromArray` is a helper method that takes an array and the arguments from `connectionArgs`, does pagination and filtering, and returns an object in the shape expected by a `connectionType`'s `resolve` function.
+- `connectionFromPromisedArray` is similar to `connectionFromArray`, but it takes a promise that resolves to an array, and returns a promise that resolves to the expected shape by `connectionType`.
+- `cursorForObjectInConnection` is a helper method that takes an array and a member object, and returns a cursor for use in the mutation payload.
 - `offsetToCursor` takes the index of a member object in an array and returns an opaque cursor for use in the mutation payload.
 - `cursorToOffset` takes an opaque cursor (created with `offsetToCursor`) and returns the corresponding array index.
 
