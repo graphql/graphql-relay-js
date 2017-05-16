@@ -60,7 +60,7 @@ import {
 
 /**
  * Using our shorthand to describe type systems, the type system for our
- * example will be the followng:
+ * example will be the following:
  *
  * interface Node {
  *   id: ID!
