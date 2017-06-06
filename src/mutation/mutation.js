@@ -30,8 +30,7 @@ type mutationFn = (
 ) => Promise<any> | any;
 
 type runAfterMutationFn = (
-  object: any,
-  info: GraphQLResolveInfo
+  object: any
 ) => Promise<any> | any;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
@@ -51,7 +50,7 @@ function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
  * mutateAndGetPayload will receieve an Object with a key for each
  * input field, and it should return an Object with a key for each
  * output field. It may return synchronously, or return a Promise.
- * 
+ *
  * runAfterMutation will resolve with the payload from the resolved
  * mutateAndGetPayload. Example usage may be to save the payload to
  * an in memory database.
@@ -119,7 +118,7 @@ export function mutationWithClientMutationId(
           if (runAfterMutation) {
             return Promise.resolve(runAfterMutation(payload))
               .then(() => payload)
-              .catch((err) => {
+              .catch(err => {
                 console.log(err, 'Error in runAfterMutation');
                 return payload;
               });
