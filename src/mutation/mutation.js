@@ -117,7 +117,12 @@ export function mutationWithClientMutationId(
         .then(payload => {
           payload.clientMutationId = input.clientMutationId;
           if (runAfterMutation) {
-            return Promise.resolve(runAfterMutation(payload)).then(() => payload);
+            return Promise.resolve(runAfterMutation(payload))
+              .then(() => payload)
+              .catch((err) => {
+                console.log(err, 'Error in runAfterMutation');
+                return payload;
+              });
           }
           return payload;
         });
