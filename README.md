@@ -142,7 +142,13 @@ var shipMutation = mutationWithClientMutationId({
       shipId: newShip.id,
       factionId: factionId,
     };
-  }
+  },
+  // Optional method
+  runAfterMutation: (resolvedPayload) => new Promise((resolve) => {
+    // We can now access the resolved ship & faction output type
+    // Do stuff with resolvedPayload...
+    resolve();
+  })
 });
 
 var mutationType = new GraphQLObjectType({
