@@ -29,6 +29,11 @@ type mutationFn = (
   info: GraphQLResolveInfo
 ) => Promise<any> | any;
 
+type runAfterMutationFn = (
+  object: any,
+  info: GraphQLResolveInfo
+) => Promise<any> | any;
+
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
 }
@@ -46,6 +51,10 @@ function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
  * mutateAndGetPayload will receieve an Object with a key for each
  * input field, and it should return an Object with a key for each
  * output field. It may return synchronously, or return a Promise.
+ * 
+ * runAfterMutation will resolve with the payload from the resolved
+ * mutateAndGetPayload. Example usage may be to save the payload to
+ * an in memory database.
  */
 type MutationConfig = {
   name: string,
@@ -54,6 +63,7 @@ type MutationConfig = {
   inputFields: Thunk<GraphQLInputFieldConfigMap>,
   outputFields: Thunk<GraphQLFieldConfigMap<*, *>>,
   mutateAndGetPayload: mutationFn,
+  runAfterMutation: runAfterMutationFn
 };
 
 /**
@@ -69,7 +79,8 @@ export function mutationWithClientMutationId(
     deprecationReason,
     inputFields,
     outputFields,
-    mutateAndGetPayload
+    mutateAndGetPayload,
+    runAfterMutation
   } = config;
   const augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
@@ -105,6 +116,9 @@ export function mutationWithClientMutationId(
       return Promise.resolve(mutateAndGetPayload(input, context, info))
         .then(payload => {
           payload.clientMutationId = input.clientMutationId;
+          if (runAfterMutation) {
+            return Promise.resolve(runAfterMutation(payload)).then(() => payload);
+          }
           return payload;
         });
     }
