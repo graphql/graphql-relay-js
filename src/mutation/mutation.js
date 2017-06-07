@@ -62,7 +62,7 @@ type MutationConfig = {
   inputFields: Thunk<GraphQLInputFieldConfigMap>,
   outputFields: Thunk<GraphQLFieldConfigMap<*, *>>,
   mutateAndGetPayload: mutationFn,
-  runAfterMutation: runAfterMutationFn
+  runAfterMutation?: runAfterMutationFn
 };
 
 /**
@@ -79,7 +79,7 @@ export function mutationWithClientMutationId(
     inputFields,
     outputFields,
     mutateAndGetPayload,
-    runAfterMutation
+    runAfterMutation,
   } = config;
   const augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
@@ -119,6 +119,11 @@ export function mutationWithClientMutationId(
             return Promise.resolve(runAfterMutation(payload))
               .then(() => payload)
               .catch(err => {
+                /**
+                 * This shouldn't make the mutation fail. However
+                 * we should let the user know about there error
+                 * & then return the payload
+                 */
                 console.log(err, 'Error in runAfterMutation');
                 return payload;
               });
