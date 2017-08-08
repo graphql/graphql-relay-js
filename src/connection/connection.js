@@ -11,6 +11,7 @@
 import {
   GraphQLBoolean,
   GraphQLInt,
+  GraphQLInterfaceType,
   GraphQLNonNull,
   GraphQLList,
   GraphQLObjectType,
@@ -61,7 +62,7 @@ export const connectionArgs: GraphQLFieldConfigArgumentMap = {
 
 type ConnectionConfig = {
   name?: ?string,
-  nodeType: GraphQLObjectType,
+  nodeType: GraphQLObjectType | GraphQLInterfaceType,
   resolveNode?: ?GraphQLFieldResolver<*, *>,
   resolveCursor?: ?GraphQLFieldResolver<*, *>,
   edgeFields?: ?Thunk<GraphQLFieldConfigMap<*, *>>,
