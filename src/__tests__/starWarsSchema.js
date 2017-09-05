@@ -113,7 +113,7 @@ import {
  * }
  *
  * type Mutation {
- *   introduceShip(input IntroduceShipInput!): IntroduceShipPayload
+ *   introduceShip(input: IntroduceShipInput!): IntroduceShipPayload
  * }
  */
 
