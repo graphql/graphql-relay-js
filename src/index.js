@@ -8,6 +8,15 @@
  *  of patent rights can be found in the PATENTS file in the same directory.
  */
 
+// Flow types for creating connection types in the schema
+export type {
+  Connection,
+  ConnectionArguments,
+  ConnectionCursor,
+  Edge,
+  PageInfo,
+} from './connection/connectiontypes.js';
+  
 // Helpers for creating connection types in the schema
 export {
   backwardConnectionArgs,
