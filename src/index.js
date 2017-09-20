@@ -16,7 +16,7 @@ export type {
   Edge,
   PageInfo,
 } from './connection/connectiontypes.js';
-  
+
 // Helpers for creating connection types in the schema
 export {
   backwardConnectionArgs,
