@@ -12,6 +12,7 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
+  GraphQLNonNull,
   graphql,
 } from 'graphql';
 
@@ -80,7 +81,7 @@ const {connectionType: friendConnection} = connectionDefinitions({
 });
 
 const {connectionType: userConnection} = connectionDefinitions({
-  nodeType: userType,
+  nodeType: new GraphQLNonNull(userType),
   resolveNode: edge => allUsers[edge.node],
 });
 
@@ -211,4 +212,101 @@ describe('connectionDefinition()', () => {
     const result = await graphql(schema, query);
     expect(result).to.deep.equal({ data: expected });
   });
+
+  describe('introspection', () => {
+    it('has the correct connection structure', async () => {
+      const query = `
+      {
+       userConnection: __type(name: "UserConnection") {
+         fields {
+           name
+           type {
+             name
+             kind
+             ofType {
+               name
+               kind
+             }
+           }
+        
+         }
+       }
+   }`;
+
+      const expected = {
+        userConnection: {
+          fields: [ {
+            name: 'pageInfo',
+            type: {
+              kind: 'NON_NULL',
+              name: null,
+              ofType: {
+                kind: 'OBJECT',
+                name: 'PageInfo'
+              }
+            }
+          }, {
+            name: 'edges',
+            type: {
+              kind: 'LIST',
+              name: null,
+              ofType: {
+                kind: 'OBJECT',
+                name: 'UserEdge'
+              }
+            }
+          } ]
+        }
+      };
+      const result = await graphql(schema, query);
+      expect(result).to.deep.equal({ data: expected });
+    });
+
+    it('has the correct edge structure', async () => {
+      const query = `{
+        __type(name: "UserEdge") {
+          fields {
+            name
+            type {
+              kind
+              ofType {
+                name
+                kind
+              }
+            }
+          }
+        }
+      }`;
+
+      const expected = {
+        __type: {
+          fields: [
+            {
+              name: 'node',
+              type: {
+                kind: 'NON_NULL',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'User'
+                }
+              }
+            },
+            {
+              name: 'cursor',
+              type: {
+                kind: 'NON_NULL',
+                ofType: {
+                  kind: 'SCALAR',
+                  name: 'String'
+                }
+              }
+            }
+          ]
+        }
+      };
+      const result = await graphql(schema, query);
+      expect(result).to.deep.equal({ data: expected });
+    });
+  });
+
 });
