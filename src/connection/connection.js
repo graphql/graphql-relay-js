@@ -85,7 +85,7 @@ export function connectionDefinitions(
   config: ConnectionConfig
 ): GraphQLConnectionDefinitions {
   const {nodeType} = config;
-  let name = config.name || nodeType.name;
+  let name = config.name;
 
   if (!name) {
     if (nodeType instanceof GraphQLNonNull) {
