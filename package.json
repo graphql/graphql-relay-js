@@ -71,7 +71,7 @@
     "eslint": "^3.14.1",
     "eslint-plugin-babel": "^4.0.1",
     "eslint-plugin-flowtype": "^2.30.0",
-    "flow-bin": "^0.57.0",
+    "flow-bin": "^0.60.1",
     "graphql": "^0.11.7",
     "isparta": "4.0.0",
     "mocha": "^3.2.0",
