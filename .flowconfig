@@ -8,3 +8,6 @@
 [libs]
 
 [options]
+
+[version]
+^0.60.1
