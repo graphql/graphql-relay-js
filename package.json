@@ -5,7 +5,7 @@
   "contributors": [
     "Daniel Schafer <dschafer@fb.com>"
   ],
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "homepage": "https://github.com/graphql/graphql-relay-js",
   "bugs": {
     "url": "https://github.com/graphql/graphql-relay-js/issues"
@@ -21,8 +21,7 @@
   "files": [
     "lib",
     "README.md",
-    "LICENSE",
-    "PATENTS"
+    "LICENSE"
   ],
   "options": {
     "mocha": "src/**/__tests__/**/*.js"

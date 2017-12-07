@@ -188,3 +188,7 @@ npm run watch
 in a terminal. This will watch the file system run lint, tests, and type checking automatically whenever you save a js file.
 
 To lint the JS files and run type interface checks run `npm run lint`.
+
+## License
+
+graphql-relay-js is [MIT licensed](./LICENSE).
