@@ -103,6 +103,9 @@ export function mutationWithClientMutationId(
     resolve: (_, {input}, context, info) => {
       return Promise.resolve(mutateAndGetPayload(input, context, info))
         .then(payload => {
+          if(!payload) {
+            payload ={};
+          }
           payload.clientMutationId = input.clientMutationId;
           return payload;
         });
