@@ -28,7 +28,7 @@
   },
   "scripts": {
     "prepublish": "./resources/prepublish.sh",
-    "test": "npm run lint && npm run check && npm run testonly",
+    "test": "yarn lint && yarn check && yarn testonly",
     "testonly": "babel-node ./node_modules/.bin/_mocha $npm_package_options_mocha",
     "lint": "eslint src",
     "check": "flow check",
