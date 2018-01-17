@@ -21,6 +21,7 @@ import {
 type ArraySliceMetaInfo = {
   sliceStart: number;
   arrayLength: number;
+  resolveNode?: (edge: any) => any;
 };
 
 /**
@@ -68,7 +69,7 @@ export function connectionFromArraySlice<T>(
   meta: ArraySliceMetaInfo
 ): Connection<T> {
   const { after, before, first, last } = args;
-  const { sliceStart, arrayLength } = meta;
+  const { sliceStart, arrayLength, resolveNode } = meta;
   const sliceEnd = sliceStart + arraySlice.length;
   const beforeOffset = getOffsetWithDefault(before, arrayLength);
   const afterOffset = getOffsetWithDefault(after, -1);
@@ -110,10 +111,17 @@ export function connectionFromArraySlice<T>(
     arraySlice.length - (sliceEnd - endOffset)
   );
 
-  const edges = slice.map((value, index) => ({
-    cursor: offsetToCursor(startOffset + index),
-    node: value,
-  }));
+  const edges = slice.map((value, index) => {
+    const newEdge = {
+      cursor: offsetToCursor(startOffset + index),
+      node: resolveNode ? resolveNode(value) : value,
+    };
+
+    if (resolveNode) {
+      return { ...newEdge, ...value };
+    }
+    return newEdge;
+  });
 
   const firstEdge = edges[0];
   const lastEdge = edges[edges.length - 1];
