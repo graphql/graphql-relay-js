@@ -13,7 +13,7 @@ An overview of GraphQL in general is available in the [README](https://github.co
 
 This library is designed to work with the [GraphQL.js](https://github.com/graphql/graphql-js) reference implementation of a GraphQL server.
 
-An overview of the functionality that a Relay-compliant GraphQL server should provide is in the [GraphQL Relay Specification](https://facebook.github.io/relay/docs/graphql-relay-specification.html) on the [Relay website](https://facebook.github.io/relay/). That overview describes a simple set of examples that exist as [tests](src/__tests__) in this repository. A good way to get started with this repository is to walk through that documentation and the corresponding tests in this library together.
+An overview of the functionality that a Relay-compliant GraphQL server should provide is in the [GraphQL Relay Specification](https://facebook.github.io/relay/docs/en/graphql-server-specification.html) on the [Relay website](https://facebook.github.io/relay/). That overview describes a simple set of examples that exist as [tests](src/__tests__) in this repository. A good way to get started with this repository is to walk through that documentation and the corresponding tests in this library together.
 
 ## Using Relay Library for GraphQL.js
 
