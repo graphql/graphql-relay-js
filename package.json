@@ -39,12 +39,12 @@
     "cover:lcov": "babel-node node_modules/.bin/isparta cover --root src --report lcovonly node_modules/.bin/_mocha -- $npm_package_options_mocha"
   },
   "peerDependencies": {
-    "graphql": "^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0"
+    "graphql": "^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.3",
+    "babel-eslint": "^8.2.1",
     "babel-plugin-check-es2015-constants": "^6.22.0",
     "babel-plugin-syntax-async-functions": "6.13.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -68,13 +68,13 @@
     "babel-plugin-transform-regenerator": "^6.26.0",
     "chai": "4.1.2",
     "coveralls": "3.0.0",
-    "eslint": "^4.13.1",
+    "eslint": "^4.17.0",
     "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-flowtype": "^2.40.1",
-    "flow-bin": "^0.61.0",
-    "graphql": "^0.12.3",
+    "eslint-plugin-flowtype": "^2.42.0",
+    "flow-bin": "^0.65.0",
+    "graphql": "^0.13.0",
     "isparta": "4.0.0",
-    "mocha": "^4.0.1",
-    "sane": "^2.2.0"
+    "mocha": "^5.0.0",
+    "sane": "^2.3.0"
   }
 }
