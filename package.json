@@ -70,11 +70,11 @@
     "coveralls": "3.0.0",
     "eslint": "^4.17.0",
     "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-flowtype": "^2.42.0",
-    "flow-bin": "^0.65.0",
-    "graphql": "^0.13.0",
+    "eslint-plugin-flowtype": "^2.44.0",
+    "flow-bin": "^0.66.0",
+    "graphql": "^0.13.1",
     "isparta": "4.0.0",
-    "mocha": "^5.0.0",
-    "sane": "^2.3.0"
+    "mocha": "^5.0.1",
+    "sane": "^2.4.1"
   }
 }
