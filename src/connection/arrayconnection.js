@@ -83,6 +83,11 @@ export function connectionFromArraySlice<T>(
     beforeOffset,
     arrayLength
   );
+
+  const totalCount = (endOffset - startOffset < 1) ?
+    0 :
+    (endOffset - startOffset);
+
   if (typeof first === 'number') {
     if (first < 0) {
       throw new Error('Argument "first" must be a non-negative integer');
@@ -120,6 +125,7 @@ export function connectionFromArraySlice<T>(
   const lowerBound = after ? (afterOffset + 1) : 0;
   const upperBound = before ? beforeOffset : arrayLength;
   return {
+    totalCount,
     edges,
     pageInfo: {
       startCursor: firstEdge ? firstEdge.cursor : null,

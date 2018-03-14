@@ -25,6 +25,7 @@ describe('connectionFromArray()', () => {
     it('returns all elements without filters', () => {
       const c = connectionFromArray(letters, {});
       return expect(c).to.deep.equal({
+        totalCount: 5,
         edges: [
           {
             node: 'A',
@@ -59,6 +60,7 @@ describe('connectionFromArray()', () => {
     it('respects a smaller first', () => {
       const c = connectionFromArray(letters, {first: 2});
       return expect(c).to.deep.equal({
+        totalCount: 5,
         edges: [
           { node: 'A',
             cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -80,6 +82,7 @@ describe('connectionFromArray()', () => {
     it('respects an overly large first', () => {
       const c = connectionFromArray(letters, {first: 10});
       return expect(c).to.deep.equal({
+        totalCount: 5,
         edges: [
           {
             node: 'A',
@@ -114,6 +117,7 @@ describe('connectionFromArray()', () => {
     it('respects a smaller last', () => {
       const c = connectionFromArray(letters, {last: 2});
       return expect(c).to.deep.equal({
+        totalCount: 5,
         edges: [
           {
             node: 'D',
@@ -136,6 +140,7 @@ describe('connectionFromArray()', () => {
     it('respects an overly large last', () => {
       const c = connectionFromArray(letters, {last: 10});
       return expect(c).to.deep.equal({
+        totalCount: 5,
         edges: [
           {
             node: 'A',
@@ -175,6 +180,7 @@ describe('connectionFromArray()', () => {
         {first: 2, after: 'YXJyYXljb25uZWN0aW9uOjE='}
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'C',
@@ -200,6 +206,7 @@ describe('connectionFromArray()', () => {
         {first: 10, after: 'YXJyYXljb25uZWN0aW9uOjE='}
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'C',
@@ -229,6 +236,7 @@ describe('connectionFromArray()', () => {
         {last: 2, before: 'YXJyYXljb25uZWN0aW9uOjM='}
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'B',
@@ -254,6 +262,7 @@ describe('connectionFromArray()', () => {
         {last: 10, before: 'YXJyYXljb25uZWN0aW9uOjM='}
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'A',
@@ -287,6 +296,7 @@ describe('connectionFromArray()', () => {
         }
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'B',
@@ -316,6 +326,7 @@ describe('connectionFromArray()', () => {
         }
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'B',
@@ -349,6 +360,7 @@ describe('connectionFromArray()', () => {
         }
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'B',
@@ -382,6 +394,7 @@ describe('connectionFromArray()', () => {
         }
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'C',
@@ -411,6 +424,7 @@ describe('connectionFromArray()', () => {
         }
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'B',
@@ -444,6 +458,7 @@ describe('connectionFromArray()', () => {
         }
       );
       return expect(c).to.deep.equal({
+        totalCount: 3,
         edges: [
           {
             node: 'B',
@@ -493,6 +508,7 @@ describe('connectionFromArray()', () => {
         {before: 'invalid', after: 'invalid'}
       );
       return expect(c).to.deep.equal({
+        totalCount: 5,
         edges: [
           {
             node: 'A',
@@ -533,6 +549,7 @@ describe('connectionFromArray()', () => {
         }
       );
       return expect(c).to.deep.equal({
+        totalCount: 5,
         edges: [
           {
             node: 'A',
@@ -570,6 +587,7 @@ describe('connectionFromArray()', () => {
         {before: 'YXJyYXljb25uZWN0aW9uOjI=', after: 'YXJyYXljb25uZWN0aW9uOjQ='}
       );
       return expect(c).to.deep.equal({
+        totalCount: 0,
         edges: [
         ],
         pageInfo: {
@@ -601,6 +619,7 @@ describe('connectionFromPromisedArray()', () => {
   it('returns all elements without filters', async () => {
     const c = await connectionFromPromisedArray(letters, {});
     return expect(c).to.deep.equal({
+      totalCount: 5,
       edges: [
         {
           node: 'A',
@@ -635,6 +654,7 @@ describe('connectionFromPromisedArray()', () => {
   it('respects a smaller first', async () => {
     const c = await connectionFromPromisedArray(letters, {first: 2});
     return expect(c).to.deep.equal({
+      totalCount: 5,
       edges: [
         { node: 'A',
           cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
@@ -670,6 +690,7 @@ describe('connectionFromArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 2,
       edges: [
         {
           node: 'B',
@@ -702,6 +723,7 @@ describe('connectionFromArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 2,
       edges: [
         {
           node: 'B',
@@ -734,6 +756,7 @@ describe('connectionFromArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 2,
       edges: [
         {
           node: 'C',
@@ -762,6 +785,7 @@ describe('connectionFromArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 2,
       edges: [
         {
           node: 'C',
@@ -790,6 +814,7 @@ describe('connectionFromArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 2,
       edges: [
         {
           node: 'D',
@@ -822,6 +847,7 @@ describe('connectionFromArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 2,
       edges: [
         {
           node: 'C',
@@ -854,6 +880,7 @@ describe('connectionFromArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 1,
       edges: [
         {
           node: 'D',
@@ -882,6 +909,7 @@ describe('connectionFromPromisedArraySlice()', () => {
       }
     );
     return expect(c).to.deep.equal({
+      totalCount: 3,
       edges: [
         { node: 'A',
           cursor: 'YXJyYXljb25uZWN0aW9uOjA=',

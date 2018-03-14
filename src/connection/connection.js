@@ -119,6 +119,10 @@ export function connectionDefinitions(
         type: new GraphQLList(edgeType),
         description: 'A list of edges.'
       },
+      totalCount: {
+        type: GraphQLInt,
+        description: 'Total rows count.'
+      },
       ...(resolveMaybeThunk(connectionFields): any)
     }),
   });
