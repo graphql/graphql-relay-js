@@ -15,6 +15,7 @@
     "url": "http://github.com/graphql/graphql-relay-js.git"
   },
   "main": "lib/index.js",
+  "module": "lib/index.mjs",
   "directories": {
     "lib": "./lib"
   },
@@ -32,9 +33,10 @@
     "testonly": "babel-node ./node_modules/.bin/_mocha $npm_package_options_mocha",
     "lint": "eslint src",
     "check": "flow check",
-    "build": "npm run build:clean && npm run build:cjs && npm run build:flow",
+    "build": "npm run build:clean && npm run build:cjs && npm run build:mjs && npm run build:flow",
     "build:clean": "rm -rf ./lib && mkdir ./lib",
     "build:cjs": "babel src --ignore __tests__ --out-dir lib",
+    "build:mjs": "BABEL_MODULES=1 babel src --optional runtime --ignore __tests__ --out-dir lib/module/ && for file in $(find lib/module -name '*.js'); do mv \"$file\" `echo \"$file\" | sed 's/lib\\/module/lib/g; s/.js$/.mjs/g'`; done && rm -rf lib/module",
     "build:flow": "find ./src -name '*.js' -not -path '*/__tests__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
     "watch": "babel-node scripts/watch.js",
     "cover": "babel-node node_modules/.bin/isparta cover --root src --report html node_modules/.bin/_mocha -- $npm_package_options_mocha",
