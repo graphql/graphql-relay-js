@@ -19,20 +19,20 @@ import {
   nodeDefinitions,
   globalIdField,
   fromGlobalId
-} from '../node/node.js';
+} from '../node/node';
 
 import {
   connectionFromArray
-} from '../connection/arrayconnection.js';
+} from '../connection/arrayconnection';
 
 import {
   connectionArgs,
   connectionDefinitions
-} from '../connection/connection.js';
+} from '../connection/connection';
 
 import {
   mutationWithClientMutationId
-} from '../mutation/mutation.js';
+} from '../mutation/mutation';
 
 import {
   getFaction,
@@ -40,7 +40,7 @@ import {
   getRebels,
   getEmpire,
   createShip,
-} from './starWarsData.js';
+} from './starWarsData';
 
 /**
  * This is a basic end-to-end test, designed to demonstrate the various

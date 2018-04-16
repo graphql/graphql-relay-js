@@ -16,7 +16,7 @@ import type {
 import {
   base64,
   unbase64,
-} from '../utils/base64.js';
+} from '../utils/base64';
 
 type ArraySliceMetaInfo = {
   sliceStart: number;

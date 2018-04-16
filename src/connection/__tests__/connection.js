@@ -17,14 +17,14 @@ import {
 
 import {
   connectionFromArray,
-} from '../arrayconnection.js';
+} from '../arrayconnection';
 
 import {
   backwardConnectionArgs,
   connectionArgs,
   connectionDefinitions,
   forwardConnectionArgs,
-} from '../connection.js';
+} from '../connection';
 
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
