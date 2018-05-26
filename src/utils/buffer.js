@@ -8,8 +8,8 @@
  */
 
 /**
- * This file exists to work around a number of issues with importing Buffer
- * across Webpack, Node and Flow.
+ * This file exists to work around an issue with importing Buffer across
+ * Webpack and Node.
  *
  * Webpack (tested with 4.5.0) doesn't currently support use of Node globals,
  * such as Buffer, in ES modules.
@@ -27,11 +27,6 @@ import NodeBuffer from 'buffer';
 
 /**
  * An alias for Node's Buffer class.
- *
- * Flow (tested with 0.69.0) knows about global.Buffer but not about
- * require('buffer').Buffer.
- * https://github.com/facebook/flow/issues/3723
  */
 
-// $FlowFixMe because of the above.
-export const Buffer: typeof global.Buffer = NodeBuffer.Buffer;
+export const Buffer = NodeBuffer.Buffer;
