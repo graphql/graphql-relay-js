@@ -43,10 +43,12 @@ type GraphQLNodeDefinitions = {
  */
 export function nodeDefinitions<TContext>(
   idFetcher: ((id: string, context: TContext, info: GraphQLResolveInfo) => any),
-  typeResolver?: ?GraphQLTypeResolver<*, TContext>
+  typeResolver?: ?GraphQLTypeResolver<*, TContext>,
+  nodeName: string = 'Node'
 ): GraphQLNodeDefinitions {
+
   const nodeInterface = new GraphQLInterfaceType({
-    name: 'Node',
+    name: nodeName,
     description: 'An object with an ID',
     fields: () => ({
       id: {
@@ -58,7 +60,7 @@ export function nodeDefinitions<TContext>(
   });
 
   const nodeField = {
-    name: 'node',
+    name: nodeName.toLowerCase(),
     description: 'Fetches an object given its ID',
     type: nodeInterface,
     args: {
@@ -71,7 +73,7 @@ export function nodeDefinitions<TContext>(
   };
 
   const nodesField = {
-    name: 'nodes',
+    name: nodeName.toLowerCase() + 's',
     description: 'Fetches objects given their IDs',
     type: new GraphQLNonNull(
       new GraphQLList(
