@@ -334,7 +334,7 @@ describe('Node interface and fields', () => {
   describe('introspection', () => {
     it('has correct node interface', async () => {
       const query = `{
-        __type(name: "Node") {
+        __type(name: "Node_Node") {
           name
           kind
           fields {
@@ -353,7 +353,7 @@ describe('Node interface and fields', () => {
       return expect(await graphql(schema, query)).to.deep.equal({
         data: {
           __type: {
-            name: 'Node',
+            name: 'Node_Node',
             kind: 'INTERFACE',
             fields: [
               {
@@ -405,7 +405,7 @@ describe('Node interface and fields', () => {
                 {
                   name: 'node',
                   type: {
-                    name: 'Node',
+                    name: 'Node_Node',
                     kind: 'INTERFACE'
                   },
                   args: [

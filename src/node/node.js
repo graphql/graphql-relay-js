@@ -48,7 +48,7 @@ export function nodeDefinitions<TContext>(
 ): GraphQLNodeDefinitions {
 
   const nodeInterface = new GraphQLInterfaceType({
-    name: nodeName,
+    name: nodeName + '_Node',
     description: 'An object with an ID',
     fields: () => ({
       id: {
@@ -60,7 +60,7 @@ export function nodeDefinitions<TContext>(
   });
 
   const nodeField = {
-    name: nodeName.toLowerCase(),
+    name: nodeName + '_node',
     description: 'Fetches an object given its ID',
     type: nodeInterface,
     args: {
@@ -73,7 +73,7 @@ export function nodeDefinitions<TContext>(
   };
 
   const nodesField = {
-    name: nodeName.toLowerCase() + 's',
+    name: nodeName + '_nodes',
     description: 'Fetches objects given their IDs',
     type: new GraphQLNonNull(
       new GraphQLList(
