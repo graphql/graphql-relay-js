@@ -25,10 +25,10 @@ import {
   unbase64
 } from '../utils/base64.js';
 
-type GraphQLNodeDefinitions = {
+type GraphQLNodeDefinitions<TContext> = {
   nodeInterface: GraphQLInterfaceType,
-  nodeField: GraphQLFieldConfig<*, *>,
-  nodesField: GraphQLFieldConfig<*, *>
+  nodeField: GraphQLFieldConfig<*, TContext>,
+  nodesField: GraphQLFieldConfig<*, TContext>
 };
 
 /**
@@ -44,7 +44,7 @@ type GraphQLNodeDefinitions = {
 export function nodeDefinitions<TContext>(
   idFetcher: ((id: string, context: TContext, info: GraphQLResolveInfo) => any),
   typeResolver?: ?GraphQLTypeResolver<*, TContext>
-): GraphQLNodeDefinitions {
+): GraphQLNodeDefinitions<TContext> {
   const nodeInterface = new GraphQLInterfaceType({
     name: 'Node',
     description: 'An object with an ID',
