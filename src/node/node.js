@@ -58,7 +58,6 @@ export function nodeDefinitions<TContext>(
   });
 
   const nodeField = {
-    name: 'node',
     description: 'Fetches an object given its ID',
     type: nodeInterface,
     args: {
@@ -71,7 +70,6 @@ export function nodeDefinitions<TContext>(
   };
 
   const nodesField = {
-    name: 'nodes',
     description: 'Fetches objects given their IDs',
     type: new GraphQLNonNull(
       new GraphQLList(
@@ -140,7 +138,6 @@ export function globalIdField(
   idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string
 ): GraphQLFieldConfig<*, *> {
   return {
-    name: 'id',
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
     resolve: (obj, args, context, info) => toGlobalId(

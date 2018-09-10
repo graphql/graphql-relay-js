@@ -132,7 +132,6 @@ describe('mutationWithClientMutationId()', () => {
             'Field "simpleMutation" argument "input" of type ' +
             '"SimpleMutationInput!" is required but not provided.',
           locations: [ { line: 3, column: 9 } ],
-          path: undefined
         }
       ]
     });
