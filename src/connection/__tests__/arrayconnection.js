@@ -868,6 +868,53 @@ describe('connectionFromArraySlice()', () => {
       }
     });
   });
+
+  it('can populate edges and resolve nodes from the array', () => {
+    const letterEdgeData = [
+      {
+        letter: 'A',
+        isFirst: true,
+      },
+      {
+        letter: 'B',
+        isFirst: false,
+      }
+    ];
+
+    const c = connectionFromArraySlice(
+      letterEdgeData,
+      {
+        first: 2,
+      },
+      {
+        sliceStart: 0,
+        arrayLength: 2,
+        resolveNode: ({ letter }) => letter,
+      }
+    );
+    return expect(c).to.deep.equal({
+      edges: [
+        {
+          isFirst: true,
+          node: 'A',
+          letter: 'A',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        },
+        {
+          isFirst: false,
+          node: 'B',
+          letter: 'B',
+          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        },
+      ],
+      pageInfo: {
+        startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
+        endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        hasPreviousPage: false,
+        hasNextPage: false,
+      }
+    });
+  });
 });
 
 describe('connectionFromPromisedArraySlice()', () => {
