@@ -110,7 +110,7 @@ type ResolvedGlobalId = {
  * Takes a type name and an ID specific to that type name, and returns a
  * "global ID" that is unique among all types.
  */
-export function toGlobalId(type: string, id: string): string {
+export function toGlobalId(type: string, id: string | number): string {
   return base64([ type, id ].join(':'));
 }
 
