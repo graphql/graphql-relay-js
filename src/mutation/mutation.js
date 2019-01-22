@@ -29,7 +29,10 @@ type mutationFn = (
 ) => Promise<any> | any;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
-  return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
+  return typeof thingOrThunk === 'function'
+    ? // $FlowFixMe - if it's a function, we assume a thunk without arguments
+      thingOrThunk()
+    : thingOrThunk;
 }
 
 /**
