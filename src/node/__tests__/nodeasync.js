@@ -7,8 +7,8 @@
  * @flow
  */
 
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import {describe, it} from 'mocha';
+import {expect} from 'chai';
 
 import {
   GraphQLID,
@@ -16,25 +16,23 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql
+  graphql,
 } from 'graphql';
 
-import {
-  nodeDefinitions
-} from '../node';
+import {nodeDefinitions} from '../node';
 
 const userData = {
   '1': {
     id: 1,
-    name: 'John Doe'
+    name: 'John Doe',
   },
   '2': {
     id: 2,
-    name: 'Jane Smith'
+    name: 'Jane Smith',
   },
 };
 
-const { nodeField, nodeInterface } = nodeDefinitions(
+const {nodeField, nodeInterface} = nodeDefinitions(
   id => {
     return userData[id];
   },
@@ -45,7 +43,7 @@ const { nodeField, nodeInterface } = nodeDefinitions(
 
 const userType = new GraphQLObjectType({
   name: 'User',
-  interfaces: [ nodeInterface ],
+  interfaces: [nodeInterface],
   fields: () => ({
     id: {
       type: new GraphQLNonNull(GraphQLID),
@@ -53,19 +51,19 @@ const userType = new GraphQLObjectType({
     name: {
       type: GraphQLString,
     },
-  })
+  }),
 });
 
 const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    node: nodeField
-  })
+    node: nodeField,
+  }),
 });
 
 const schema = new GraphQLSchema({
   query: queryType,
-  types: [ userType ]
+  types: [userType],
 });
 
 describe('Node interface and fields with async object fetcher', () => {
@@ -80,8 +78,8 @@ describe('Node interface and fields with async object fetcher', () => {
       data: {
         node: {
           id: '1',
-        }
-      }
+        },
+      },
     });
   });
 
@@ -100,8 +98,8 @@ describe('Node interface and fields with async object fetcher', () => {
         node: {
           id: '1',
           name: 'John Doe',
-        }
-      }
+        },
+      },
     });
   });
 });

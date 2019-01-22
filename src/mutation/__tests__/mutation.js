@@ -7,28 +7,25 @@
  * @flow
  */
 
-
 // 80+ char lines are useful in describe/it, so ignore in this file.
 /* eslint-disable max-len */
 
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import {describe, it} from 'mocha';
+import {expect} from 'chai';
 
-import { GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql } from 'graphql';
+import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'graphql';
 
-import {
-  mutationWithClientMutationId
-} from '../mutation';
+import {mutationWithClientMutationId} from '../mutation';
 
 const simpleMutation = mutationWithClientMutationId({
   name: 'SimpleMutation',
   inputFields: {},
   outputFields: {
     result: {
-      type: GraphQLInt
-    }
+      type: GraphQLInt,
+    },
   },
-  mutateAndGetPayload: () => ({result: 1})
+  mutateAndGetPayload: () => ({result: 1}),
 });
 
 const simpleMutationWithDescription = mutationWithClientMutationId({
@@ -37,10 +34,10 @@ const simpleMutationWithDescription = mutationWithClientMutationId({
   inputFields: {},
   outputFields: {
     result: {
-      type: GraphQLInt
-    }
+      type: GraphQLInt,
+    },
   },
-  mutateAndGetPayload: () => ({result: 1})
+  mutateAndGetPayload: () => ({result: 1}),
 });
 
 const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
@@ -48,26 +45,26 @@ const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
   inputFields: {},
   outputFields: {
     result: {
-      type: GraphQLInt
-    }
+      type: GraphQLInt,
+    },
   },
   mutateAndGetPayload: () => ({result: 1}),
-  deprecationReason: 'Just because'
+  deprecationReason: 'Just because',
 });
 
 const simpleMutationWithThunkFields = mutationWithClientMutationId({
   name: 'SimpleMutationWithThunkFields',
   inputFields: () => ({
     inputData: {
-      type: GraphQLInt
-    }
+      type: GraphQLInt,
+    },
   }),
   outputFields: () => ({
     result: {
-      type: GraphQLInt
-    }
+      type: GraphQLInt,
+    },
   }),
-  mutateAndGetPayload: ({ inputData }) => ({ result: inputData })
+  mutateAndGetPayload: ({inputData}) => ({result: inputData}),
 });
 
 const simplePromiseMutation = mutationWithClientMutationId({
@@ -75,10 +72,10 @@ const simplePromiseMutation = mutationWithClientMutationId({
   inputFields: {},
   outputFields: {
     result: {
-      type: GraphQLInt
-    }
+      type: GraphQLInt,
+    },
   },
-  mutateAndGetPayload: () => Promise.resolve({result: 1})
+  mutateAndGetPayload: () => Promise.resolve({result: 1}),
 });
 
 const simpleRootValueMutation = mutationWithClientMutationId({
@@ -86,17 +83,17 @@ const simpleRootValueMutation = mutationWithClientMutationId({
   inputFields: {},
   outputFields: {
     result: {
-      type: GraphQLInt
-    }
+      type: GraphQLInt,
+    },
   },
-  mutateAndGetPayload: (params, context, {rootValue}) => (rootValue)
+  mutateAndGetPayload: (params, context, {rootValue}) => rootValue,
 });
 
 const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    query: { type: queryType }
-  })
+    query: {type: queryType},
+  }),
 });
 
 const mutationType = new GraphQLObjectType({
@@ -108,12 +105,12 @@ const mutationType = new GraphQLObjectType({
     simpleMutationWithThunkFields,
     simplePromiseMutation,
     simpleRootValueMutation,
-  }
+  },
 });
 
 const schema = new GraphQLSchema({
   query: queryType,
-  mutation: mutationType
+  mutation: mutationType,
 });
 
 describe('mutationWithClientMutationId()', () => {
@@ -131,10 +128,9 @@ describe('mutationWithClientMutationId()', () => {
           message:
             'Field "simpleMutation" argument "input" of type ' +
             '"SimpleMutationInput!" is required but not provided.',
-          locations: [ { line: 3, column: 9 } ],
-          path: undefined
-        }
-      ]
+          locations: [{line: 3, column: 9}],
+        },
+      ],
     });
   });
 
@@ -152,9 +148,9 @@ describe('mutationWithClientMutationId()', () => {
       data: {
         simpleMutation: {
           result: 1,
-          clientMutationId: 'abc'
-        }
-      }
+          clientMutationId: 'abc',
+        },
+      },
     });
   });
 
@@ -175,9 +171,9 @@ describe('mutationWithClientMutationId()', () => {
       data: {
         simpleMutationWithThunkFields: {
           result: 1234,
-          clientMutationId: 'abc'
-        }
-      }
+          clientMutationId: 'abc',
+        },
+      },
     });
   });
 
@@ -195,9 +191,9 @@ describe('mutationWithClientMutationId()', () => {
       data: {
         simplePromiseMutation: {
           result: 1,
-          clientMutationId: 'abc'
-        }
-      }
+          clientMutationId: 'abc',
+        },
+      },
     });
   });
 
@@ -211,13 +207,13 @@ describe('mutationWithClientMutationId()', () => {
       }
     `;
 
-    expect(await graphql(schema, query, { result: 1 })).to.deep.equal({
+    expect(await graphql(schema, query, {result: 1})).to.deep.equal({
       data: {
         simpleRootValueMutation: {
           result: 1,
-          clientMutationId: 'abc'
-        }
-      }
+          clientMutationId: 'abc',
+        },
+      },
     });
   });
 
@@ -247,12 +243,12 @@ describe('mutationWithClientMutationId()', () => {
                 name: 'clientMutationId',
                 type: {
                   name: 'String',
-                  kind: 'SCALAR'
-                }
-              }
-            ]
-          }
-        }
+                  kind: 'SCALAR',
+                },
+              },
+            ],
+          },
+        },
       });
     });
 
@@ -282,18 +278,18 @@ describe('mutationWithClientMutationId()', () => {
                 type: {
                   name: 'Int',
                   kind: 'SCALAR',
-                }
+                },
               },
               {
                 name: 'clientMutationId',
                 type: {
                   name: 'String',
-                  kind: 'SCALAR'
-                }
-              }
-            ]
-          }
-        }
+                  kind: 'SCALAR',
+                },
+              },
+            ],
+          },
+        },
       });
     });
 
@@ -338,15 +334,15 @@ describe('mutationWithClientMutationId()', () => {
                         kind: 'NON_NULL',
                         ofType: {
                           name: 'SimpleMutationInput',
-                          kind: 'INPUT_OBJECT'
-                        }
+                          kind: 'INPUT_OBJECT',
+                        },
                       },
-                    }
+                    },
                   ],
                   type: {
                     name: 'SimpleMutationPayload',
                     kind: 'OBJECT',
-                  }
+                  },
                 },
                 {
                   name: 'simpleMutationWithDescription',
@@ -358,15 +354,15 @@ describe('mutationWithClientMutationId()', () => {
                         kind: 'NON_NULL',
                         ofType: {
                           name: 'SimpleMutationWithDescriptionInput',
-                          kind: 'INPUT_OBJECT'
-                        }
+                          kind: 'INPUT_OBJECT',
+                        },
                       },
-                    }
+                    },
                   ],
                   type: {
                     name: 'SimpleMutationWithDescriptionPayload',
                     kind: 'OBJECT',
-                  }
+                  },
                 },
                 {
                   name: 'simpleMutationWithThunkFields',
@@ -378,15 +374,15 @@ describe('mutationWithClientMutationId()', () => {
                         kind: 'NON_NULL',
                         ofType: {
                           name: 'SimpleMutationWithThunkFieldsInput',
-                          kind: 'INPUT_OBJECT'
-                        }
+                          kind: 'INPUT_OBJECT',
+                        },
                       },
-                    }
+                    },
                   ],
                   type: {
                     name: 'SimpleMutationWithThunkFieldsPayload',
                     kind: 'OBJECT',
-                  }
+                  },
                 },
                 {
                   name: 'simplePromiseMutation',
@@ -398,15 +394,15 @@ describe('mutationWithClientMutationId()', () => {
                         kind: 'NON_NULL',
                         ofType: {
                           name: 'SimplePromiseMutationInput',
-                          kind: 'INPUT_OBJECT'
-                        }
+                          kind: 'INPUT_OBJECT',
+                        },
                       },
-                    }
+                    },
                   ],
                   type: {
                     name: 'SimplePromiseMutationPayload',
                     kind: 'OBJECT',
-                  }
+                  },
                 },
                 {
                   name: 'simpleRootValueMutation',
@@ -418,20 +414,20 @@ describe('mutationWithClientMutationId()', () => {
                         kind: 'NON_NULL',
                         ofType: {
                           name: 'SimpleRootValueMutationInput',
-                          kind: 'INPUT_OBJECT'
-                        }
+                          kind: 'INPUT_OBJECT',
+                        },
                       },
-                    }
+                    },
                   ],
                   type: {
                     name: 'SimpleRootValueMutationPayload',
                     kind: 'OBJECT',
-                  }
+                  },
                 },
-              ]
-            }
-          }
-        }
+              ],
+            },
+          },
+        },
       });
     });
 
@@ -454,28 +450,28 @@ describe('mutationWithClientMutationId()', () => {
               fields: [
                 {
                   name: 'simpleMutation',
-                  description: null
+                  description: null,
                 },
                 {
                   name: 'simpleMutationWithDescription',
-                  description: 'Simple Mutation Description'
+                  description: 'Simple Mutation Description',
                 },
                 {
                   name: 'simpleMutationWithThunkFields',
-                  description: null
+                  description: null,
                 },
                 {
                   name: 'simplePromiseMutation',
-                  description: null
+                  description: null,
                 },
                 {
                   name: 'simpleRootValueMutation',
-                  description: null
-                }
-              ]
-            }
-          }
-        }
+                  description: null,
+                },
+              ],
+            },
+          },
+        },
       });
     });
 
@@ -500,12 +496,12 @@ describe('mutationWithClientMutationId()', () => {
                 {
                   name: 'simpleMutation',
                   isDeprecated: false,
-                  deprecationReason: null
+                  deprecationReason: null,
                 },
                 {
                   name: 'simpleMutationWithDescription',
                   isDeprecated: false,
-                  deprecationReason: null
+                  deprecationReason: null,
                 },
                 {
                   name: 'simpleMutationWithDeprecationReason',
@@ -515,22 +511,22 @@ describe('mutationWithClientMutationId()', () => {
                 {
                   name: 'simpleMutationWithThunkFields',
                   isDeprecated: false,
-                  deprecationReason: null
+                  deprecationReason: null,
                 },
                 {
                   name: 'simplePromiseMutation',
                   isDeprecated: false,
-                  deprecationReason: null
+                  deprecationReason: null,
                 },
                 {
                   name: 'simpleRootValueMutation',
                   isDeprecated: false,
-                  deprecationReason: null
-                }
-              ]
-            }
-          }
-        }
+                  deprecationReason: null,
+                },
+              ],
+            },
+          },
+        },
       });
     });
   });

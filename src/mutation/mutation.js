@@ -11,7 +11,7 @@ import {
   GraphQLInputObjectType,
   GraphQLNonNull,
   GraphQLObjectType,
-  GraphQLString
+  GraphQLString,
 } from 'graphql';
 
 import type {
@@ -29,7 +29,10 @@ type mutationFn = (
 ) => Promise<any> | any;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
-  return typeof thingOrThunk === 'function' ? thingOrThunk() : thingOrThunk;
+  return typeof thingOrThunk === 'function'
+    ? // $FlowFixMe - if it's a function, we assume a thunk without arguments
+      thingOrThunk()
+    : thingOrThunk;
 }
 
 /**
@@ -68,29 +71,29 @@ export function mutationWithClientMutationId(
     deprecationReason,
     inputFields,
     outputFields,
-    mutateAndGetPayload
+    mutateAndGetPayload,
   } = config;
   const augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
     clientMutationId: {
-      type: GraphQLString
-    }
+      type: GraphQLString,
+    },
   });
   const augmentedOutputFields = () => ({
     ...resolveMaybeThunk(outputFields),
     clientMutationId: {
-      type: GraphQLString
-    }
+      type: GraphQLString,
+    },
   });
 
   const outputType = new GraphQLObjectType({
     name: name + 'Payload',
-    fields: augmentedOutputFields
+    fields: augmentedOutputFields,
   });
 
   const inputType = new GraphQLInputObjectType({
     name: name + 'Input',
-    fields: augmentedInputFields
+    fields: augmentedInputFields,
   });
 
   return {
@@ -98,14 +101,15 @@ export function mutationWithClientMutationId(
     description,
     deprecationReason,
     args: {
-      input: {type: new GraphQLNonNull(inputType)}
+      input: {type: new GraphQLNonNull(inputType)},
     },
     resolve: (_, {input}, context, info) => {
-      return Promise.resolve(mutateAndGetPayload(input, context, info))
-        .then(payload => {
+      return Promise.resolve(mutateAndGetPayload(input, context, info)).then(
+        payload => {
           payload.clientMutationId = input.clientMutationId;
           return payload;
-        });
-    }
+        }
+      );
+    },
   };
 }
