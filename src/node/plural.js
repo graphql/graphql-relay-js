@@ -7,16 +7,13 @@
  * @flow
  */
 
-import {
-  GraphQLList,
-  GraphQLNonNull,
-} from 'graphql';
+import {GraphQLList, GraphQLNonNull} from 'graphql';
 
 import type {
   GraphQLFieldConfig,
   GraphQLInputType,
   GraphQLOutputType,
-  GraphQLResolveInfo
+  GraphQLResolveInfo,
 } from 'graphql';
 
 type PluralIdentifyingRootFieldConfig = {
@@ -40,13 +37,7 @@ export function pluralIdentifyingRootField(
     inputType = inputType.ofType;
   }
   inputArgs[config.argName] = {
-    type: new GraphQLNonNull(
-      new GraphQLList(
-        new GraphQLNonNull(
-          inputType
-        )
-      )
-    )
+    type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(inputType))),
   };
   return {
     description: config.description,
@@ -54,11 +45,11 @@ export function pluralIdentifyingRootField(
     args: inputArgs,
     resolve(obj, args, context, info) {
       const inputs = args[config.argName];
-      return Promise.all(inputs.map(
-        input => Promise.resolve(
-          config.resolveSingleInput(input, context, info)
+      return Promise.all(
+        inputs.map(input =>
+          Promise.resolve(config.resolveSingleInput(input, context, info))
         )
-      ));
-    }
+      );
+    },
   };
 }

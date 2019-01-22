@@ -13,14 +13,11 @@ import type {
   ConnectionCursor,
 } from './connectiontypes';
 
-import {
-  base64,
-  unbase64,
-} from '../utils/base64.js';
+import {base64, unbase64} from '../utils/base64.js';
 
 type ArraySliceMetaInfo = {
-  sliceStart: number;
-  arrayLength: number;
+  sliceStart: number,
+  arrayLength: number,
 };
 
 /**
@@ -32,14 +29,10 @@ export function connectionFromArray<T>(
   data: Array<T>,
   args: ConnectionArguments
 ): Connection<T> {
-  return connectionFromArraySlice(
-    data,
-    args,
-    {
-      sliceStart: 0,
-      arrayLength: data.length,
-    }
-  );
+  return connectionFromArraySlice(data, args, {
+    sliceStart: 0,
+    arrayLength: data.length,
+  });
 }
 
 /**
@@ -67,41 +60,27 @@ export function connectionFromArraySlice<T>(
   args: ConnectionArguments,
   meta: ArraySliceMetaInfo
 ): Connection<T> {
-  const { after, before, first, last } = args;
-  const { sliceStart, arrayLength } = meta;
+  const {after, before, first, last} = args;
+  const {sliceStart, arrayLength} = meta;
   const sliceEnd = sliceStart + arraySlice.length;
   const beforeOffset = getOffsetWithDefault(before, arrayLength);
   const afterOffset = getOffsetWithDefault(after, -1);
 
-  let startOffset = Math.max(
-    sliceStart - 1,
-    afterOffset,
-    -1
-  ) + 1;
-  let endOffset = Math.min(
-    sliceEnd,
-    beforeOffset,
-    arrayLength
-  );
+  let startOffset = Math.max(sliceStart - 1, afterOffset, -1) + 1;
+  let endOffset = Math.min(sliceEnd, beforeOffset, arrayLength);
   if (typeof first === 'number') {
     if (first < 0) {
       throw new Error('Argument "first" must be a non-negative integer');
     }
 
-    endOffset = Math.min(
-      endOffset,
-      startOffset + first
-    );
+    endOffset = Math.min(endOffset, startOffset + first);
   }
   if (typeof last === 'number') {
     if (last < 0) {
       throw new Error('Argument "last" must be a non-negative integer');
     }
 
-    startOffset = Math.max(
-      startOffset,
-      endOffset - last
-    );
+    startOffset = Math.max(startOffset, endOffset - last);
   }
 
   // If supplied slice is too large, trim it down before mapping over it.
@@ -117,7 +96,7 @@ export function connectionFromArraySlice<T>(
 
   const firstEdge = edges[0];
   const lastEdge = edges[edges.length - 1];
-  const lowerBound = after ? (afterOffset + 1) : 0;
+  const lowerBound = after ? afterOffset + 1 : 0;
   const upperBound = before ? beforeOffset : arrayLength;
   return {
     edges,
@@ -126,8 +105,7 @@ export function connectionFromArraySlice<T>(
       endCursor: lastEdge ? lastEdge.cursor : null,
       hasPreviousPage:
         typeof last === 'number' ? startOffset > lowerBound : false,
-      hasNextPage:
-        typeof first === 'number' ? endOffset < upperBound : false,
+      hasNextPage: typeof first === 'number' ? endOffset < upperBound : false,
     },
   };
 }
@@ -141,8 +119,8 @@ export function connectionFromPromisedArraySlice<T>(
   args: ConnectionArguments,
   arrayInfo: ArraySliceMetaInfo
 ): Promise<Connection<T>> {
-  return dataPromise.then(
-    data => connectionFromArraySlice(data, args, arrayInfo)
+  return dataPromise.then(data =>
+    connectionFromArraySlice(data, args, arrayInfo)
   );
 }
 

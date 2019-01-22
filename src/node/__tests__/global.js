@@ -7,8 +7,8 @@
  * @flow
  */
 
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import {describe, it} from 'mocha';
+import {expect} from 'chai';
 
 import {
   GraphQLInt,
@@ -16,51 +16,47 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql
+  graphql,
 } from 'graphql';
 
-import {
-  fromGlobalId,
-  globalIdField,
-  nodeDefinitions,
-} from '../node';
+import {fromGlobalId, globalIdField, nodeDefinitions} from '../node';
 
 const userData = {
   '1': {
     id: 1,
-    name: 'John Doe'
+    name: 'John Doe',
   },
   '2': {
     id: 2,
-    name: 'Jane Smith'
+    name: 'Jane Smith',
   },
 };
 
 const photoData = {
   '1': {
     photoId: 1,
-    width: 300
+    width: 300,
   },
   '2': {
     photoId: 2,
-    width: 400
+    width: 400,
   },
 };
 
 const postData = {
   '1': {
     id: 1,
-    text: 'lorem'
+    text: 'lorem',
   },
   '2': {
     id: 2,
-    text: 'ipsum'
+    text: 'ipsum',
   },
 };
 
-const { nodeField, nodeInterface } = nodeDefinitions(
+const {nodeField, nodeInterface} = nodeDefinitions(
   globalId => {
-    const { type, id } = fromGlobalId(globalId);
+    const {type, id} = fromGlobalId(globalId);
     if (type === 'User') {
       return userData[id];
     }
@@ -86,35 +82,35 @@ const { nodeField, nodeInterface } = nodeDefinitions(
 
 const userType = new GraphQLObjectType({
   name: 'User',
-  interfaces: [ nodeInterface ],
+  interfaces: [nodeInterface],
   fields: () => ({
     id: globalIdField('User'),
     name: {
       type: GraphQLString,
     },
-  })
+  }),
 });
 
 const photoType = new GraphQLObjectType({
   name: 'Photo',
-  interfaces: [ nodeInterface ],
+  interfaces: [nodeInterface],
   fields: () => ({
     id: globalIdField('Photo', obj => obj.photoId),
     width: {
       type: GraphQLInt,
     },
-  })
+  }),
 });
 
 const postType = new GraphQLObjectType({
   name: 'Post',
-  interfaces: [ nodeInterface ],
+  interfaces: [nodeInterface],
   fields: () => ({
     id: globalIdField(),
     text: {
       type: GraphQLString,
     },
-  })
+  }),
 });
 
 const queryType = new GraphQLObjectType({
@@ -124,21 +120,23 @@ const queryType = new GraphQLObjectType({
     allObjects: {
       type: new GraphQLList(nodeInterface),
       resolve: () => [
-        userData[1], userData[2],
-        photoData[1], photoData[2],
-        postData[1], postData[2],
-      ]
-    }
-  })
+        userData[1],
+        userData[2],
+        photoData[1],
+        photoData[2],
+        postData[1],
+        postData[2],
+      ],
+    },
+  }),
 });
 
 const schema = new GraphQLSchema({
   query: queryType,
-  types: [ userType, photoType, postType ]
+  types: [userType, photoType, postType],
 });
 
 describe('global ID fields', () => {
-
   it('gives different IDs', async () => {
     const query = `{
       allObjects {
@@ -150,25 +148,25 @@ describe('global ID fields', () => {
       data: {
         allObjects: [
           {
-            id: 'VXNlcjox'
+            id: 'VXNlcjox',
           },
           {
-            id: 'VXNlcjoy'
+            id: 'VXNlcjoy',
           },
           {
-            id: 'UGhvdG86MQ=='
+            id: 'UGhvdG86MQ==',
           },
           {
-            id: 'UGhvdG86Mg=='
+            id: 'UGhvdG86Mg==',
           },
           {
-            id: 'UG9zdDox'
+            id: 'UG9zdDox',
           },
           {
-            id: 'UG9zdDoy'
+            id: 'UG9zdDoy',
           },
-        ]
-      }
+        ],
+      },
     });
   });
 
@@ -198,17 +196,17 @@ describe('global ID fields', () => {
       data: {
         user: {
           id: 'VXNlcjox',
-          name: 'John Doe'
+          name: 'John Doe',
         },
         photo: {
           id: 'UGhvdG86MQ==',
-          width: 300
+          width: 300,
         },
         post: {
           id: 'UG9zdDox',
-          text: 'lorem'
-        }
-      }
+          text: 'lorem',
+        },
+      },
     });
   });
 });

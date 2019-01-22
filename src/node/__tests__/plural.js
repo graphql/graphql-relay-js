@@ -7,19 +7,17 @@
  * @flow
  */
 
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import {describe, it} from 'mocha';
+import {expect} from 'chai';
 
 import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql
+  graphql,
 } from 'graphql';
 
-import {
-  pluralIdentifyingRootField
-} from '../plural';
+import {pluralIdentifyingRootField} from '../plural';
 
 const userType = new GraphQLObjectType({
   name: 'User',
@@ -41,19 +39,19 @@ const queryType = new GraphQLObjectType({
       description: 'Map from a username to the user',
       inputType: GraphQLString,
       outputType: userType,
-      resolveSingleInput: (username, { lang }) => ({
+      resolveSingleInput: (username, {lang}) => ({
         username,
-        url: 'www.facebook.com/' + username + '?lang=' + lang
-      })
-    })
-  })
+        url: 'www.facebook.com/' + username + '?lang=' + lang,
+      }),
+    }),
+  }),
 });
 
 const schema = new GraphQLSchema({
-  query: queryType
+  query: queryType,
 });
 
-const context = { lang: 'en' };
+const context = {lang: 'en'};
 
 describe('pluralIdentifyingRootField()', () => {
   it('allows fetching', async () => {
@@ -69,18 +67,18 @@ describe('pluralIdentifyingRootField()', () => {
         usernames: [
           {
             username: 'dschafer',
-            url: 'www.facebook.com/dschafer?lang=en'
+            url: 'www.facebook.com/dschafer?lang=en',
           },
           {
             username: 'leebyron',
-            url: 'www.facebook.com/leebyron?lang=en'
+            url: 'www.facebook.com/leebyron?lang=en',
           },
           {
             username: 'schrockn',
-            url: 'www.facebook.com/schrockn?lang=en'
+            url: 'www.facebook.com/schrockn?lang=en',
           },
-        ]
-      }
+        ],
+      },
     });
   });
 
@@ -137,24 +135,24 @@ describe('pluralIdentifyingRootField()', () => {
                           ofType: {
                             name: 'String',
                             kind: 'SCALAR',
-                          }
-                        }
-                      }
-                    }
-                  }
+                          },
+                        },
+                      },
+                    },
+                  },
                 ],
                 type: {
                   kind: 'LIST',
                   ofType: {
                     name: 'User',
                     kind: 'OBJECT',
-                  }
-                }
-              }
-            ]
-          }
-        }
-      }
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
     });
   });
 });

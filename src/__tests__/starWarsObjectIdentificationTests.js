@@ -7,10 +7,10 @@
  * @flow
  */
 
-import { expect } from 'chai';
-import { describe, it } from 'mocha';
-import { StarWarsSchema } from './starWarsSchema.js';
-import { graphql } from 'graphql';
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
+import {StarWarsSchema} from './starWarsSchema.js';
+import {graphql} from 'graphql';
 
 // 80+ char lines are useful in describe/it, so ignore in this file.
 /* eslint-disable max-len */
@@ -28,11 +28,11 @@ describe('Star Wars object identification', () => {
     const expected = {
       rebels: {
         id: 'RmFjdGlvbjox',
-        name: 'Alliance to Restore the Republic'
-      }
+        name: 'Alliance to Restore the Republic',
+      },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 
   it('refetches the rebels', async () => {
@@ -49,11 +49,11 @@ describe('Star Wars object identification', () => {
     const expected = {
       node: {
         id: 'RmFjdGlvbjox',
-        name: 'Alliance to Restore the Republic'
-      }
+        name: 'Alliance to Restore the Republic',
+      },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 
   it('fetches the ID and name of the empire', async () => {
@@ -68,11 +68,11 @@ describe('Star Wars object identification', () => {
     const expected = {
       empire: {
         id: 'RmFjdGlvbjoy',
-        name: 'Galactic Empire'
-      }
+        name: 'Galactic Empire',
+      },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 
   it('refetches the empire', async () => {
@@ -89,11 +89,11 @@ describe('Star Wars object identification', () => {
     const expected = {
       node: {
         id: 'RmFjdGlvbjoy',
-        name: 'Galactic Empire'
-      }
+        name: 'Galactic Empire',
+      },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 
   it('refetches the X-Wing', async () => {
@@ -110,10 +110,10 @@ describe('Star Wars object identification', () => {
     const expected = {
       node: {
         id: 'U2hpcDox',
-        name: 'X-Wing'
-      }
+        name: 'X-Wing',
+      },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 });

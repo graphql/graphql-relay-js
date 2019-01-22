@@ -37,23 +37,13 @@ export {
 } from './connection/arrayconnection.js';
 
 // Helper for creating mutations with client mutation IDs
-export {
-  mutationWithClientMutationId,
-} from './mutation/mutation.js';
+export {mutationWithClientMutationId} from './mutation/mutation.js';
 
 // Helper for creating node definitions
-export {
-  nodeDefinitions,
-} from './node/node.js';
+export {nodeDefinitions} from './node/node.js';
 
 // Helper for creating plural identifying root fields
-export {
-  pluralIdentifyingRootField,
-} from './node/plural.js';
+export {pluralIdentifyingRootField} from './node/plural.js';
 
 // Utilities for creating global IDs in systems that don't have them.
-export {
-  fromGlobalId,
-  globalIdField,
-  toGlobalId,
-} from './node/node.js';
+export {fromGlobalId, globalIdField, toGlobalId} from './node/node.js';

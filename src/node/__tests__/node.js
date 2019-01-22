@@ -7,8 +7,8 @@
  * @flow
  */
 
-import { describe, it } from 'mocha';
-import { expect } from 'chai';
+import {describe, it} from 'mocha';
+import {expect} from 'chai';
 
 import {
   GraphQLID,
@@ -17,36 +17,34 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql
+  graphql,
 } from 'graphql';
 
-import {
-  nodeDefinitions
-} from '../node';
+import {nodeDefinitions} from '../node';
 
 const userData = {
   '1': {
     id: 1,
-    name: 'John Doe'
+    name: 'John Doe',
   },
   '2': {
     id: 2,
-    name: 'Jane Smith'
+    name: 'Jane Smith',
   },
 };
 
 const photoData = {
   '3': {
     id: 3,
-    width: 300
+    width: 300,
   },
   '4': {
     id: 4,
-    width: 400
+    width: 400,
   },
 };
 
-const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
+const {nodeField, nodesField, nodeInterface} = nodeDefinitions(
   (id, context, info) => {
     expect(info.schema).to.equal(schema);
     if (userData[id]) {
@@ -68,7 +66,7 @@ const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
 
 const userType = new GraphQLObjectType({
   name: 'User',
-  interfaces: [ nodeInterface ],
+  interfaces: [nodeInterface],
   fields: () => ({
     id: {
       type: new GraphQLNonNull(GraphQLID),
@@ -76,12 +74,12 @@ const userType = new GraphQLObjectType({
     name: {
       type: GraphQLString,
     },
-  })
+  }),
 });
 
 const photoType = new GraphQLObjectType({
   name: 'Photo',
-  interfaces: [ nodeInterface ],
+  interfaces: [nodeInterface],
   fields: () => ({
     id: {
       type: new GraphQLNonNull(GraphQLID),
@@ -89,20 +87,20 @@ const photoType = new GraphQLObjectType({
     width: {
       type: GraphQLInt,
     },
-  })
+  }),
 });
 
 const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
     node: nodeField,
-    nodes: nodesField
-  })
+    nodes: nodesField,
+  }),
 });
 
 const schema = new GraphQLSchema({
   query: queryType,
-  types: [ userType, photoType ]
+  types: [userType, photoType],
 });
 
 describe('Node interface and fields', () => {
@@ -118,8 +116,8 @@ describe('Node interface and fields', () => {
         data: {
           node: {
             id: '1',
-          }
-        }
+          },
+        },
       });
     });
 
@@ -134,13 +132,13 @@ describe('Node interface and fields', () => {
         data: {
           nodes: [
             {
-              id: '1'
+              id: '1',
             },
             {
-              id: '2'
-            }
-          ]
-        }
+              id: '2',
+            },
+          ],
+        },
       });
     });
 
@@ -155,8 +153,8 @@ describe('Node interface and fields', () => {
         data: {
           node: {
             id: '4',
-          }
-        }
+          },
+        },
       });
     });
 
@@ -171,13 +169,13 @@ describe('Node interface and fields', () => {
         data: {
           nodes: [
             {
-              id: '3'
+              id: '3',
             },
             {
-              id: '4'
-            }
-          ]
-        }
+              id: '4',
+            },
+          ],
+        },
       });
     });
 
@@ -192,13 +190,13 @@ describe('Node interface and fields', () => {
         data: {
           nodes: [
             {
-              id: '1'
+              id: '1',
             },
             {
-              id: '3'
-            }
-          ]
-        }
+              id: '3',
+            },
+          ],
+        },
       });
     });
 
@@ -217,8 +215,8 @@ describe('Node interface and fields', () => {
           node: {
             id: '1',
             name: 'John Doe',
-          }
-        }
+          },
+        },
       });
     });
 
@@ -237,8 +235,8 @@ describe('Node interface and fields', () => {
           node: {
             id: '4',
             width: 400,
-          }
-        }
+          },
+        },
       });
     });
 
@@ -255,8 +253,8 @@ describe('Node interface and fields', () => {
           node: {
             id: '1',
             __typename: 'User',
-          }
-        }
+          },
+        },
       });
     });
 
@@ -273,8 +271,8 @@ describe('Node interface and fields', () => {
           node: {
             id: '4',
             __typename: 'Photo',
-          }
-        }
+          },
+        },
       });
     });
 
@@ -292,8 +290,8 @@ describe('Node interface and fields', () => {
         data: {
           node: {
             id: '1',
-          }
-        }
+          },
+        },
       });
     });
 
@@ -306,8 +304,8 @@ describe('Node interface and fields', () => {
 
       return expect(await graphql(schema, query)).to.deep.equal({
         data: {
-          node: null
-        }
+          node: null,
+        },
       });
     });
 
@@ -322,11 +320,11 @@ describe('Node interface and fields', () => {
         data: {
           nodes: [
             {
-              id: '3'
+              id: '3',
             },
-            null
-          ]
-        }
+            null,
+          ],
+        },
       });
     });
   });
@@ -362,13 +360,13 @@ describe('Node interface and fields', () => {
                   kind: 'NON_NULL',
                   ofType: {
                     name: 'ID',
-                    kind: 'SCALAR'
-                  }
-                }
-              }
-            ]
-          }
-        }
+                    kind: 'SCALAR',
+                  },
+                },
+              },
+            ],
+          },
+        },
       });
     });
 
@@ -406,7 +404,7 @@ describe('Node interface and fields', () => {
                   name: 'node',
                   type: {
                     name: 'Node',
-                    kind: 'INTERFACE'
+                    kind: 'INTERFACE',
                   },
                   args: [
                     {
@@ -415,17 +413,17 @@ describe('Node interface and fields', () => {
                         kind: 'NON_NULL',
                         ofType: {
                           name: 'ID',
-                          kind: 'SCALAR'
-                        }
-                      }
-                    }
-                  ]
+                          kind: 'SCALAR',
+                        },
+                      },
+                    },
+                  ],
                 },
                 {
                   name: 'nodes',
                   type: {
                     name: null,
-                    kind: 'NON_NULL'
+                    kind: 'NON_NULL',
                   },
                   args: [
                     {
@@ -434,16 +432,16 @@ describe('Node interface and fields', () => {
                         kind: 'NON_NULL',
                         ofType: {
                           name: null,
-                          kind: 'LIST'
-                        }
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
+                          kind: 'LIST',
+                        },
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
       });
     });
   });
