@@ -19,31 +19,31 @@ export type PageInfo = {
   startCursor: ?ConnectionCursor,
   endCursor: ?ConnectionCursor,
   hasPreviousPage: ?boolean,
-  hasNextPage: ?boolean
+  hasNextPage: ?boolean,
 };
 
 /**
  * A flow type designed to be exposed as a `Connection` over GraphQL.
  */
 export type Connection<T> = {
-  edges: Array<Edge<T>>;
-  pageInfo: PageInfo;
+  edges: Array<Edge<T>>,
+  pageInfo: PageInfo,
 };
 
 /**
  * A flow type designed to be exposed as a `Edge` over GraphQL.
  */
 export type Edge<T> = {
-  node: T;
-  cursor: ConnectionCursor;
+  node: T,
+  cursor: ConnectionCursor,
 };
 
 /**
  * A flow type describing the arguments a connection field receives in GraphQL.
  */
 export type ConnectionArguments = {
-  before?: ?ConnectionCursor;
-  after?: ?ConnectionCursor;
-  first?: ?number;
-  last?: ?number;
+  before?: ?ConnectionCursor,
+  after?: ?ConnectionCursor,
+  first?: ?number,
+  last?: ?number,
 };

@@ -11,24 +11,21 @@ import {
   GraphQLInterfaceType,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLID
+  GraphQLID,
 } from 'graphql';
 
 import type {
   GraphQLFieldConfig,
   GraphQLResolveInfo,
-  GraphQLTypeResolver
+  GraphQLTypeResolver,
 } from 'graphql';
 
-import {
-  base64,
-  unbase64
-} from '../utils/base64.js';
+import {base64, unbase64} from '../utils/base64.js';
 
 type GraphQLNodeDefinitions<TContext> = {
   nodeInterface: GraphQLInterfaceType,
   nodeField: GraphQLFieldConfig<*, TContext>,
-  nodesField: GraphQLFieldConfig<*, TContext>
+  nodesField: GraphQLFieldConfig<*, TContext>,
 };
 
 /**
@@ -42,7 +39,7 @@ type GraphQLNodeDefinitions<TContext> = {
  * interface without a provided `resolveType` method.
  */
 export function nodeDefinitions<TContext>(
-  idFetcher: ((id: string, context: TContext, info: GraphQLResolveInfo) => any),
+  idFetcher: (id: string, context: TContext, info: GraphQLResolveInfo) => any,
   typeResolver?: ?GraphQLTypeResolver<*, TContext>
 ): GraphQLNodeDefinitions<TContext> {
   const nodeInterface = new GraphQLInterfaceType({
@@ -54,7 +51,7 @@ export function nodeDefinitions<TContext>(
         description: 'The id of the object.',
       },
     }),
-    resolveType: typeResolver
+    resolveType: typeResolver,
   });
 
   const nodeField = {
@@ -63,47 +60,33 @@ export function nodeDefinitions<TContext>(
     args: {
       id: {
         type: new GraphQLNonNull(GraphQLID),
-        description: 'The ID of an object'
-      }
+        description: 'The ID of an object',
+      },
     },
-    resolve: (obj, { id }, context, info) => idFetcher(id, context, info),
+    resolve: (obj, {id}, context, info) => idFetcher(id, context, info),
   };
 
   const nodesField = {
     description: 'Fetches objects given their IDs',
-    type: new GraphQLNonNull(
-      new GraphQLList(
-        nodeInterface
-      )
-    ),
+    type: new GraphQLNonNull(new GraphQLList(nodeInterface)),
     args: {
       ids: {
         type: new GraphQLNonNull(
-          new GraphQLList(
-            new GraphQLNonNull(
-              GraphQLID
-            )
-          )
+          new GraphQLList(new GraphQLNonNull(GraphQLID))
         ),
-        description: 'The IDs of objects'
-      }
+        description: 'The IDs of objects',
+      },
     },
-    resolve: (obj, { ids }, context, info) =>
-      Promise.all(
-        ids.map(id =>
-          Promise.resolve(
-            idFetcher(id, context, info)
-          )
-        )
-      )
+    resolve: (obj, {ids}, context, info) =>
+      Promise.all(ids.map(id => Promise.resolve(idFetcher(id, context, info)))),
   };
 
-  return { nodeInterface, nodeField, nodesField };
+  return {nodeInterface, nodeField, nodesField};
 }
 
 type ResolvedGlobalId = {
   type: string,
-  id: string
+  id: string,
 };
 
 /**
@@ -111,7 +94,7 @@ type ResolvedGlobalId = {
  * "global ID" that is unique among all types.
  */
 export function toGlobalId(type: string, id: string): string {
-  return base64([ type, id ].join(':'));
+  return base64([type, id].join(':'));
 }
 
 /**
@@ -123,7 +106,7 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
   const delimiterPos = unbasedGlobalId.indexOf(':');
   return {
     type: unbasedGlobalId.substring(0, delimiterPos),
-    id: unbasedGlobalId.substring(delimiterPos + 1)
+    id: unbasedGlobalId.substring(delimiterPos + 1),
   };
 }
 
@@ -140,9 +123,10 @@ export function globalIdField(
   return {
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
-    resolve: (obj, args, context, info) => toGlobalId(
-      typeName || info.parentType.name,
-      idFetcher ? idFetcher(obj, context, info) : obj.id
-    )
+    resolve: (obj, args, context, info) =>
+      toGlobalId(
+        typeName || info.parentType.name,
+        idFetcher ? idFetcher(obj, context, info) : obj.id
+      ),
   };
 }

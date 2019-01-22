@@ -15,9 +15,7 @@ import {
   graphql,
 } from 'graphql';
 
-import {
-  connectionFromArray,
-} from '../arrayconnection.js';
+import {connectionFromArray} from '../arrayconnection.js';
 
 import {
   backwardConnectionArgs,
@@ -26,15 +24,15 @@ import {
   forwardConnectionArgs,
 } from '../connection.js';
 
-import { expect } from 'chai';
-import { describe, it } from 'mocha';
+import {expect} from 'chai';
+import {describe, it} from 'mocha';
 
 const allUsers = [
-  { name: 'Dan', friends: [ 1, 2, 3, 4 ] },
-  { name: 'Nick', friends: [ 0, 2, 3, 4 ] },
-  { name: 'Lee', friends: [ 0, 1, 3, 4 ] },
-  { name: 'Joe', friends: [ 0, 1, 2, 4 ] },
-  { name: 'Tim', friends: [ 0, 1, 2, 3 ] },
+  {name: 'Dan', friends: [1, 2, 3, 4]},
+  {name: 'Nick', friends: [0, 2, 3, 4]},
+  {name: 'Lee', friends: [0, 1, 3, 4]},
+  {name: 'Joe', friends: [0, 1, 2, 4]},
+  {name: 'Tim', friends: [0, 1, 2, 3]},
 ];
 
 const userType = new GraphQLObjectType({
@@ -68,14 +66,14 @@ const {connectionType: friendConnection} = connectionDefinitions({
   edgeFields: () => ({
     friendshipTime: {
       type: GraphQLString,
-      resolve: () => 'Yesterday'
-    }
+      resolve: () => 'Yesterday',
+    },
   }),
   connectionFields: () => ({
     totalCount: {
       type: GraphQLInt,
-      resolve: () => allUsers.length - 1
-    }
+      resolve: () => allUsers.length - 1,
+    },
   }),
 });
 
@@ -91,7 +89,7 @@ const queryType = new GraphQLObjectType({
       type: userType,
       resolve: () => allUsers[0],
     },
-  })
+  }),
 });
 
 const schema = new GraphQLSchema({
@@ -123,21 +121,21 @@ describe('connectionDefinition()', () => {
             {
               friendshipTime: 'Yesterday',
               node: {
-                name: 'Nick'
-              }
+                name: 'Nick',
+              },
             },
             {
               friendshipTime: 'Yesterday',
               node: {
-                name: 'Lee'
-              }
+                name: 'Lee',
+              },
             },
-          ]
-        }
-      }
+          ],
+        },
+      },
     };
     const result = await graphql(schema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 
   it('works with forwardConnectionArgs', async () => {
@@ -160,20 +158,20 @@ describe('connectionDefinition()', () => {
           edges: [
             {
               node: {
-                name: 'Nick'
-              }
+                name: 'Nick',
+              },
             },
             {
               node: {
-                name: 'Lee'
-              }
+                name: 'Lee',
+              },
             },
-          ]
-        }
-      }
+          ],
+        },
+      },
     };
     const result = await graphql(schema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 
   it('works with backwardConnectionArgs', async () => {
@@ -196,19 +194,19 @@ describe('connectionDefinition()', () => {
           edges: [
             {
               node: {
-                name: 'Joe'
-              }
+                name: 'Joe',
+              },
             },
             {
               node: {
-                name: 'Tim'
-              }
+                name: 'Tim',
+              },
             },
-          ]
-        }
-      }
+          ],
+        },
+      },
     };
     const result = await graphql(schema, query);
-    expect(result).to.deep.equal({ data: expected });
+    expect(result).to.deep.equal({data: expected});
   });
 });
