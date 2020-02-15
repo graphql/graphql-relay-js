@@ -2,6 +2,7 @@
 .*/coverage/.*
 .*/scripts/.*
 .*/node_modules/flow-bin/.*
+<PROJECT_ROOT>/\.git/.*
 
 [include]
 
@@ -10,4 +11,4 @@
 [options]
 
 [version]
-^0.91.0
+^0.118.0
