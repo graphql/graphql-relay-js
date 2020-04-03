@@ -2,10 +2,9 @@ language: node_js
 
 # https://github.com/nodejs/LTS
 node_js:
+  - '13'
+  - '12'
   - '10'
-  - '9'
-  - '8'
-  - '6'
 
 git:
   depth: 5
