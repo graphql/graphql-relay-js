@@ -204,7 +204,7 @@ rules:
   no-undef: error
   no-undef-init: error
   no-undefined: off
-  no-unused-vars: off # TODO [error, { vars: all, args: all, argsIgnorePattern: '^_' }]
+  no-unused-vars: [error, { vars: all, args: all, argsIgnorePattern: '^_' }]
   no-use-before-define: off
 
   # Stylistic Issues

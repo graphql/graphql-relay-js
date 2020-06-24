@@ -56,7 +56,7 @@ export function nodeDefinitions<TContext>(
         description: 'The ID of an object',
       },
     },
-    resolve: (obj, { id }, context, info) => idFetcher(id, context, info),
+    resolve: (_obj, { id }, context, info) => idFetcher(id, context, info),
   };
 
   const nodesField = {
@@ -70,7 +70,7 @@ export function nodeDefinitions<TContext>(
         description: 'The IDs of objects',
       },
     },
-    resolve: (obj, { ids }, context, info) =>
+    resolve: (_obj, { ids }, context, info) =>
       Promise.all(
         ids.map((id) => Promise.resolve(idFetcher(id, context, info))),
       ),
@@ -118,7 +118,7 @@ export function globalIdField(
   return {
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
-    resolve: (obj, args, context, info) =>
+    resolve: (obj, _args, context, info) =>
       toGlobalId(
         typeName ?? info.parentType.name,
         idFetcher ? idFetcher(obj, context, info) : obj.id,

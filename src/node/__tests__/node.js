@@ -38,7 +38,7 @@ const photoData = {
 };
 
 const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
-  (id, context, info) => {
+  (id, _context, info) => {
     expect(info.schema).to.equal(schema);
     if (userData[id]) {
       return userData[id];
