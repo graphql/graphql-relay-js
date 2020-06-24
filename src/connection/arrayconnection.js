@@ -89,8 +89,8 @@ export function connectionFromArraySlice<T>(
 
   const firstEdge = edges[0];
   const lastEdge = edges[edges.length - 1];
-  const lowerBound = after ? afterOffset + 1 : 0;
-  const upperBound = before ? beforeOffset : arrayLength;
+  const lowerBound = after != null ? afterOffset + 1 : 0;
+  const upperBound = before != null ? beforeOffset : arrayLength;
   return {
     edges,
     pageInfo: {
