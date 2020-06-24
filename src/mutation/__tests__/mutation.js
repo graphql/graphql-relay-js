@@ -116,8 +116,7 @@ describe('mutationWithClientMutationId()', () => {
       errors: [
         {
           message:
-            'Field "simpleMutation" argument "input" of type ' +
-            '"SimpleMutationInput!" is required but not provided.',
+            'Field "simpleMutation" argument "input" of type "SimpleMutationInput!" is required, but it was not provided.',
           locations: [{ line: 3, column: 9 }],
         },
       ],
