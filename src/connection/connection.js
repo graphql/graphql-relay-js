@@ -58,19 +58,19 @@ export const connectionArgs: GraphQLFieldConfigArgumentMap = {
   ...backwardConnectionArgs,
 };
 
-type ConnectionConfig = {
+type ConnectionConfig = {|
   name?: ?string,
   nodeType: GraphQLObjectType,
   resolveNode?: ?GraphQLFieldResolver<*, *>,
   resolveCursor?: ?GraphQLFieldResolver<*, *>,
   edgeFields?: ?Thunk<GraphQLFieldConfigMap<*, *>>,
   connectionFields?: ?Thunk<GraphQLFieldConfigMap<*, *>>,
-};
+|};
 
-type GraphQLConnectionDefinitions = {
+type GraphQLConnectionDefinitions = {|
   edgeType: GraphQLObjectType,
   connectionType: GraphQLObjectType,
-};
+|};
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'

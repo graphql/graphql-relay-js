@@ -22,11 +22,11 @@ import type {
 
 import { base64, unbase64 } from '../utils/base64.js';
 
-type GraphQLNodeDefinitions<TContext> = {
+type GraphQLNodeDefinitions<TContext> = {|
   nodeInterface: GraphQLInterfaceType,
   nodeField: GraphQLFieldConfig<*, TContext>,
   nodesField: GraphQLFieldConfig<*, TContext>,
-};
+|};
 
 /**
  * Given a function to map from an ID to an underlying object, and a function
@@ -86,10 +86,10 @@ export function nodeDefinitions<TContext>(
   return { nodeInterface, nodeField, nodesField };
 }
 
-type ResolvedGlobalId = {
+type ResolvedGlobalId = {|
   type: string,
   id: string,
-};
+|};
 
 /**
  * Takes a type name and an ID specific to that type name, and returns a

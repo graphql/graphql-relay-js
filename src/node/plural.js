@@ -16,7 +16,7 @@ import type {
   GraphQLResolveInfo,
 } from 'graphql';
 
-type PluralIdentifyingRootFieldConfig = {
+type PluralIdentifyingRootFieldConfig = {|
   argName: string,
   inputType: GraphQLInputType,
   outputType: GraphQLOutputType,
@@ -26,7 +26,7 @@ type PluralIdentifyingRootFieldConfig = {
     info: GraphQLResolveInfo,
   ) => ?any,
   description?: ?string,
-};
+|};
 
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig,
