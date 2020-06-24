@@ -7,6 +7,9 @@ env:
 reportUnusedDisableDirectives: true
 plugins:
   - flowtype
+  - node
+  - istanbul
+  - import
 settings:
   flowtype:
     onlyFilesWithFlowAnnotation: true
@@ -61,6 +64,122 @@ rules:
   flowtype/space-before-generic-bracket: off
   flowtype/space-before-type-colon: off
   flowtype/union-intersection-spacing: off
+
+  ##############################################################################
+  # `eslint-plugin-istanbul` rule list based on `v0.1.1`
+  # https://github.com/istanbuljs/eslint-plugin-istanbul#rules
+  ##############################################################################
+
+  istanbul/no-ignore-file: error
+  istanbul/prefer-ignore-reason: error
+
+  ##############################################################################
+  # `eslint-plugin-node` rule list based on `v11.1.x`
+  ##############################################################################
+
+  # Possible Errors
+  # https://github.com/mysticatea/eslint-plugin-node#possible-errors
+
+  node/handle-callback-err: [error, error]
+  node/no-callback-literal: error
+  node/no-exports-assign: error
+  node/no-extraneous-import: error
+  node/no-extraneous-require: error
+  node/no-missing-import: error
+  node/no-missing-require: error
+  node/no-new-require: error
+  node/no-path-concat: error
+  node/no-process-exit: off
+  node/no-unpublished-bin: error
+  node/no-unpublished-import: error
+  node/no-unpublished-require: error
+  node/no-unsupported-features/es-builtins: error
+  node/no-unsupported-features/es-syntax: off # TODO enable
+  node/no-unsupported-features/node-builtins: error
+  node/process-exit-as-throw: error
+  node/shebang: error
+
+  # Best Practices
+  # https://github.com/mysticatea/eslint-plugin-node#best-practices
+  node/no-deprecated-api: error
+
+  # Stylistic Issues
+  # https://github.com/mysticatea/eslint-plugin-node#stylistic-issues
+
+  node/callback-return: error
+  node/exports-style: off # TODO consider
+  node/file-extension-in-import: off # TODO consider
+  node/global-require: error
+  node/no-mixed-requires: error
+  node/no-process-env: off
+  node/no-restricted-import: off
+  node/no-restricted-require: off
+  node/no-sync: error
+  node/prefer-global/buffer: error
+  node/prefer-global/console: error
+  node/prefer-global/process: error
+  node/prefer-global/text-decoder: error
+  node/prefer-global/text-encoder: error
+  node/prefer-global/url-search-params: error
+  node/prefer-global/url: error
+  node/prefer-promises/dns: off
+  node/prefer-promises/fs: off
+
+  ##############################################################################
+  # `eslint-plugin-import` rule list based on `v2.21.x`
+  ##############################################################################
+
+  # Static analysis
+  # https://github.com/benmosher/eslint-plugin-import#static-analysis
+  import/no-unresolved: error
+  import/named: error
+  import/default: error
+  import/namespace: error
+  import/no-restricted-paths: off
+  import/no-absolute-path: error
+  import/no-dynamic-require: error
+  import/no-internal-modules: off
+  import/no-webpack-loader-syntax: error
+  import/no-self-import: error
+  import/no-cycle: error
+  import/no-useless-path-segments: error
+  import/no-relative-parent-imports: off
+
+  # Helpful warnings
+  # https://github.com/benmosher/eslint-plugin-import#helpful-warnings
+  import/export: error
+  import/no-named-as-default: error
+  import/no-named-as-default-member: error
+  import/no-deprecated: error
+  import/no-extraneous-dependencies: [error, { devDependencies: false }]
+  import/no-mutable-exports: error
+  import/no-unused-modules: error
+
+  # Module systems
+  # https://github.com/benmosher/eslint-plugin-import#module-systems
+  import/unambiguous: error
+  import/no-commonjs: error
+  import/no-amd: error
+  import/no-nodejs-modules: error
+
+  # Style guide
+  # https://github.com/benmosher/eslint-plugin-import#style-guide
+  import/first: error
+  import/exports-last: off
+  import/no-duplicates: error
+  import/no-namespace: error
+  import/extensions: off # TODO [error, never] # TODO: switch to ignorePackages
+  import/order: off # TODO [error, { newlines-between: always-and-inside-groups }]
+  import/newline-after-import: error
+  import/prefer-default-export: off
+  import/max-dependencies: off
+  import/no-unassigned-import: error
+  import/no-named-default: error
+  import/no-default-export: off
+  import/no-named-export: off
+  import/no-anonymous-default-export: error
+  import/group-exports: off
+  import/dynamic-import-chunkname: off
 
   ##############################################################################
   # ESLint builtin rules list based on `v7.2.x`
@@ -357,3 +476,6 @@ overrides:
     rules:
       no-await-in-loop: off
       no-console: off
+  - files: '**/__*__/**'
+    rules:
+      import/no-extraneous-dependencies: [error, { devDependencies: true }]
