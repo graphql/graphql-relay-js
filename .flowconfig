@@ -29,8 +29,8 @@ unsafe-getters-setters=error
 unnecessary-optional-chain=error
 unnecessary-invariant=error
 signature-verification-failure=error
-implicit-inexact-object=off
-ambiguous-object-type=off
+implicit-inexact-object=error
+ambiguous-object-type=error
 uninitialized-instance-property=error
 unsafe-addition=error
 
