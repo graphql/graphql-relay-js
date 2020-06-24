@@ -76,7 +76,7 @@ const simpleRootValueMutation = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: (params, context, { rootValue }) => rootValue,
+  mutateAndGetPayload: (_params, _context, { rootValue }) => rootValue,
 });
 
 const queryType = new GraphQLObjectType({

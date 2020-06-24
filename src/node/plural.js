@@ -36,7 +36,7 @@ export function pluralIdentifyingRootField(
     description: config.description,
     type: new GraphQLList(config.outputType),
     args: inputArgs,
-    resolve(obj, args, context, info) {
+    resolve(_obj, args, context, info) {
       const inputs = args[config.argName];
       return Promise.all(
         inputs.map((input) =>
