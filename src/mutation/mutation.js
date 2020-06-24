@@ -96,13 +96,12 @@ export function mutationWithClientMutationId(
     args: {
       input: { type: new GraphQLNonNull(inputType) },
     },
-    resolve: (_, { input }, context, info) => {
-      return Promise.resolve(mutateAndGetPayload(input, context, info)).then(
+    resolve: (_, { input }, context, info) =>
+      Promise.resolve(mutateAndGetPayload(input, context, info)).then(
         (payload) => {
           payload.clientMutationId = input.clientMutationId;
           return payload;
         },
-      );
-    },
+      ),
   };
 }

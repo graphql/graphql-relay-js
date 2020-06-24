@@ -26,12 +26,8 @@ const userData = {
 };
 
 const { nodeField, nodeInterface } = nodeDefinitions(
-  (id) => {
-    return userData[id];
-  },
-  () => {
-    return userType;
-  },
+  (id) => userData[id],
+  () => userType,
 );
 
 const userType = new GraphQLObjectType({
