@@ -1,0 +1,31 @@
+{
+  "presets": [["@babel/preset-env", { "targets": { "node": "current" } }]],
+  "plugins": ["@babel/plugin-transform-flow-strip-types"],
+  "overrides": [
+    {
+      "exclude": ["**/__tests__/**/*"],
+      "presets": ["@babel/preset-env"],
+      "plugins": [
+        ["@babel/plugin-transform-classes", { "loose": true }],
+        ["@babel/plugin-transform-destructuring", { "loose": true }],
+        ["@babel/plugin-transform-spread", { "loose": true }],
+        ["@babel/plugin-transform-for-of", { "assumeArray": true }]
+      ],
+      "env": {
+        "cjs": {
+          "presets": [["@babel/preset-env", { "modules": "commonjs" }]],
+          "plugins": ["./resources/inline-invariant"]
+        },
+        "mjs": {
+          "presets": [["@babel/preset-env", { "modules": false }]],
+          "plugins": [
+            [
+              "./resources/add-extension-to-import-paths",
+              { "extension": "mjs" }
+            ]
+          ]
+        }
+      }
+    }
+  ]
+}
