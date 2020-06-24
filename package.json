@@ -40,7 +40,7 @@
     "@babel/core": "7.10.3",
     "@babel/node": "7.10.3",
     "@babel/plugin-transform-flow-strip-types": "7.10.1",
-    "@babel/preset-env": "7.10.2",
+    "@babel/preset-env": "7.10.3",
     "@babel/register": "7.10.3",
     "babel-eslint": "10.1.0",
     "chai": "4.2.0",
