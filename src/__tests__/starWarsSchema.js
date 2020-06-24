@@ -15,16 +15,16 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import {nodeDefinitions, globalIdField, fromGlobalId} from '../node/node.js';
+import { nodeDefinitions, globalIdField, fromGlobalId } from '../node/node.js';
 
-import {connectionFromArray} from '../connection/arrayconnection.js';
+import { connectionFromArray } from '../connection/arrayconnection.js';
 
 import {
   connectionArgs,
   connectionDefinitions,
 } from '../connection/connection.js';
 
-import {mutationWithClientMutationId} from '../mutation/mutation.js';
+import { mutationWithClientMutationId } from '../mutation/mutation.js';
 
 import {
   getFaction,
@@ -115,9 +115,9 @@ import {
  * The first method is the way we resolve an ID to its object. The second is the
  * way we resolve an object that implements node to its type.
  */
-const {nodeInterface, nodeField} = nodeDefinitions(
-  globalId => {
-    const {type, id} = fromGlobalId(globalId);
+const { nodeInterface, nodeField } = nodeDefinitions(
+  (globalId) => {
+    const { type, id } = fromGlobalId(globalId);
     if (type === 'Faction') {
       return getFaction(id);
     }
@@ -125,9 +125,9 @@ const {nodeInterface, nodeField} = nodeDefinitions(
       return getShip(id);
     }
   },
-  obj => {
+  (obj) => {
     return obj.ships ? factionType : shipType;
-  }
+  },
 );
 
 /**
@@ -168,7 +168,7 @@ const shipType = new GraphQLObjectType({
  *     node: Ship
  *   }
  */
-const {connectionType: shipConnection} = connectionDefinitions({
+const { connectionType: shipConnection } = connectionDefinitions({
   nodeType: shipType,
 });
 
@@ -258,14 +258,14 @@ const shipMutation = mutationWithClientMutationId({
   outputFields: {
     ship: {
       type: shipType,
-      resolve: payload => getShip(payload.shipId),
+      resolve: (payload) => getShip(payload.shipId),
     },
     faction: {
       type: factionType,
-      resolve: payload => getFaction(payload.factionId),
+      resolve: (payload) => getFaction(payload.factionId),
     },
   },
-  mutateAndGetPayload: ({shipName, factionId}) => {
+  mutateAndGetPayload: ({ shipName, factionId }) => {
     const newShip = createShip(shipName, factionId);
     return {
       shipId: newShip.id,

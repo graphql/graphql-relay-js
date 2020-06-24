@@ -7,10 +7,10 @@
  * @flow
  */
 
-import {expect} from 'chai';
-import {describe, it} from 'mocha';
-import {StarWarsSchema} from './starWarsSchema.js';
-import {graphql} from 'graphql';
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import { StarWarsSchema } from './starWarsSchema.js';
+import { graphql } from 'graphql';
 
 // 80+ char lines are useful in describe/it, so ignore in this file.
 /* eslint-disable max-len */
@@ -46,7 +46,7 @@ describe('Star Wars connections', () => {
       },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({data: expected});
+    expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches the first two ships of the rebels with a cursor', async () => {
@@ -87,7 +87,7 @@ describe('Star Wars connections', () => {
       },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({data: expected});
+    expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches the next three ships of the rebels with a cursor', async () => {
@@ -134,7 +134,7 @@ describe('Star Wars connections', () => {
       },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({data: expected});
+    expect(result).to.deep.equal({ data: expected });
   });
 
   it('fetches no ships of the rebels at the end of connection', async () => {
@@ -162,7 +162,7 @@ describe('Star Wars connections', () => {
       },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({data: expected});
+    expect(result).to.deep.equal({ data: expected });
   });
 
   it('identifies the end of the list', async () => {
@@ -238,6 +238,6 @@ describe('Star Wars connections', () => {
       },
     };
     const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({data: expected});
+    expect(result).to.deep.equal({ data: expected });
   });
 });

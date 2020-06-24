@@ -7,8 +7,8 @@
  * @flow
  */
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 
 import {
   GraphQLInt,
@@ -19,7 +19,7 @@ import {
   graphql,
 } from 'graphql';
 
-import {fromGlobalId, globalIdField, nodeDefinitions} from '../node';
+import { fromGlobalId, globalIdField, nodeDefinitions } from '../node';
 
 const userData = {
   '1': {
@@ -54,9 +54,9 @@ const postData = {
   },
 };
 
-const {nodeField, nodeInterface} = nodeDefinitions(
-  globalId => {
-    const {type, id} = fromGlobalId(globalId);
+const { nodeField, nodeInterface } = nodeDefinitions(
+  (globalId) => {
+    const { type, id } = fromGlobalId(globalId);
     if (type === 'User') {
       return userData[id];
     }
@@ -67,7 +67,7 @@ const {nodeField, nodeInterface} = nodeDefinitions(
       return postData[id];
     }
   },
-  obj => {
+  (obj) => {
     if (obj.name) {
       return userType;
     }
@@ -77,7 +77,7 @@ const {nodeField, nodeInterface} = nodeDefinitions(
     if (obj.text) {
       return postType;
     }
-  }
+  },
 );
 
 const userType = new GraphQLObjectType({
@@ -95,7 +95,7 @@ const photoType = new GraphQLObjectType({
   name: 'Photo',
   interfaces: [nodeInterface],
   fields: () => ({
-    id: globalIdField('Photo', obj => obj.photoId),
+    id: globalIdField('Photo', (obj) => obj.photoId),
     width: {
       type: GraphQLInt,
     },

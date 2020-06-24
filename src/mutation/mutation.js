@@ -25,7 +25,7 @@ import type {
 type mutationFn = (
   object: any,
   ctx: any,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) => Promise<any> | any;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
@@ -63,7 +63,7 @@ type MutationConfig = {
  * provided MutationConfig.
  */
 export function mutationWithClientMutationId(
-  config: MutationConfig
+  config: MutationConfig,
 ): GraphQLFieldConfig<*, *> {
   const {
     name,
@@ -101,14 +101,14 @@ export function mutationWithClientMutationId(
     description,
     deprecationReason,
     args: {
-      input: {type: new GraphQLNonNull(inputType)},
+      input: { type: new GraphQLNonNull(inputType) },
     },
-    resolve: (_, {input}, context, info) => {
+    resolve: (_, { input }, context, info) => {
       return Promise.resolve(mutateAndGetPayload(input, context, info)).then(
-        payload => {
+        (payload) => {
           payload.clientMutationId = input.clientMutationId;
           return payload;
-        }
+        },
       );
     },
   };
