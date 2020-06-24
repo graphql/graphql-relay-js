@@ -80,9 +80,9 @@ export function connectionDefinitions(
   config: ConnectionConfig,
 ): GraphQLConnectionDefinitions {
   const { nodeType } = config;
-  const name = config.name || nodeType.name;
-  const edgeFields = config.edgeFields || {};
-  const connectionFields = config.connectionFields || {};
+  const name = config.name ?? nodeType.name;
+  const edgeFields = config.edgeFields ?? {};
+  const connectionFields = config.connectionFields ?? {};
   const resolveNode = config.resolveNode;
   const resolveCursor = config.resolveCursor;
   const edgeType = new GraphQLObjectType({

@@ -120,7 +120,7 @@ export function globalIdField(
     type: new GraphQLNonNull(GraphQLID),
     resolve: (obj, args, context, info) =>
       toGlobalId(
-        typeName || info.parentType.name,
+        typeName ?? info.parentType.name,
         idFetcher ? idFetcher(obj, context, info) : obj.id,
       ),
   };

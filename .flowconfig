@@ -14,7 +14,7 @@
 
 [lints]
 sketchy-null-bool=error
-sketchy-null-string=off
+sketchy-null-string=error
 sketchy-null-number=error
 sketchy-null-mixed=error
 sketchy-number=error
