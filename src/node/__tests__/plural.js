@@ -34,7 +34,7 @@ const queryType = new GraphQLObjectType({
       outputType: userType,
       resolveSingleInput: (username, { lang }) => ({
         username,
-        url: 'www.facebook.com/' + username + '?lang=' + lang,
+        url: `www.facebook.com/${username}?lang=${lang}`,
       }),
     }),
   }),
@@ -48,12 +48,14 @@ const context = { lang: 'en' };
 
 describe('pluralIdentifyingRootField()', () => {
   it('allows fetching', async () => {
-    const query = `{
-      usernames(usernames:[ "dschafer", "leebyron", "schrockn" ]) {
-        username
-        url
+    const query = `
+      {
+        usernames(usernames:[ "dschafer", "leebyron", "schrockn" ]) {
+          username
+          url
+        }
       }
-    }`;
+    `;
 
     return expect(await graphql(schema, query, null, context)).to.deep.equal({
       data: {
@@ -76,38 +78,40 @@ describe('pluralIdentifyingRootField()', () => {
   });
 
   it('correctly introspects', async () => {
-    const query = `{
-      __schema {
-        queryType {
-          fields {
-            name
-            args {
+    const query = `
+      {
+        __schema {
+          queryType {
+            fields {
               name
-              type {
-                kind
-                ofType {
+              args {
+                name
+                type {
                   kind
                   ofType {
                     kind
                     ofType {
-                      name
                       kind
+                      ofType {
+                        name
+                        kind
+                      }
                     }
                   }
                 }
               }
-            }
-            type {
-              kind
-              ofType {
-                name
+              type {
                 kind
+                ofType {
+                  name
+                  kind
+                }
               }
             }
           }
         }
       }
-    }`;
+    `;
 
     return expect(await graphql(schema, query)).to.deep.equal({
       data: {

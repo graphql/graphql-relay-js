@@ -208,19 +208,21 @@ describe('mutationWithClientMutationId()', () => {
 
   describe('introspection', () => {
     it('contains correct input', async () => {
-      const query = `{
-        __type(name: "SimpleMutationInput") {
-          name
-          kind
-          inputFields {
+      const query = `
+        {
+          __type(name: "SimpleMutationInput") {
             name
-            type {
+            kind
+            inputFields {
               name
-              kind
+              type {
+                name
+                kind
+              }
             }
           }
         }
-      }`;
+      `;
 
       expect(await graphql(schema, query)).to.deep.equal({
         data: {
@@ -242,19 +244,21 @@ describe('mutationWithClientMutationId()', () => {
     });
 
     it('contains correct payload', async () => {
-      const query = `{
-        __type(name: "SimpleMutationPayload") {
-          name
-          kind
-          fields {
+      const query = `
+        {
+          __type(name: "SimpleMutationPayload") {
             name
-            type {
+            kind
+            fields {
               name
-              kind
+              type {
+                name
+                kind
+              }
             }
           }
         }
-      }`;
+      `;
 
       expect(await graphql(schema, query)).to.deep.equal({
         data: {
@@ -283,30 +287,32 @@ describe('mutationWithClientMutationId()', () => {
     });
 
     it('contains correct field', async () => {
-      const query = `{
-        __schema {
-          mutationType {
-            fields {
-              name
-              args {
+      const query = `
+        {
+          __schema {
+            mutationType {
+              fields {
                 name
+                args {
+                  name
+                  type {
+                    name
+                    kind
+                    ofType {
+                      name
+                      kind
+                    }
+                  }
+                }
                 type {
                   name
                   kind
-                  ofType {
-                    name
-                    kind
-                  }
                 }
-              }
-              type {
-                name
-                kind
               }
             }
           }
         }
-      }`;
+      `;
 
       expect(await graphql(schema, query)).to.deep.equal({
         data: {
@@ -421,16 +427,18 @@ describe('mutationWithClientMutationId()', () => {
     });
 
     it('contains correct descriptions', async () => {
-      const query = `{
-        __schema {
-          mutationType {
-            fields {
-              name
-              description
+      const query = `
+        {
+          __schema {
+            mutationType {
+              fields {
+                name
+                description
+              }
             }
           }
         }
-      }`;
+      `;
 
       return expect(await graphql(schema, query)).to.deep.equal({
         data: {
@@ -465,17 +473,19 @@ describe('mutationWithClientMutationId()', () => {
     });
 
     it('contains correct deprecation reasons', async () => {
-      const query = `{
-        __schema {
-          mutationType {
-            fields(includeDeprecated: true) {
-              name
-              isDeprecated
-              deprecationReason
+      const query = `
+        {
+          __schema {
+            mutationType {
+              fields(includeDeprecated: true) {
+                name
+                isDeprecated
+                deprecationReason
+              }
             }
           }
         }
-      }`;
+      `;
 
       return expect(await graphql(schema, query)).to.deep.equal({
         data: {
