@@ -54,10 +54,10 @@ export const connectionArgs: GraphQLFieldConfigArgumentMap = {
 type ConnectionConfig = {|
   name?: ?string,
   nodeType: GraphQLObjectType,
-  resolveNode?: ?GraphQLFieldResolver<*, *>,
-  resolveCursor?: ?GraphQLFieldResolver<*, *>,
-  edgeFields?: ?Thunk<GraphQLFieldConfigMap<*, *>>,
-  connectionFields?: ?Thunk<GraphQLFieldConfigMap<*, *>>,
+  resolveNode?: ?GraphQLFieldResolver<any, any>,
+  resolveCursor?: ?GraphQLFieldResolver<any, any>,
+  edgeFields?: ?Thunk<GraphQLFieldConfigMap<any, any>>,
+  connectionFields?: ?Thunk<GraphQLFieldConfigMap<any, any>>,
 |};
 
 type GraphQLConnectionDefinitions = {|

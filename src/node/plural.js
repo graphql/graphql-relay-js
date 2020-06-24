@@ -23,7 +23,7 @@ type PluralIdentifyingRootFieldConfig = {|
 
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig,
-): GraphQLFieldConfig<*, *> {
+): GraphQLFieldConfig<mixed, mixed> {
   const inputArgs = {};
   let inputType = config.inputType;
   if (inputType instanceof GraphQLNonNull) {
