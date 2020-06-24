@@ -1,13 +1,44 @@
 [ignore]
-.*/coverage/.*
-.*/scripts/.*
-.*/node_modules/flow-bin/.*
+.*
+!<PROJECT_ROOT>/src
+!<PROJECT_ROOT>/node_modules/chai
+!<PROJECT_ROOT>/node_modules/mocha
+!<PROJECT_ROOT>/node_modules/graphql
 
 [include]
 
+[declarations]
+<PROJECT_ROOT>/node_modules/graphql
+
 [libs]
 
+[lints]
+sketchy-null-bool=error
+sketchy-null-string=off
+sketchy-null-number=error
+sketchy-null-mixed=error
+sketchy-number=error
+untyped-type-import=error
+nonstrict-import=off
+untyped-import=off
+unclear-type=off
+deprecated-type=off
+deprecated-utility=error
+dynamic-export=off
+unsafe-getters-setters=error
+unnecessary-optional-chain=error
+unnecessary-invariant=error
+signature-verification-failure=error
+implicit-inexact-object=off
+ambiguous-object-type=off
+uninitialized-instance-property=error
+unsafe-addition=error
+
 [options]
+include_warnings=true
+module.use_strict=true
+babel_loose_array_spread=true
+esproposal.optional_chaining=enable
 
 [version]
-^0.91.0
+^0.127.0
