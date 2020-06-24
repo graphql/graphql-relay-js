@@ -2,9 +2,6 @@
   "name": "graphql-relay",
   "version": "0.6.0",
   "description": "A library to help construct a graphql-js server supporting react-relay.",
-  "contributors": [
-    "Daniel Schafer <dschafer@fb.com>"
-  ],
   "license": "MIT",
   "homepage": "https://github.com/graphql/graphql-relay-js",
   "bugs": {
