@@ -47,7 +47,7 @@ type MutationConfig = {|
   description?: string,
   deprecationReason?: string,
   inputFields: Thunk<GraphQLInputFieldConfigMap>,
-  outputFields: Thunk<GraphQLFieldConfigMap<*, *>>,
+  outputFields: Thunk<GraphQLFieldConfigMap<any, any>>,
   mutateAndGetPayload: mutationFn,
 |};
 
@@ -57,7 +57,7 @@ type MutationConfig = {|
  */
 export function mutationWithClientMutationId(
   config: MutationConfig,
-): GraphQLFieldConfig<*, *> {
+): GraphQLFieldConfig<mixed, mixed> {
   const {
     name,
     description,
