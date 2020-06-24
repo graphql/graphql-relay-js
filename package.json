@@ -26,12 +26,11 @@
     "prettier:check": "prettier --check .",
     "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check",
     "testonly": "mocha src/**/__tests__/**/*.js",
+    "testonly:cover": "nyc npm run testonly",
     "lint": "eslint src",
     "check": "flow check",
     "build": "rm -rf lib/* && babel src --ignore __tests__ --out-dir lib && npm run build:flow",
-    "build:flow": "find ./src -name '*.js' -not -path '*/__tests__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
-    "cover": "isparta cover --root src --report html mocha src/**/__tests__/**/*.js",
-    "cover:lcov": "isparta cover --root src --report lcovonly mocha src/**/__tests__/**/*.js"
+    "build:flow": "find ./src -name '*.js' -not -path '*/__tests__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done"
   },
   "peerDependencies": {
     "graphql": "^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0"
@@ -45,14 +44,13 @@
     "@babel/register": "7.10.3",
     "babel-eslint": "10.1.0",
     "chai": "4.2.0",
-    "coveralls": "3.0.2",
     "eslint": "^5.5.0",
     "eslint-plugin-babel": "^5.2.0",
     "eslint-plugin-flowtype": "^2.50.0",
     "flow-bin": "0.127.0",
     "graphql": "^14.1.1",
-    "isparta": "4.1.0",
     "mocha": "8.0.1",
+    "nyc": "15.1.0",
     "prettier": "2.0.5"
   }
 }

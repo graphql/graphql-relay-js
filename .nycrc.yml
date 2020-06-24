@@ -1,0 +1,10 @@
+all: true
+include:
+  - 'src/**/*'
+  - 'src/__tests__/starWarsData.js'
+exclude: []
+clean: true
+temp-directory: 'coverage'
+report-dir: 'coverage'
+skip-full: true
+reporter: [json, html, text]
