@@ -131,11 +131,13 @@ const schema = new GraphQLSchema({
 
 describe('global ID fields', () => {
   it('gives different IDs', async () => {
-    const query = `{
-      allObjects {
-        id
+    const query = `
+      {
+        allObjects {
+          id
+        }
       }
-    }`;
+    `;
 
     expect(await graphql(schema, query)).to.deep.equal({
       data: {
@@ -164,26 +166,28 @@ describe('global ID fields', () => {
   });
 
   it('refetches the IDs', async () => {
-    const query = `{
-      user: node(id: "VXNlcjox") {
-        id
-        ... on User {
-          name
-        }
-      },
-      photo: node(id: "UGhvdG86MQ==") {
-        id
-        ... on Photo {
-          width
-        }
-      },
-      post: node(id: "UG9zdDox") {
-        id
-        ... on Post {
-          text
+    const query = `
+      {
+        user: node(id: "VXNlcjox") {
+          id
+          ... on User {
+            name
+          }
+        },
+        photo: node(id: "UGhvdG86MQ==") {
+          id
+          ... on Photo {
+            width
+          }
+        },
+        post: node(id: "UG9zdDox") {
+          id
+          ... on Post {
+            text
+          }
         }
       }
-    }`;
+    `;
 
     expect(await graphql(schema, query)).to.deep.equal({
       data: {
