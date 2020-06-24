@@ -7,8 +7,8 @@
  * @flow
  */
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 
 import {
   GraphQLID,
@@ -19,7 +19,7 @@ import {
   graphql,
 } from 'graphql';
 
-import {nodeDefinitions} from '../node';
+import { nodeDefinitions } from '../node';
 
 const userData = {
   '1': {
@@ -32,13 +32,13 @@ const userData = {
   },
 };
 
-const {nodeField, nodeInterface} = nodeDefinitions(
-  id => {
+const { nodeField, nodeInterface } = nodeDefinitions(
+  (id) => {
     return userData[id];
   },
   () => {
     return userType;
-  }
+  },
 );
 
 const userType = new GraphQLObjectType({

@@ -7,8 +7,8 @@
  * @flow
  */
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 
 import {
   GraphQLID,
@@ -20,7 +20,7 @@ import {
   graphql,
 } from 'graphql';
 
-import {nodeDefinitions} from '../node';
+import { nodeDefinitions } from '../node';
 
 const userData = {
   '1': {
@@ -44,7 +44,7 @@ const photoData = {
   },
 };
 
-const {nodeField, nodesField, nodeInterface} = nodeDefinitions(
+const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
   (id, context, info) => {
     expect(info.schema).to.equal(schema);
     if (userData[id]) {
@@ -54,14 +54,14 @@ const {nodeField, nodesField, nodeInterface} = nodeDefinitions(
       return photoData[id];
     }
   },
-  obj => {
+  (obj) => {
     if (userData[obj.id]) {
       return userType;
     }
     if (photoData[obj.id]) {
       return photoType;
     }
-  }
+  },
 );
 
 const userType = new GraphQLObjectType({

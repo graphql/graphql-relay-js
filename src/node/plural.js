@@ -7,7 +7,7 @@
  * @flow
  */
 
-import {GraphQLList, GraphQLNonNull} from 'graphql';
+import { GraphQLList, GraphQLNonNull } from 'graphql';
 
 import type {
   GraphQLFieldConfig,
@@ -23,13 +23,13 @@ type PluralIdentifyingRootFieldConfig = {
   resolveSingleInput: (
     input: any,
     context: any,
-    info: GraphQLResolveInfo
+    info: GraphQLResolveInfo,
   ) => ?any,
   description?: ?string,
 };
 
 export function pluralIdentifyingRootField(
-  config: PluralIdentifyingRootFieldConfig
+  config: PluralIdentifyingRootFieldConfig,
 ): GraphQLFieldConfig<*, *> {
   const inputArgs = {};
   let inputType = config.inputType;
@@ -46,9 +46,9 @@ export function pluralIdentifyingRootField(
     resolve(obj, args, context, info) {
       const inputs = args[config.argName];
       return Promise.all(
-        inputs.map(input =>
-          Promise.resolve(config.resolveSingleInput(input, context, info))
-        )
+        inputs.map((input) =>
+          Promise.resolve(config.resolveSingleInput(input, context, info)),
+        ),
       );
     },
   };

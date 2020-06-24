@@ -84,9 +84,9 @@ function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
  * and whose nodes are of the specified type.
  */
 export function connectionDefinitions(
-  config: ConnectionConfig
+  config: ConnectionConfig,
 ): GraphQLConnectionDefinitions {
-  const {nodeType} = config;
+  const { nodeType } = config;
   const name = config.name || nodeType.name;
   const edgeFields = config.edgeFields || {};
   const connectionFields = config.connectionFields || {};
@@ -126,7 +126,7 @@ export function connectionDefinitions(
     }),
   });
 
-  return {edgeType, connectionType};
+  return { edgeType, connectionType };
 }
 
 /**

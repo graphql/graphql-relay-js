@@ -20,7 +20,7 @@ import type {
   GraphQLTypeResolver,
 } from 'graphql';
 
-import {base64, unbase64} from '../utils/base64.js';
+import { base64, unbase64 } from '../utils/base64.js';
 
 type GraphQLNodeDefinitions<TContext> = {
   nodeInterface: GraphQLInterfaceType,
@@ -40,7 +40,7 @@ type GraphQLNodeDefinitions<TContext> = {
  */
 export function nodeDefinitions<TContext>(
   idFetcher: (id: string, context: TContext, info: GraphQLResolveInfo) => any,
-  typeResolver?: ?GraphQLTypeResolver<*, TContext>
+  typeResolver?: ?GraphQLTypeResolver<*, TContext>,
 ): GraphQLNodeDefinitions<TContext> {
   const nodeInterface = new GraphQLInterfaceType({
     name: 'Node',
@@ -63,7 +63,7 @@ export function nodeDefinitions<TContext>(
         description: 'The ID of an object',
       },
     },
-    resolve: (obj, {id}, context, info) => idFetcher(id, context, info),
+    resolve: (obj, { id }, context, info) => idFetcher(id, context, info),
   };
 
   const nodesField = {
@@ -72,16 +72,18 @@ export function nodeDefinitions<TContext>(
     args: {
       ids: {
         type: new GraphQLNonNull(
-          new GraphQLList(new GraphQLNonNull(GraphQLID))
+          new GraphQLList(new GraphQLNonNull(GraphQLID)),
         ),
         description: 'The IDs of objects',
       },
     },
-    resolve: (obj, {ids}, context, info) =>
-      Promise.all(ids.map(id => Promise.resolve(idFetcher(id, context, info)))),
+    resolve: (obj, { ids }, context, info) =>
+      Promise.all(
+        ids.map((id) => Promise.resolve(idFetcher(id, context, info))),
+      ),
   };
 
-  return {nodeInterface, nodeField, nodesField};
+  return { nodeInterface, nodeField, nodesField };
 }
 
 type ResolvedGlobalId = {
@@ -118,7 +120,7 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
  */
 export function globalIdField(
   typeName?: ?string,
-  idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string
+  idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string,
 ): GraphQLFieldConfig<*, *> {
   return {
     description: 'The ID of an object',
@@ -126,7 +128,7 @@ export function globalIdField(
     resolve: (obj, args, context, info) =>
       toGlobalId(
         typeName || info.parentType.name,
-        idFetcher ? idFetcher(obj, context, info) : obj.id
+        idFetcher ? idFetcher(obj, context, info) : obj.id,
       ),
   };
 }

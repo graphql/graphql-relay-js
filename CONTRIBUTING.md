@@ -1,5 +1,4 @@
-Contributing
-============
+# Contributing
 
 After cloning this repo, ensure dependencies are installed by running:
 

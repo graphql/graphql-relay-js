@@ -10,12 +10,12 @@
 // 80+ char lines are useful in describe/it, so ignore in this file.
 /* eslint-disable max-len */
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 
-import {GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql} from 'graphql';
+import { GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql } from 'graphql';
 
-import {mutationWithClientMutationId} from '../mutation';
+import { mutationWithClientMutationId } from '../mutation';
 
 const simpleMutation = mutationWithClientMutationId({
   name: 'SimpleMutation',
@@ -25,7 +25,7 @@ const simpleMutation = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: () => ({result: 1}),
+  mutateAndGetPayload: () => ({ result: 1 }),
 });
 
 const simpleMutationWithDescription = mutationWithClientMutationId({
@@ -37,7 +37,7 @@ const simpleMutationWithDescription = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: () => ({result: 1}),
+  mutateAndGetPayload: () => ({ result: 1 }),
 });
 
 const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
@@ -48,7 +48,7 @@ const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: () => ({result: 1}),
+  mutateAndGetPayload: () => ({ result: 1 }),
   deprecationReason: 'Just because',
 });
 
@@ -64,7 +64,7 @@ const simpleMutationWithThunkFields = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   }),
-  mutateAndGetPayload: ({inputData}) => ({result: inputData}),
+  mutateAndGetPayload: ({ inputData }) => ({ result: inputData }),
 });
 
 const simplePromiseMutation = mutationWithClientMutationId({
@@ -75,7 +75,7 @@ const simplePromiseMutation = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: () => Promise.resolve({result: 1}),
+  mutateAndGetPayload: () => Promise.resolve({ result: 1 }),
 });
 
 const simpleRootValueMutation = mutationWithClientMutationId({
@@ -86,13 +86,13 @@ const simpleRootValueMutation = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: (params, context, {rootValue}) => rootValue,
+  mutateAndGetPayload: (params, context, { rootValue }) => rootValue,
 });
 
 const queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    query: {type: queryType},
+    query: { type: queryType },
   }),
 });
 
@@ -128,7 +128,7 @@ describe('mutationWithClientMutationId()', () => {
           message:
             'Field "simpleMutation" argument "input" of type ' +
             '"SimpleMutationInput!" is required but not provided.',
-          locations: [{line: 3, column: 9}],
+          locations: [{ line: 3, column: 9 }],
         },
       ],
     });
@@ -207,7 +207,7 @@ describe('mutationWithClientMutationId()', () => {
       }
     `;
 
-    expect(await graphql(schema, query, {result: 1})).to.deep.equal({
+    expect(await graphql(schema, query, { result: 1 })).to.deep.equal({
       data: {
         simpleRootValueMutation: {
           result: 1,

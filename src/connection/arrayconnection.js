@@ -13,7 +13,7 @@ import type {
   ConnectionCursor,
 } from './connectiontypes';
 
-import {base64, unbase64} from '../utils/base64.js';
+import { base64, unbase64 } from '../utils/base64.js';
 
 type ArraySliceMetaInfo = {
   sliceStart: number,
@@ -27,7 +27,7 @@ type ArraySliceMetaInfo = {
  */
 export function connectionFromArray<T>(
   data: $ReadOnlyArray<T>,
-  args: ConnectionArguments
+  args: ConnectionArguments,
 ): Connection<T> {
   return connectionFromArraySlice(data, args, {
     sliceStart: 0,
@@ -41,9 +41,9 @@ export function connectionFromArray<T>(
  */
 export function connectionFromPromisedArray<T>(
   dataPromise: Promise<$ReadOnlyArray<T>>,
-  args: ConnectionArguments
+  args: ConnectionArguments,
 ): Promise<Connection<T>> {
-  return dataPromise.then(data => connectionFromArray(data, args));
+  return dataPromise.then((data) => connectionFromArray(data, args));
 }
 
 /**
@@ -58,10 +58,10 @@ export function connectionFromPromisedArray<T>(
 export function connectionFromArraySlice<T>(
   arraySlice: $ReadOnlyArray<T>,
   args: ConnectionArguments,
-  meta: ArraySliceMetaInfo
+  meta: ArraySliceMetaInfo,
 ): Connection<T> {
-  const {after, before, first, last} = args;
-  const {sliceStart, arrayLength} = meta;
+  const { after, before, first, last } = args;
+  const { sliceStart, arrayLength } = meta;
   const sliceEnd = sliceStart + arraySlice.length;
   const beforeOffset = getOffsetWithDefault(before, arrayLength);
   const afterOffset = getOffsetWithDefault(after, -1);
@@ -86,7 +86,7 @@ export function connectionFromArraySlice<T>(
   // If supplied slice is too large, trim it down before mapping over it.
   const slice = arraySlice.slice(
     Math.max(startOffset - sliceStart, 0),
-    arraySlice.length - (sliceEnd - endOffset)
+    arraySlice.length - (sliceEnd - endOffset),
   );
 
   const edges = slice.map((value, index) => ({
@@ -117,10 +117,10 @@ export function connectionFromArraySlice<T>(
 export function connectionFromPromisedArraySlice<T>(
   dataPromise: Promise<$ReadOnlyArray<T>>,
   args: ConnectionArguments,
-  arrayInfo: ArraySliceMetaInfo
+  arrayInfo: ArraySliceMetaInfo,
 ): Promise<Connection<T>> {
-  return dataPromise.then(data =>
-    connectionFromArraySlice(data, args, arrayInfo)
+  return dataPromise.then((data) =>
+    connectionFromArraySlice(data, args, arrayInfo),
   );
 }
 
@@ -145,7 +145,7 @@ export function cursorToOffset(cursor: ConnectionCursor): number {
  */
 export function cursorForObjectInConnection<T>(
   data: $ReadOnlyArray<T>,
-  object: T
+  object: T,
 ): ?ConnectionCursor {
   const offset = data.indexOf(object);
   if (offset === -1) {
@@ -161,7 +161,7 @@ export function cursorForObjectInConnection<T>(
  */
 export function getOffsetWithDefault(
   cursor?: ?ConnectionCursor,
-  defaultOffset: number
+  defaultOffset: number,
 ): number {
   if (typeof cursor !== 'string') {
     return defaultOffset;

@@ -7,10 +7,10 @@
  * @flow
  */
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 
-import {base64, unbase64} from '../base64';
+import { base64, unbase64 } from '../base64';
 
 const exampleUtf8 = 'Some examples: ❤😀';
 const exampleBase64 = 'U29tZSBleGFtcGxlczog4p2k8J+YgA==';

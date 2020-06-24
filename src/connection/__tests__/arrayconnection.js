@@ -7,8 +7,8 @@
  * @flow
  */
 
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import { describe, it } from 'mocha';
+import { expect } from 'chai';
 
 import {
   connectionFromArray,
@@ -57,10 +57,10 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects a smaller first', () => {
-      const c = connectionFromArray(letters, {first: 2});
+      const c = connectionFromArray(letters, { first: 2 });
       return expect(c).to.deep.equal({
         edges: [
-          {node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA='},
+          { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
           {
             node: 'B',
             cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -76,7 +76,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects an overly large first', () => {
-      const c = connectionFromArray(letters, {first: 10});
+      const c = connectionFromArray(letters, { first: 10 });
       return expect(c).to.deep.equal({
         edges: [
           {
@@ -110,7 +110,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects a smaller last', () => {
-      const c = connectionFromArray(letters, {last: 2});
+      const c = connectionFromArray(letters, { last: 2 });
       return expect(c).to.deep.equal({
         edges: [
           {
@@ -132,7 +132,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects an overly large last', () => {
-      const c = connectionFromArray(letters, {last: 10});
+      const c = connectionFromArray(letters, { last: 10 });
       return expect(c).to.deep.equal({
         edges: [
           {
@@ -451,13 +451,13 @@ describe('connectionFromArray()', () => {
   describe('cursor edge cases', () => {
     it('throws an error if first < 0', () => {
       expect(() => {
-        connectionFromArray(letters, {first: -1});
+        connectionFromArray(letters, { first: -1 });
       }).to.throw('Argument "first" must be a non-negative integer');
     });
 
     it('throws an error if last < 0', () => {
       expect(() => {
-        connectionFromArray(letters, {last: -1});
+        connectionFromArray(letters, { last: -1 });
       }).to.throw('Argument "last" must be a non-negative integer');
     });
 
@@ -603,10 +603,10 @@ describe('connectionFromPromisedArray()', () => {
   });
 
   it('respects a smaller first', async () => {
-    const c = await connectionFromPromisedArray(letters, {first: 2});
+    const c = await connectionFromPromisedArray(letters, { first: 2 });
     return expect(c).to.deep.equal({
       edges: [
-        {node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA='},
+        { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
         {
           node: 'B',
           cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
@@ -635,7 +635,7 @@ describe('connectionFromArraySlice()', () => {
       {
         sliceStart: 1,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
@@ -667,7 +667,7 @@ describe('connectionFromArraySlice()', () => {
       {
         sliceStart: 0,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
@@ -699,7 +699,7 @@ describe('connectionFromArraySlice()', () => {
       {
         sliceStart: 2,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
@@ -727,7 +727,7 @@ describe('connectionFromArraySlice()', () => {
       {
         sliceStart: 1,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
@@ -755,7 +755,7 @@ describe('connectionFromArraySlice()', () => {
       {
         sliceStart: 3,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
@@ -787,7 +787,7 @@ describe('connectionFromArraySlice()', () => {
       {
         sliceStart: 2,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
@@ -819,7 +819,7 @@ describe('connectionFromArraySlice()', () => {
       {
         sliceStart: 3,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
@@ -843,15 +843,15 @@ describe('connectionFromPromisedArraySlice()', () => {
     const letters = Promise.resolve(['A', 'B', 'C']);
     const c = await connectionFromPromisedArraySlice(
       letters,
-      {first: 2},
+      { first: 2 },
       {
         sliceStart: 0,
         arrayLength: 5,
-      }
+      },
     );
     return expect(c).to.deep.equal({
       edges: [
-        {node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA='},
+        { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
         {
           node: 'B',
           cursor: 'YXJyYXljb25uZWN0aW9uOjE=',

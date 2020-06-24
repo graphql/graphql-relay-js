@@ -42,19 +42,21 @@ Helper functions are provided for both building the GraphQL types for connection
 An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
 
 ```js
-var {connectionType: ShipConnection} =
-  connectionDefinitions({nodeType: shipType});
+var { connectionType: ShipConnection } = connectionDefinitions({
+  nodeType: shipType,
+});
 var factionType = new GraphQLObjectType({
   name: 'Faction',
   fields: () => ({
     ships: {
       type: ShipConnection,
       args: connectionArgs,
-      resolve: (faction, args) => connectionFromArray(
-        faction.ships.map((id) => data.Ship[id]),
-        args
-      ),
-    }
+      resolve: (faction, args) =>
+        connectionFromArray(
+          faction.ships.map((id) => data.Ship[id]),
+          args,
+        ),
+    },
   }),
 });
 ```
@@ -65,23 +67,23 @@ This shows adding a `ships` field to the `Faction` object that is a connection. 
 
 Helper functions are provided for both building the GraphQL types for nodes and for implementing global IDs around local IDs.
 
- - `nodeDefinitions` returns the `Node` interface that objects can implement, and returns the `node` root field to include on the query type. To implement this, it takes a function to resolve an ID to an object, and to determine the type of a given object.
- - `toGlobalId` takes a type name and an ID specific to that type name, and returns a "global ID" that is unique among all types.
- - `fromGlobalId` takes the "global ID" created by `toGlobalID`, and returns the type name and ID used to create it.
- - `globalIdField` creates the configuration for an `id` field on a node.
- - `pluralIdentifyingRootField` creates a field that accepts a list of non-ID identifiers (like a username) and maps them to their corresponding objects.
+- `nodeDefinitions` returns the `Node` interface that objects can implement, and returns the `node` root field to include on the query type. To implement this, it takes a function to resolve an ID to an object, and to determine the type of a given object.
+- `toGlobalId` takes a type name and an ID specific to that type name, and returns a "global ID" that is unique among all types.
+- `fromGlobalId` takes the "global ID" created by `toGlobalID`, and returns the type name and ID used to create it.
+- `globalIdField` creates the configuration for an `id` field on a node.
+- `pluralIdentifyingRootField` creates a field that accepts a list of non-ID identifiers (like a username) and maps them to their corresponding objects.
 
 An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
 
 ```js
-var {nodeInterface, nodeField} = nodeDefinitions(
+var { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
-    var {type, id} = fromGlobalId(globalId);
+    var { type, id } = fromGlobalId(globalId);
     return data[type][id];
   },
   (obj) => {
     return obj.ships ? factionType : shipType;
-  }
+  },
 );
 
 var factionType = new GraphQLObjectType({
@@ -89,14 +91,14 @@ var factionType = new GraphQLObjectType({
   fields: () => ({
     id: globalIdField(),
   }),
-  interfaces: [nodeInterface]
+  interfaces: [nodeInterface],
 });
 
 var queryType = new GraphQLObjectType({
   name: 'Query',
   fields: () => ({
-    node: nodeField
-  })
+    node: nodeField,
+  }),
 });
 ```
 
@@ -106,7 +108,7 @@ This uses `nodeDefinitions` to construct the `Node` interface and the `node` fie
 
 A helper function is provided for building mutations with single inputs and client mutation IDs.
 
- - `mutationWithClientMutationId` takes a name, input fields, output fields, and a mutation method to map from the input fields to the output fields, performing the mutation along the way. It then creates and returns a field configuration that can be used as a top-level field on the mutation type.
+- `mutationWithClientMutationId` takes a name, input fields, output fields, and a mutation method to map from the input fields to the output fields, performing the mutation along the way. It then creates and returns a field configuration that can be used as a top-level field on the mutation type.
 
 An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
 
@@ -115,26 +117,26 @@ var shipMutation = mutationWithClientMutationId({
   name: 'IntroduceShip',
   inputFields: {
     shipName: {
-      type: new GraphQLNonNull(GraphQLString)
+      type: new GraphQLNonNull(GraphQLString),
     },
     factionId: {
-      type: new GraphQLNonNull(GraphQLID)
-    }
+      type: new GraphQLNonNull(GraphQLID),
+    },
   },
   outputFields: {
     ship: {
       type: shipType,
-      resolve: (payload) => data['Ship'][payload.shipId]
+      resolve: (payload) => data['Ship'][payload.shipId],
     },
     faction: {
       type: factionType,
-      resolve: (payload) => data['Faction'][payload.factionId]
-    }
+      resolve: (payload) => data['Faction'][payload.factionId],
+    },
   },
-  mutateAndGetPayload: ({shipName, factionId}) => {
+  mutateAndGetPayload: ({ shipName, factionId }) => {
     var newShip = {
       id: getNewShipId(),
-      name: shipName
+      name: shipName,
     };
     data.Ship[newShip.id] = newShip;
     data.Faction[factionId].ships.push(newShip.id);
@@ -142,14 +144,14 @@ var shipMutation = mutationWithClientMutationId({
       shipId: newShip.id,
       factionId: factionId,
     };
-  }
+  },
 });
 
 var mutationType = new GraphQLObjectType({
   name: 'Mutation',
   fields: () => ({
-    introduceShip: shipMutation
-  })
+    introduceShip: shipMutation,
+  }),
 });
 ```
 
