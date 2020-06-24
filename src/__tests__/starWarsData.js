@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 
 /**
  * This defines a basic set of data for our Star Wars Schema.
@@ -80,7 +80,7 @@ const data = {
 };
 
 let nextShip = 9;
-export function createShip(shipName, factionId) {
+export function createShip(shipName: string, factionId: string) {
   const newShip = {
     id: String(nextShip++),
     name: shipName,
@@ -90,11 +90,11 @@ export function createShip(shipName, factionId) {
   return newShip;
 }
 
-export function getShip(id) {
+export function getShip(id: string) {
   return data.Ship[id];
 }
 
-export function getFaction(id) {
+export function getFaction(id: string) {
   return data.Faction[id];
 }
 

@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 
 // Flow types for creating connection types in the schema
 export type {

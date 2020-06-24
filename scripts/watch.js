@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 
 import sane from 'sane';
 import { resolve as resolvePath } from 'path';

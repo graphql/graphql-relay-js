@@ -1,4 +1,4 @@
-// @flow
+// @flow strict
 
 /**
  * An flow type alias for cursors in this implementation.
