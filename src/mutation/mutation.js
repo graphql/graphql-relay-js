@@ -15,7 +15,7 @@ import type {
   Thunk,
 } from 'graphql';
 
-type mutationFn = (
+type MutationFn = (
   object: any,
   ctx: any,
   info: GraphQLResolveInfo,
@@ -48,7 +48,7 @@ type MutationConfig = {|
   deprecationReason?: string,
   inputFields: Thunk<GraphQLInputFieldConfigMap>,
   outputFields: Thunk<GraphQLFieldConfigMap<any, any>>,
-  mutateAndGetPayload: mutationFn,
+  mutateAndGetPayload: MutationFn,
 |};
 
 /**
