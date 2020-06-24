@@ -33,7 +33,6 @@
     "check": "flow check",
     "build": "rm -rf lib/* && babel src --ignore __tests__ --out-dir lib && npm run build:flow",
     "build:flow": "find ./src -name '*.js' -not -path '*/__tests__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done",
-    "watch": "babel-node scripts/watch.js",
     "cover": "babel-node node_modules/.bin/isparta cover --root src --report html node_modules/.bin/_mocha -- $npm_package_options_mocha",
     "cover:lcov": "babel-node node_modules/.bin/isparta cover --root src --report lcovonly node_modules/.bin/_mocha -- $npm_package_options_mocha"
   },
@@ -56,7 +55,6 @@
     "graphql": "^14.1.1",
     "isparta": "4.1.0",
     "mocha": "^5.2.0",
-    "prettier": "2.0.5",
-    "sane": "^2.5.2"
+    "prettier": "2.0.5"
   }
 }
