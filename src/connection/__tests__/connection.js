@@ -10,14 +10,14 @@ import {
   graphqlSync,
 } from 'graphql';
 
-import { connectionFromArray } from '../arrayconnection.js';
+import { connectionFromArray } from '../arrayconnection';
 
 import {
   backwardConnectionArgs,
   connectionArgs,
   connectionDefinitions,
   forwardConnectionArgs,
-} from '../connection.js';
+} from '../connection';
 
 const allUsers = [
   { name: 'Dan', friends: [1, 2, 3, 4] },

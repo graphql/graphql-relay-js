@@ -7,7 +7,7 @@ export type {
   ConnectionCursor,
   Edge,
   PageInfo,
-} from './connection/connectiontypes.js';
+} from './connection/connectiontypes';
 
 // Helpers for creating connection types in the schema
 export {
@@ -15,7 +15,7 @@ export {
   connectionArgs,
   connectionDefinitions,
   forwardConnectionArgs,
-} from './connection/connection.js';
+} from './connection/connection';
 
 // Helpers for creating connections from arrays
 export {
@@ -27,16 +27,16 @@ export {
   cursorToOffset,
   getOffsetWithDefault,
   offsetToCursor,
-} from './connection/arrayconnection.js';
+} from './connection/arrayconnection';
 
 // Helper for creating mutations with client mutation IDs
-export { mutationWithClientMutationId } from './mutation/mutation.js';
+export { mutationWithClientMutationId } from './mutation/mutation';
 
 // Helper for creating node definitions
-export { nodeDefinitions } from './node/node.js';
+export { nodeDefinitions } from './node/node';
 
 // Helper for creating plural identifying root fields
-export { pluralIdentifyingRootField } from './node/plural.js';
+export { pluralIdentifyingRootField } from './node/plural';
 
 // Utilities for creating global IDs in systems that don't have them.
-export { fromGlobalId, globalIdField, toGlobalId } from './node/node.js';
+export { fromGlobalId, globalIdField, toGlobalId } from './node/node';
