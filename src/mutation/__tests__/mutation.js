@@ -440,7 +440,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           __schema: {
             mutationType: {
@@ -487,7 +487,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           __schema: {
             mutationType: {

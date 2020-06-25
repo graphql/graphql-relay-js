@@ -17,7 +17,7 @@ describe('connectionFromArray()', () => {
   describe('basic slicing', () => {
     it('returns all elements without filters', () => {
       const c = connectionFromArray(letters, {});
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'A',
@@ -51,7 +51,7 @@ describe('connectionFromArray()', () => {
 
     it('respects a smaller first', () => {
       const c = connectionFromArray(letters, { first: 2 });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
           {
@@ -70,7 +70,7 @@ describe('connectionFromArray()', () => {
 
     it('respects an overly large first', () => {
       const c = connectionFromArray(letters, { first: 10 });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'A',
@@ -104,7 +104,7 @@ describe('connectionFromArray()', () => {
 
     it('respects a smaller last', () => {
       const c = connectionFromArray(letters, { last: 2 });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'D',
@@ -126,7 +126,7 @@ describe('connectionFromArray()', () => {
 
     it('respects an overly large last', () => {
       const c = connectionFromArray(letters, { last: 10 });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'A',
@@ -165,7 +165,7 @@ describe('connectionFromArray()', () => {
         first: 2,
         after: 'YXJyYXljb25uZWN0aW9uOjE=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'C',
@@ -190,7 +190,7 @@ describe('connectionFromArray()', () => {
         first: 10,
         after: 'YXJyYXljb25uZWN0aW9uOjE=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'C',
@@ -219,7 +219,7 @@ describe('connectionFromArray()', () => {
         last: 2,
         before: 'YXJyYXljb25uZWN0aW9uOjM=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'B',
@@ -244,7 +244,7 @@ describe('connectionFromArray()', () => {
         last: 10,
         before: 'YXJyYXljb25uZWN0aW9uOjM=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'A',
@@ -274,7 +274,7 @@ describe('connectionFromArray()', () => {
         after: 'YXJyYXljb25uZWN0aW9uOjA=',
         before: 'YXJyYXljb25uZWN0aW9uOjQ=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'B',
@@ -300,7 +300,7 @@ describe('connectionFromArray()', () => {
         after: 'YXJyYXljb25uZWN0aW9uOjA=',
         before: 'YXJyYXljb25uZWN0aW9uOjQ=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'B',
@@ -330,7 +330,7 @@ describe('connectionFromArray()', () => {
         after: 'YXJyYXljb25uZWN0aW9uOjA=',
         before: 'YXJyYXljb25uZWN0aW9uOjQ=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'B',
@@ -360,7 +360,7 @@ describe('connectionFromArray()', () => {
         after: 'YXJyYXljb25uZWN0aW9uOjA=',
         before: 'YXJyYXljb25uZWN0aW9uOjQ=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'C',
@@ -386,7 +386,7 @@ describe('connectionFromArray()', () => {
         after: 'YXJyYXljb25uZWN0aW9uOjA=',
         before: 'YXJyYXljb25uZWN0aW9uOjQ=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'B',
@@ -416,7 +416,7 @@ describe('connectionFromArray()', () => {
         after: 'YXJyYXljb25uZWN0aW9uOjA=',
         before: 'YXJyYXljb25uZWN0aW9uOjQ=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'B',
@@ -459,7 +459,7 @@ describe('connectionFromArray()', () => {
         before: 'invalid',
         after: 'invalid',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'A',
@@ -496,7 +496,7 @@ describe('connectionFromArray()', () => {
         before: 'YXJyYXljb25uZWN0aW9uOjYK',
         after: 'YXJyYXljb25uZWN0aW9uOi0xCg==',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [
           {
             node: 'A',
@@ -533,7 +533,7 @@ describe('connectionFromArray()', () => {
         before: 'YXJyYXljb25uZWN0aW9uOjI=',
         after: 'YXJyYXljb25uZWN0aW9uOjQ=',
       });
-      return expect(c).to.deep.equal({
+      expect(c).to.deep.equal({
         edges: [],
         pageInfo: {
           startCursor: null,
@@ -548,12 +548,12 @@ describe('connectionFromArray()', () => {
   describe('cursorForObjectInConnection()', () => {
     it("returns an edge's cursor, given an array and a member object", () => {
       const letterBCursor = cursorForObjectInConnection(letters, 'B');
-      return expect(letterBCursor).to.equal('YXJyYXljb25uZWN0aW9uOjE=');
+      expect(letterBCursor).to.equal('YXJyYXljb25uZWN0aW9uOjE=');
     });
 
     it('returns null, given an array and a non-member object', () => {
       const letterFCursor = cursorForObjectInConnection(letters, 'F');
-      return expect(letterFCursor).to.be.null;
+      expect(letterFCursor).to.equal(null);
     });
   });
 });
@@ -563,7 +563,7 @@ describe('connectionFromPromisedArray()', () => {
 
   it('returns all elements without filters', async () => {
     const c = await connectionFromPromisedArray(letters, {});
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'A',
@@ -597,7 +597,7 @@ describe('connectionFromPromisedArray()', () => {
 
   it('respects a smaller first', async () => {
     const c = await connectionFromPromisedArray(letters, { first: 2 });
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
         {
@@ -630,7 +630,7 @@ describe('connectionFromArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'B',
@@ -662,7 +662,7 @@ describe('connectionFromArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'B',
@@ -694,7 +694,7 @@ describe('connectionFromArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'C',
@@ -722,7 +722,7 @@ describe('connectionFromArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'C',
@@ -750,7 +750,7 @@ describe('connectionFromArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'D',
@@ -782,7 +782,7 @@ describe('connectionFromArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'C',
@@ -814,7 +814,7 @@ describe('connectionFromArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         {
           node: 'D',
@@ -842,7 +842,7 @@ describe('connectionFromPromisedArraySlice()', () => {
         arrayLength: 5,
       },
     );
-    return expect(c).to.deep.equal({
+    expect(c).to.deep.equal({
       edges: [
         { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
         {
