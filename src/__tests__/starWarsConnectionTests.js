@@ -2,8 +2,9 @@
 
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { StarWarsSchema } from './starWarsSchema.js';
 import { graphqlSync } from 'graphql';
+
+import { StarWarsSchema } from './starWarsSchema.js';
 
 describe('Star Wars connections', () => {
   it('fetches the first ship of the rebels', () => {

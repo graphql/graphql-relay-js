@@ -169,7 +169,7 @@ rules:
   import/no-duplicates: error
   import/no-namespace: error
   import/extensions: off # TODO [error, never] # TODO: switch to ignorePackages
-  import/order: off # TODO [error, { newlines-between: always-and-inside-groups }]
+  import/order: [error, { newlines-between: always-and-inside-groups }]
   import/newline-after-import: error
   import/prefer-default-export: off
   import/max-dependencies: off

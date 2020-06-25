@@ -2,8 +2,9 @@
 
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { StarWarsSchema } from './starWarsSchema.js';
 import { graphqlSync } from 'graphql';
+
+import { StarWarsSchema } from './starWarsSchema.js';
 
 describe('Star Wars mutations', () => {
   it('mutates the data set', () => {
