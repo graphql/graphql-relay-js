@@ -1,5 +1,7 @@
 // @flow strict
 
+import { expect } from 'chai';
+import { describe, it } from 'mocha';
 import {
   GraphQLInt,
   GraphQLObjectType,
@@ -16,9 +18,6 @@ import {
   connectionDefinitions,
   forwardConnectionArgs,
 } from '../connection.js';
-
-import { expect } from 'chai';
-import { describe, it } from 'mocha';
 
 const allUsers = [
   { name: 'Dan', friends: [1, 2, 3, 4] },

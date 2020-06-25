@@ -1,12 +1,12 @@
 // @flow strict
 
+import { base64, unbase64 } from '../utils/base64.js';
+
 import type {
   Connection,
   ConnectionArguments,
   ConnectionCursor,
 } from './connectiontypes';
-
-import { base64, unbase64 } from '../utils/base64.js';
 
 type ArraySliceMetaInfo = {|
   sliceStart: number,
