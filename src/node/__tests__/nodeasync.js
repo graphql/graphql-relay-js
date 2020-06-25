@@ -65,7 +65,7 @@ describe('Node interface and fields with async object fetcher', () => {
       }
     `;
 
-    return expect(await graphql(schema, query)).to.deep.equal({
+    expect(await graphql(schema, query)).to.deep.equal({
       data: {
         node: {
           id: '1',
@@ -86,7 +86,7 @@ describe('Node interface and fields with async object fetcher', () => {
       }
     `;
 
-    return expect(await graphql(schema, query)).to.deep.equal({
+    expect(await graphql(schema, query)).to.deep.equal({
       data: {
         node: {
           id: '1',

@@ -215,7 +215,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           node: {
             id: '1',
@@ -237,7 +237,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           node: {
             id: '4',
@@ -257,7 +257,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           node: {
             id: '1',
@@ -277,7 +277,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           node: {
             id: '4',
@@ -299,7 +299,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           node: {
             id: '1',
@@ -317,7 +317,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           node: null,
         },
@@ -333,7 +333,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           nodes: [
             {
@@ -367,7 +367,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           __type: {
             name: 'Node',
@@ -416,7 +416,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      return expect(await graphql(schema, query)).to.deep.equal({
+      expect(await graphql(schema, query)).to.deep.equal({
         data: {
           __schema: {
             queryType: {
