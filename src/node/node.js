@@ -13,7 +13,7 @@ import type {
   GraphQLTypeResolver,
 } from 'graphql';
 
-import { base64, unbase64 } from '../utils/base64.js';
+import { base64, unbase64 } from '../utils/base64';
 
 type GraphQLNodeDefinitions<TContext> = {|
   nodeInterface: GraphQLInterfaceType,

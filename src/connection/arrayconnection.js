@@ -1,6 +1,6 @@
 // @flow strict
 
-import { base64, unbase64 } from '../utils/base64.js';
+import { base64, unbase64 } from '../utils/base64';
 
 import type {
   Connection,
