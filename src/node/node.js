@@ -71,9 +71,7 @@ export function nodeDefinitions<TContext>(
       },
     },
     resolve: (_obj, { ids }, context, info) =>
-      Promise.all(
-        ids.map((id) => Promise.resolve(idFetcher(id, context, info))),
-      ),
+      ids.map((id) => idFetcher(id, context, info)),
   };
 
   return { nodeInterface, nodeField, nodesField };

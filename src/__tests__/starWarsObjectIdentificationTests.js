@@ -3,10 +3,10 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { StarWarsSchema } from './starWarsSchema.js';
-import { graphql } from 'graphql';
+import { graphqlSync } from 'graphql';
 
 describe('Star Wars object identification', () => {
-  it('fetches the ID and name of the rebels', async () => {
+  it('fetches the ID and name of the rebels', () => {
     const query = `
       query RebelsQuery {
         rebels {
@@ -15,17 +15,18 @@ describe('Star Wars object identification', () => {
         }
       }
     `;
-    const expected = {
-      rebels: {
-        id: 'RmFjdGlvbjox',
-        name: 'Alliance to Restore the Republic',
+
+    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+      data: {
+        rebels: {
+          id: 'RmFjdGlvbjox',
+          name: 'Alliance to Restore the Republic',
+        },
       },
-    };
-    const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 
-  it('refetches the rebels', async () => {
+  it('refetches the rebels', () => {
     const query = `
       query RebelsRefetchQuery {
         node(id: "RmFjdGlvbjox") {
@@ -36,17 +37,18 @@ describe('Star Wars object identification', () => {
         }
       }
     `;
-    const expected = {
-      node: {
-        id: 'RmFjdGlvbjox',
-        name: 'Alliance to Restore the Republic',
+
+    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+      data: {
+        node: {
+          id: 'RmFjdGlvbjox',
+          name: 'Alliance to Restore the Republic',
+        },
       },
-    };
-    const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 
-  it('fetches the ID and name of the empire', async () => {
+  it('fetches the ID and name of the empire', () => {
     const query = `
       query EmpireQuery {
         empire {
@@ -55,17 +57,18 @@ describe('Star Wars object identification', () => {
         }
       }
     `;
-    const expected = {
-      empire: {
-        id: 'RmFjdGlvbjoy',
-        name: 'Galactic Empire',
+
+    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+      data: {
+        empire: {
+          id: 'RmFjdGlvbjoy',
+          name: 'Galactic Empire',
+        },
       },
-    };
-    const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 
-  it('refetches the empire', async () => {
+  it('refetches the empire', () => {
     const query = `
       query EmpireRefetchQuery {
         node(id: "RmFjdGlvbjoy") {
@@ -76,17 +79,18 @@ describe('Star Wars object identification', () => {
         }
       }
     `;
-    const expected = {
-      node: {
-        id: 'RmFjdGlvbjoy',
-        name: 'Galactic Empire',
+
+    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+      data: {
+        node: {
+          id: 'RmFjdGlvbjoy',
+          name: 'Galactic Empire',
+        },
       },
-    };
-    const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 
-  it('refetches the X-Wing', async () => {
+  it('refetches the X-Wing', () => {
     const query = `
       query XWingRefetchQuery {
         node(id: "U2hpcDox") {
@@ -97,13 +101,14 @@ describe('Star Wars object identification', () => {
         }
       }
     `;
-    const expected = {
-      node: {
-        id: 'U2hpcDox',
-        name: 'X-Wing',
+
+    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+      data: {
+        node: {
+          id: 'U2hpcDox',
+          name: 'X-Wing',
+        },
       },
-    };
-    const result = await graphql(StarWarsSchema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 });

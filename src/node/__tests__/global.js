@@ -9,7 +9,7 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql,
+  graphqlSync,
 } from 'graphql';
 
 import { fromGlobalId, globalIdField, nodeDefinitions } from '../node';
@@ -130,7 +130,7 @@ const schema = new GraphQLSchema({
 });
 
 describe('global ID fields', () => {
-  it('gives different IDs', async () => {
+  it('gives different IDs', () => {
     const query = `
       {
         allObjects {
@@ -139,33 +139,21 @@ describe('global ID fields', () => {
       }
     `;
 
-    expect(await graphql(schema, query)).to.deep.equal({
+    expect(graphqlSync(schema, query)).to.deep.equal({
       data: {
         allObjects: [
-          {
-            id: 'VXNlcjox',
-          },
-          {
-            id: 'VXNlcjoy',
-          },
-          {
-            id: 'UGhvdG86MQ==',
-          },
-          {
-            id: 'UGhvdG86Mg==',
-          },
-          {
-            id: 'UG9zdDox',
-          },
-          {
-            id: 'UG9zdDoy',
-          },
+          { id: 'VXNlcjox' },
+          { id: 'VXNlcjoy' },
+          { id: 'UGhvdG86MQ==' },
+          { id: 'UGhvdG86Mg==' },
+          { id: 'UG9zdDox' },
+          { id: 'UG9zdDoy' },
         ],
       },
     });
   });
 
-  it('refetches the IDs', async () => {
+  it('refetches the IDs', () => {
     const query = `
       {
         user: node(id: "VXNlcjox") {
@@ -189,7 +177,7 @@ describe('global ID fields', () => {
       }
     `;
 
-    expect(await graphql(schema, query)).to.deep.equal({
+    expect(graphqlSync(schema, query)).to.deep.equal({
       data: {
         user: {
           id: 'VXNlcjox',
