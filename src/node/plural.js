@@ -24,24 +24,24 @@ type PluralIdentifyingRootFieldConfig = {|
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig,
 ): GraphQLFieldConfig<mixed, mixed> {
-  const inputArgs = {};
   let inputType = config.inputType;
   if (isNonNullType(inputType)) {
     inputType = inputType.ofType;
   }
-  inputArgs[config.argName] = {
-    type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(inputType))),
-  };
   return {
     description: config.description,
     type: new GraphQLList(config.outputType),
-    args: inputArgs,
+    args: {
+      [config.argName]: {
+        type: new GraphQLNonNull(
+          new GraphQLList(new GraphQLNonNull(inputType)),
+        ),
+      },
+    },
     resolve(_obj, args, context, info) {
       const inputs = args[config.argName];
-      return Promise.all(
-        inputs.map((input) =>
-          Promise.resolve(config.resolveSingleInput(input, context, info)),
-        ),
+      return inputs.map((input) =>
+        config.resolveSingleInput(input, context, info),
       );
     },
   };

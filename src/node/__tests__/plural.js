@@ -7,7 +7,7 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql,
+  graphqlSync,
 } from 'graphql';
 
 import { pluralIdentifyingRootField } from '../plural';
@@ -47,7 +47,7 @@ const schema = new GraphQLSchema({
 const context = { lang: 'en' };
 
 describe('pluralIdentifyingRootField()', () => {
-  it('allows fetching', async () => {
+  it('allows fetching', () => {
     const query = `
       {
         usernames(usernames:[ "dschafer", "leebyron", "schrockn" ]) {
@@ -57,7 +57,7 @@ describe('pluralIdentifyingRootField()', () => {
       }
     `;
 
-    expect(await graphql(schema, query, null, context)).to.deep.equal({
+    expect(graphqlSync(schema, query, null, context)).to.deep.equal({
       data: {
         usernames: [
           {
@@ -77,7 +77,7 @@ describe('pluralIdentifyingRootField()', () => {
     });
   });
 
-  it('correctly introspects', async () => {
+  it('correctly introspects', () => {
     const query = `
       {
         __schema {
@@ -113,7 +113,7 @@ describe('pluralIdentifyingRootField()', () => {
       }
     `;
 
-    expect(await graphql(schema, query)).to.deep.equal({
+    expect(graphqlSync(schema, query)).to.deep.equal({
       data: {
         __schema: {
           queryType: {
