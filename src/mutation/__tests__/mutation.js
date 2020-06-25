@@ -206,6 +206,26 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
+  it('supports mutations returning null', async () => {
+    const query = `
+      mutation M {
+        simpleRootValueMutation(input: {clientMutationId: "abc"}) {
+          result
+          clientMutationId
+        }
+      }
+    `;
+
+    expect(await graphql(schema, query, null)).to.deep.equal({
+      data: {
+        simpleRootValueMutation: {
+          result: null,
+          clientMutationId: 'abc',
+        },
+      },
+    });
+  });
+
   describe('introspection', () => {
     it('contains correct input', async () => {
       const query = `

@@ -98,10 +98,10 @@ export function mutationWithClientMutationId(
     },
     resolve: (_, { input }, context, info) =>
       Promise.resolve(mutateAndGetPayload(input, context, info)).then(
-        (payload) => {
-          payload.clientMutationId = input.clientMutationId;
-          return payload;
-        },
+        (payload) => ({
+          ...payload,
+          clientMutationId: input.clientMutationId,
+        }),
       ),
   };
 }
