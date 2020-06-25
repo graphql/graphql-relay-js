@@ -1,6 +1,6 @@
 // @flow strict
 
-import { GraphQLList, GraphQLNonNull } from 'graphql';
+import { GraphQLList, GraphQLNonNull, isNonNullType } from 'graphql';
 
 import type {
   GraphQLFieldConfig,
@@ -26,7 +26,7 @@ export function pluralIdentifyingRootField(
 ): GraphQLFieldConfig<mixed, mixed> {
   const inputArgs = {};
   let inputType = config.inputType;
-  if (inputType instanceof GraphQLNonNull) {
+  if (isNonNullType(inputType)) {
     inputType = inputType.ofType;
   }
   inputArgs[config.argName] = {
