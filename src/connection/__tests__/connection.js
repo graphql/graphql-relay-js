@@ -5,7 +5,7 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
-  graphql,
+  graphqlSync,
 } from 'graphql';
 
 import { connectionFromArray } from '../arrayconnection.js';
@@ -90,7 +90,7 @@ const schema = new GraphQLSchema({
 });
 
 describe('connectionDefinition()', () => {
-  it('includes connection and edge fields', async () => {
+  it('includes connection and edge fields', () => {
     const query = `
       query FriendsQuery {
         user {
@@ -106,32 +106,29 @@ describe('connectionDefinition()', () => {
         }
       }
     `;
-    const expected = {
-      user: {
-        friends: {
-          totalCount: 4,
-          edges: [
-            {
-              friendshipTime: 'Yesterday',
-              node: {
-                name: 'Nick',
+
+    expect(graphqlSync(schema, query)).to.deep.equal({
+      data: {
+        user: {
+          friends: {
+            totalCount: 4,
+            edges: [
+              {
+                friendshipTime: 'Yesterday',
+                node: { name: 'Nick' },
               },
-            },
-            {
-              friendshipTime: 'Yesterday',
-              node: {
-                name: 'Lee',
+              {
+                friendshipTime: 'Yesterday',
+                node: { name: 'Lee' },
               },
-            },
-          ],
+            ],
+          },
         },
       },
-    };
-    const result = await graphql(schema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 
-  it('works with forwardConnectionArgs', async () => {
+  it('works with forwardConnectionArgs', () => {
     const query = `
       query FriendsQuery {
         user {
@@ -145,29 +142,26 @@ describe('connectionDefinition()', () => {
         }
       }
     `;
-    const expected = {
-      user: {
-        friendsForward: {
-          edges: [
-            {
-              node: {
-                name: 'Nick',
+
+    expect(graphqlSync(schema, query)).to.deep.equal({
+      data: {
+        user: {
+          friendsForward: {
+            edges: [
+              {
+                node: { name: 'Nick' },
               },
-            },
-            {
-              node: {
-                name: 'Lee',
+              {
+                node: { name: 'Lee' },
               },
-            },
-          ],
+            ],
+          },
         },
       },
-    };
-    const result = await graphql(schema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 
-  it('works with backwardConnectionArgs', async () => {
+  it('works with backwardConnectionArgs', () => {
     const query = `
       query FriendsQuery {
         user {
@@ -181,25 +175,22 @@ describe('connectionDefinition()', () => {
         }
       }
     `;
-    const expected = {
-      user: {
-        friendsBackward: {
-          edges: [
-            {
-              node: {
-                name: 'Joe',
+
+    expect(graphqlSync(schema, query)).to.deep.equal({
+      data: {
+        user: {
+          friendsBackward: {
+            edges: [
+              {
+                node: { name: 'Joe' },
               },
-            },
-            {
-              node: {
-                name: 'Tim',
+              {
+                node: { name: 'Tim' },
               },
-            },
-          ],
+            ],
+          },
         },
       },
-    };
-    const result = await graphql(schema, query);
-    expect(result).to.deep.equal({ data: expected });
+    });
   });
 });

@@ -3,10 +3,10 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { StarWarsSchema } from './starWarsSchema.js';
-import { graphql } from 'graphql';
+import { graphqlSync } from 'graphql';
 
 describe('Star Wars mutations', () => {
-  it('mutates the data set', async () => {
+  it('mutates the data set', () => {
     const mutation = `
       mutation AddBWingQuery($input: IntroduceShipInput!) {
         introduceShip(input: $input) {
@@ -40,7 +40,7 @@ describe('Star Wars mutations', () => {
         clientMutationId: 'abcde',
       },
     };
-    const result = await graphql(StarWarsSchema, mutation, null, null, params);
+    const result = graphqlSync(StarWarsSchema, mutation, null, null, params);
     expect(result).to.deep.equal({ data: expected });
   });
 });

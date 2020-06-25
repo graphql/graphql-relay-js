@@ -3,7 +3,13 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
-import { GraphQLInt, GraphQLObjectType, GraphQLSchema, graphql } from 'graphql';
+import {
+  GraphQLInt,
+  GraphQLObjectType,
+  GraphQLSchema,
+  graphql,
+  graphqlSync,
+} from 'graphql';
 
 import { mutationWithClientMutationId } from '../mutation';
 
@@ -104,7 +110,7 @@ const schema = new GraphQLSchema({
 });
 
 describe('mutationWithClientMutationId()', () => {
-  it('requires an argument', async () => {
+  it('requires an argument', () => {
     const query = `
       mutation M {
         simpleMutation {
@@ -112,7 +118,8 @@ describe('mutationWithClientMutationId()', () => {
         }
       }
     `;
-    expect(await graphql(schema, query)).to.deep.equal({
+
+    expect(graphqlSync(schema, query)).to.deep.equal({
       errors: [
         {
           message:
@@ -123,7 +130,7 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
-  it('returns the same client mutation ID', async () => {
+  it('returns the same client mutation ID', () => {
     const query = `
       mutation M {
         simpleMutation(input: {clientMutationId: "abc"}) {
@@ -133,7 +140,7 @@ describe('mutationWithClientMutationId()', () => {
       }
     `;
 
-    expect(await graphql(schema, query)).to.deep.equal({
+    expect(graphqlSync(schema, query)).to.deep.equal({
       data: {
         simpleMutation: {
           result: 1,
@@ -143,7 +150,7 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
-  it('supports thunks as input and output fields', async () => {
+  it('supports thunks as input and output fields', () => {
     const query = `
       mutation M {
         simpleMutationWithThunkFields(input: {
@@ -156,7 +163,7 @@ describe('mutationWithClientMutationId()', () => {
       }
     `;
 
-    expect(await graphql(schema, query)).to.deep.equal({
+    expect(graphqlSync(schema, query)).to.deep.equal({
       data: {
         simpleMutationWithThunkFields: {
           result: 1234,
@@ -186,7 +193,7 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
-  it('can access rootValue', async () => {
+  it('can access rootValue', () => {
     const query = `
       mutation M {
         simpleRootValueMutation(input: {clientMutationId: "abc"}) {
@@ -196,7 +203,7 @@ describe('mutationWithClientMutationId()', () => {
       }
     `;
 
-    expect(await graphql(schema, query, { result: 1 })).to.deep.equal({
+    expect(graphqlSync(schema, query, { result: 1 })).to.deep.equal({
       data: {
         simpleRootValueMutation: {
           result: 1,
@@ -206,7 +213,7 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
-  it('supports mutations returning null', async () => {
+  it('supports mutations returning null', () => {
     const query = `
       mutation M {
         simpleRootValueMutation(input: {clientMutationId: "abc"}) {
@@ -216,7 +223,7 @@ describe('mutationWithClientMutationId()', () => {
       }
     `;
 
-    expect(await graphql(schema, query, null)).to.deep.equal({
+    expect(graphqlSync(schema, query, null)).to.deep.equal({
       data: {
         simpleRootValueMutation: {
           result: null,
@@ -227,7 +234,7 @@ describe('mutationWithClientMutationId()', () => {
   });
 
   describe('introspection', () => {
-    it('contains correct input', async () => {
+    it('contains correct input', () => {
       const query = `
         {
           __type(name: "SimpleMutationInput") {
@@ -244,7 +251,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       `;
 
-      expect(await graphql(schema, query)).to.deep.equal({
+      expect(graphqlSync(schema, query)).to.deep.equal({
         data: {
           __type: {
             name: 'SimpleMutationInput',
@@ -263,7 +270,7 @@ describe('mutationWithClientMutationId()', () => {
       });
     });
 
-    it('contains correct payload', async () => {
+    it('contains correct payload', () => {
       const query = `
         {
           __type(name: "SimpleMutationPayload") {
@@ -280,7 +287,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       `;
 
-      expect(await graphql(schema, query)).to.deep.equal({
+      expect(graphqlSync(schema, query)).to.deep.equal({
         data: {
           __type: {
             name: 'SimpleMutationPayload',
@@ -306,7 +313,7 @@ describe('mutationWithClientMutationId()', () => {
       });
     });
 
-    it('contains correct field', async () => {
+    it('contains correct field', () => {
       const query = `
         {
           __schema {
@@ -334,7 +341,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       `;
 
-      expect(await graphql(schema, query)).to.deep.equal({
+      expect(graphqlSync(schema, query)).to.deep.equal({
         data: {
           __schema: {
             mutationType: {
@@ -446,7 +453,7 @@ describe('mutationWithClientMutationId()', () => {
       });
     });
 
-    it('contains correct descriptions', async () => {
+    it('contains correct descriptions', () => {
       const query = `
         {
           __schema {
@@ -460,7 +467,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       `;
 
-      expect(await graphql(schema, query)).to.deep.equal({
+      expect(graphqlSync(schema, query)).to.deep.equal({
         data: {
           __schema: {
             mutationType: {
@@ -492,7 +499,7 @@ describe('mutationWithClientMutationId()', () => {
       });
     });
 
-    it('contains correct deprecation reasons', async () => {
+    it('contains correct deprecation reasons', () => {
       const query = `
         {
           __schema {
@@ -507,7 +514,7 @@ describe('mutationWithClientMutationId()', () => {
         }
       `;
 
-      expect(await graphql(schema, query)).to.deep.equal({
+      expect(graphqlSync(schema, query)).to.deep.equal({
         data: {
           __schema: {
             mutationType: {
