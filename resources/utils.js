@@ -1,0 +1,46 @@
+// @noflow
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+function rmdirRecursive(dirPath) {
+  if (fs.existsSync(dirPath)) {
+    for (const dirent of fs.readdirSync(dirPath, { withFileTypes: true })) {
+      const fullPath = path.join(dirPath, dirent.name);
+      if (dirent.isDirectory()) {
+        rmdirRecursive(fullPath);
+      } else {
+        fs.unlinkSync(fullPath);
+      }
+    }
+    fs.rmdirSync(dirPath);
+  }
+}
+
+function readdirRecursive(dirPath, opts = {}) {
+  const { ignoreDir } = opts;
+  const result = [];
+  for (const dirent of fs.readdirSync(dirPath, { withFileTypes: true })) {
+    const name = dirent.name;
+    if (!dirent.isDirectory()) {
+      result.push(dirent.name);
+      continue;
+    }
+
+    if (ignoreDir && ignoreDir.test(name)) {
+      continue;
+    }
+    const list = readdirRecursive(path.join(dirPath, name), opts).map((f) =>
+      path.join(name, f),
+    );
+    result.push(...list);
+  }
+  return result;
+}
+
+module.exports = {
+  rmdirRecursive,
+  readdirRecursive,
+};

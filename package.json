@@ -11,15 +11,7 @@
     "type": "git",
     "url": "http://github.com/graphql/graphql-relay-js.git"
   },
-  "main": "lib/index.js",
-  "directories": {
-    "lib": "./lib"
-  },
-  "files": [
-    "lib",
-    "README.md",
-    "LICENSE"
-  ],
+  "main": "index.js",
   "scripts": {
     "prepublish": "./resources/prepublish.sh",
     "prettier": "prettier --write --list-different .",
@@ -29,8 +21,7 @@
     "testonly:cover": "nyc npm run testonly",
     "lint": "eslint .",
     "check": "flow check",
-    "build": "rm -rf lib/* && babel src --ignore __tests__ --out-dir lib && npm run build:flow",
-    "build:flow": "find ./src -name '*.js' -not -path '*/__tests__*' | while read filepath; do cp $filepath `echo $filepath | sed 's/\\/src\\//\\/lib\\//g'`.flow; done"
+    "build": "node resources/build.js"
   },
   "peerDependencies": {
     "graphql": "^14.0.0 || ^15.0.0"

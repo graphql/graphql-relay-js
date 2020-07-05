@@ -13,8 +13,7 @@
       ],
       "env": {
         "cjs": {
-          "presets": [["@babel/preset-env", { "modules": "commonjs" }]],
-          "plugins": ["./resources/inline-invariant"]
+          "presets": [["@babel/preset-env", { "modules": "commonjs" }]]
         },
         "mjs": {
           "presets": [["@babel/preset-env", { "modules": false }]],
