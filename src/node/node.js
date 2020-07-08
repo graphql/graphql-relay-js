@@ -33,7 +33,7 @@ type GraphQLNodeDefinitions<TContext> = {
  */
 export function nodeDefinitions<TContext>(
   idFetcher: (id: string, context: TContext, info: GraphQLResolveInfo) => any,
-  typeResolver?: ?GraphQLTypeResolver<any, TContext>,
+  typeResolver?: GraphQLTypeResolver<any, TContext>,
 ): GraphQLNodeDefinitions<TContext> {
   const nodeInterface = new GraphQLInterfaceType({
     name: 'Node',
@@ -110,7 +110,7 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
  * property on the object.
  */
 export function globalIdField(
-  typeName?: ?string,
+  typeName?: string,
   idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string,
 ): GraphQLFieldConfig<any, mixed> {
   return {

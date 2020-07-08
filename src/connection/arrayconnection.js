@@ -139,7 +139,7 @@ export function cursorToOffset(cursor: ConnectionCursor): number {
 export function cursorForObjectInConnection<T>(
   data: $ReadOnlyArray<T>,
   object: T,
-): ?ConnectionCursor {
+): ConnectionCursor | null {
   const offset = data.indexOf(object);
   if (offset === -1) {
     return null;
@@ -153,7 +153,7 @@ export function cursorForObjectInConnection<T>(
  * otherwise it will be the default.
  */
 export function getOffsetWithDefault(
-  cursor?: ?ConnectionCursor,
+  cursor: ConnectionCursor | void | null,
   defaultOffset: number,
 ): number {
   if (typeof cursor !== 'string') {
