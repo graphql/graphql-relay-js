@@ -12,6 +12,7 @@
     "url": "http://github.com/graphql/graphql-relay-js.git"
   },
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "prepublish": "./resources/prepublish.sh",
     "prettier": "prettier --write --list-different .",
