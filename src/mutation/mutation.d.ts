@@ -1,0 +1,44 @@
+import type {
+  GraphQLFieldConfig,
+  GraphQLInputFieldConfigMap,
+  GraphQLFieldConfigMap,
+  GraphQLResolveInfo,
+  Thunk,
+} from 'graphql';
+
+export type mutationFn = (
+  object: any,
+  ctx: any,
+  info: GraphQLResolveInfo,
+) => Promise<any> | any;
+
+/**
+ * A description of a mutation consumable by mutationWithClientMutationId
+ * to create a GraphQLFieldConfig for that mutation.
+ *
+ * The inputFields and outputFields should not include `clientMutationId`,
+ * as this will be provided automatically.
+ *
+ * An input object will be created containing the input fields, and an
+ * object will be created containing the output fields.
+ *
+ * mutateAndGetPayload will receive an Object with a key for each
+ * input field, and it should return an Object with a key for each
+ * output field. It may return synchronously, or return a Promise.
+ */
+export interface MutationConfig {
+  name: string;
+  description?: string;
+  inputFields: Thunk<GraphQLInputFieldConfigMap>;
+  outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
+  mutateAndGetPayload: mutationFn;
+  deprecationReason?: string;
+}
+
+/**
+ * Returns a GraphQLFieldConfig for the mutation described by the
+ * provided MutationConfig.
+ */
+export function mutationWithClientMutationId(
+  config: MutationConfig,
+): GraphQLFieldConfig<any, any>;
