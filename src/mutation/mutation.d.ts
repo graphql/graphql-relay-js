@@ -6,12 +6,14 @@ import type {
   Thunk,
 } from 'graphql';
 
-export type mutationFn = (
+// TS_SPECIFIC: This type is only exported by TypeScript
+export type MutationFn = (
   object: any,
   ctx: any,
   info: GraphQLResolveInfo,
 ) => Promise<any> | any;
 
+// TS_SPECIFIC: This type is only exported by TypeScript
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
  * to create a GraphQLFieldConfig for that mutation.
@@ -31,7 +33,7 @@ export interface MutationConfig {
   description?: string;
   inputFields: Thunk<GraphQLInputFieldConfigMap>;
   outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
-  mutateAndGetPayload: mutationFn;
+  mutateAndGetPayload: MutationFn;
   deprecationReason?: string;
 }
 
