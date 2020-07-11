@@ -4,6 +4,7 @@ import type {
   ConnectionCursor,
 } from './connectiontypes';
 
+// TS_SPECIFIC: This type is only exported by TypeScript
 export interface ArraySliceMetaInfo {
   sliceStart: number;
   arrayLength: number;
@@ -15,7 +16,7 @@ export interface ArraySliceMetaInfo {
  * so pagination will only work if the array is static.
  */
 export function connectionFromArray<T>(
-  data: T[],
+  data: ReadonlyArray<T>,
   args: ConnectionArguments,
 ): Connection<T>;
 
@@ -24,7 +25,7 @@ export function connectionFromArray<T>(
  * promised connection.
  */
 export function connectionFromPromisedArray<T>(
-  dataPromise: Promise<T[]>,
+  dataPromise: Promise<ReadonlyArray<T>>,
   args: ConnectionArguments,
 ): Promise<Connection<T>>;
 
@@ -38,7 +39,7 @@ export function connectionFromPromisedArray<T>(
  * total result large enough to cover the range specified in `args`.
  */
 export function connectionFromArraySlice<T>(
-  arraySlice: T[],
+  arraySlice: ReadonlyArray<T>,
   args: ConnectionArguments,
   meta: ArraySliceMetaInfo,
 ): Connection<T>;
@@ -48,7 +49,7 @@ export function connectionFromArraySlice<T>(
  * and returns a promised connection.
  */
 export function connectionFromPromisedArraySlice<T>(
-  dataPromise: Promise<T[]>,
+  dataPromise: Promise<ReadonlyArray<T>>,
   args: ConnectionArguments,
   arrayInfo: ArraySliceMetaInfo,
 ): Promise<Connection<T>>;
@@ -67,9 +68,9 @@ export function cursorToOffset(cursor: ConnectionCursor): number;
  * Return the cursor associated with an object in an array.
  */
 export function cursorForObjectInConnection<T>(
-  data: T[],
+  data: ReadonlyArray<T>,
   object: T,
-): ConnectionCursor;
+): ConnectionCursor | null | undefined;
 
 /**
  * Given an optional cursor and a default offset, returns the offset
@@ -78,5 +79,5 @@ export function cursorForObjectInConnection<T>(
  */
 export function getOffsetWithDefault(
   cursor?: ConnectionCursor | null,
-  defaultOffset?: number | null,
+  defaultOffset: number,
 ): number;

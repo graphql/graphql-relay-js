@@ -4,10 +4,11 @@ import type {
   GraphQLTypeResolver,
 } from 'graphql';
 
-export interface GraphQLNodeDefinitions {
+// TS_SPECIFIC: This type is only exported by TypeScript
+export interface GraphQLNodeDefinitions<TContext> {
   nodeInterface: GraphQLInterfaceType;
-  nodeField: GraphQLFieldConfig<any, any>;
-  nodesField: GraphQLFieldConfig<any, any>;
+  nodeField: GraphQLFieldConfig<any, TContext>;
+  nodesField: GraphQLFieldConfig<any, TContext>;
 }
 
 /**
@@ -22,9 +23,10 @@ export interface GraphQLNodeDefinitions {
  */
 export function nodeDefinitions<TContext>(
   idFetcher: (id: string, context: TContext, info: GraphQLResolveInfo) => any,
-  typeResolver?: GraphQLTypeResolver<any, TContext>,
-): GraphQLNodeDefinitions;
+  typeResolver?: GraphQLTypeResolver<any, TContext> | null,
+): GraphQLNodeDefinitions<TContext>;
 
+// TS_SPECIFIC: This type is only exported by TypeScript
 export interface ResolvedGlobalId {
   type: string;
   id: string;
@@ -49,6 +51,6 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId;
  * property on the object.
  */
 export function globalIdField(
-  typeName?: string,
+  typeName?: string | null,
   idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string,
 ): GraphQLFieldConfig<any, any>;
