@@ -153,7 +153,7 @@ export function cursorForObjectInConnection<T>(
  * otherwise it will be the default.
  */
 export function getOffsetWithDefault(
-  cursor?: ?ConnectionCursor,
+  cursor: ConnectionCursor | null | void,
   defaultOffset: number,
 ): number {
   if (typeof cursor !== 'string') {

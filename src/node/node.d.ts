@@ -1,5 +1,6 @@
 import type {
   GraphQLFieldConfig,
+  GraphQLInterfaceType,
   GraphQLResolveInfo,
   GraphQLTypeResolver,
 } from 'graphql';
