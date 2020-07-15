@@ -17,11 +17,12 @@
     "prepublish": "./resources/prepublish.sh",
     "prettier": "prettier --write --list-different .",
     "prettier:check": "prettier --check .",
-    "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check",
+    "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check && npm run check:spelling",
     "testonly": "mocha src/**/__tests__/**/*.js",
     "testonly:cover": "nyc npm run testonly",
     "lint": "eslint .",
     "check": "flow check",
+    "check:spelling": "cspell '**/*'",
     "build": "node resources/build.js"
   },
   "peerDependencies": {
@@ -38,6 +39,7 @@
     "@typescript-eslint/parser": "3.6.0",
     "babel-eslint": "10.1.0",
     "chai": "4.2.0",
+    "cspell": "4.0.63",
     "eslint": "7.3.1",
     "eslint-plugin-flowtype": "5.1.3",
     "eslint-plugin-import": "2.21.2",

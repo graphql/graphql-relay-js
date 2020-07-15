@@ -1,0 +1,52 @@
+{
+  "language": "en",
+  "ignorePaths": [
+    // Copied from '.gitignore', please keep it in sync.
+    ".eslintcache",
+    "node_modules",
+    "coverage",
+    "dist",
+
+    // Excluded from spelling check
+    "cspell.json",
+    "package.json",
+    "package-lock.json",
+    "tsconfig.json"
+  ],
+  "words": [
+    "arrayconnection",
+    "connectiontypes",
+    "rederives",
+    "refetchability",
+    "refetches",
+    "unbase",
+    "unbased",
+
+    // Different words used inside tests
+
+    "millenium",
+    "corellian",
+    "bwing",
+    "xwing",
+    "ywing",
+    "dschafer",
+    "leebyron",
+    "schrockn",
+    "Ghvd",
+    "Glvbjox",
+    "Glvbjoy",
+    "Gxlczog",
+    "Nlcjox",
+    "Nlcjoy",
+    "Xljb",
+
+    // TODO: contribute upstream
+    "codecov",
+    "downlevel",
+    "transpilation",
+
+    // TODO: remove below words
+    "QL's", // GraphQL's
+    "QLID" // GraphQLID
+  ]
+}
