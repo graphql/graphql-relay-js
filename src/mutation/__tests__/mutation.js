@@ -13,6 +13,10 @@ import {
 
 import { mutationWithClientMutationId } from '../mutation';
 
+function dummyResolve() {
+  return { result: 1 };
+}
+
 const simpleMutation = mutationWithClientMutationId({
   name: 'SimpleMutation',
   inputFields: {},
@@ -21,7 +25,7 @@ const simpleMutation = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: () => ({ result: 1 }),
+  mutateAndGetPayload: dummyResolve,
 });
 
 const simpleMutationWithDescription = mutationWithClientMutationId({
@@ -33,7 +37,7 @@ const simpleMutationWithDescription = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: () => ({ result: 1 }),
+  mutateAndGetPayload: dummyResolve,
 });
 
 const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
@@ -44,7 +48,7 @@ const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
       type: GraphQLInt,
     },
   },
-  mutateAndGetPayload: () => ({ result: 1 }),
+  mutateAndGetPayload: dummyResolve,
   deprecationReason: 'Just because',
 });
 

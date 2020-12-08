@@ -50,14 +50,13 @@ const postData = {
 const { nodeField, nodeInterface } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
-    if (type === 'User') {
-      return userData[id];
-    }
-    if (type === 'Photo') {
-      return photoData[id];
-    }
-    if (type === 'Post') {
-      return postData[id];
+    switch(type) {
+      case 'User':
+        return userData[id];
+      case 'Photo':
+        return photoData[id];
+      case 'Post':
+        return postData[id];
     }
   },
   (obj) => {
@@ -67,6 +66,8 @@ const { nodeField, nodeInterface } = nodeDefinitions(
     if (obj.photoId) {
       return photoType;
     }
+
+    // istanbul ignore else (Can't be reached)
     if (obj.text) {
       return postType;
     }
