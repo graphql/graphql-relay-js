@@ -51,6 +51,7 @@ const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
     if (userData[obj.id]) {
       return userType;
     }
+    // istanbul ignore else (Can't be reached)
     if (photoData[obj.id]) {
       return photoType;
     }

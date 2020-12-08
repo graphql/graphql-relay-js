@@ -111,11 +111,11 @@ import {
 const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
-    if (type === 'Faction') {
-      return getFaction(id);
-    }
-    if (type === 'Ship') {
-      return getShip(id);
+    switch (type) {
+      case 'Faction':
+        return getFaction(id);
+      case 'Ship':
+        return getShip(id);
     }
   },
   (obj) => (obj.ships ? factionType : shipType),
