@@ -1,16 +1,12 @@
 [ignore]
 .*
 !<PROJECT_ROOT>/src
-!<PROJECT_ROOT>/node_modules/chai
-!<PROJECT_ROOT>/node_modules/mocha
 !<PROJECT_ROOT>/node_modules/graphql
 
 [include]
 
 [declarations]
 <PROJECT_ROOT>/node_modules/graphql
-
-[libs]
 
 [lints]
 sketchy-null-bool=error

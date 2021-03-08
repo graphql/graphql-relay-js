@@ -8,6 +8,7 @@
     "dist",
 
     // Excluded from spelling check
+    "flow-typed",
     "cspell.json",
     "package.json",
     "package-lock.json",
