@@ -21,6 +21,9 @@
       ]
     }
   },
+  "engines": {
+    "node": "^12.20.0 || ^14.15.0 || >= 15.9.0"
+  },
   "scripts": {
     "preversion": "npm run ci && npm run test",
     "prettier": "prettier --write --list-different .",
