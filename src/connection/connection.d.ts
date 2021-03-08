@@ -42,12 +42,12 @@ export const connectionArgs: GraphQLFieldConfigArgumentMap &
   BackwardConnectionArgs;
 
 export interface ConnectionConfig {
-  name?: string | null;
+  name?: string;
   nodeType: GraphQLObjectType;
-  resolveNode?: GraphQLFieldResolver<any, any> | null;
-  resolveCursor?: GraphQLFieldResolver<any, any> | null;
-  edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>> | null;
-  connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>> | null;
+  resolveNode?: GraphQLFieldResolver<any, any>;
+  resolveCursor?: GraphQLFieldResolver<any, any>;
+  edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
+  connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
 }
 
 export interface GraphQLConnectionDefinitions {

@@ -18,7 +18,7 @@ type PluralIdentifyingRootFieldConfig = {
     context: any,
     info: GraphQLResolveInfo,
   ) => ?any,
-  description?: ?string,
+  description?: string,
 };
 
 export function pluralIdentifyingRootField(

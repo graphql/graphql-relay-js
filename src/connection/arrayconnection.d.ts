@@ -70,7 +70,7 @@ export function cursorToOffset(cursor: ConnectionCursor): number;
 export function cursorForObjectInConnection<T>(
   data: ReadonlyArray<T>,
   object: T,
-): ConnectionCursor | null | undefined;
+): ConnectionCursor | null;
 
 /**
  * Given an optional cursor and a default offset, returns the offset

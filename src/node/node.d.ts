@@ -24,7 +24,7 @@ export interface GraphQLNodeDefinitions<TContext> {
  */
 export function nodeDefinitions<TContext>(
   idFetcher: (id: string, context: TContext, info: GraphQLResolveInfo) => any,
-  typeResolver?: GraphQLTypeResolver<any, TContext> | null,
+  typeResolver?: GraphQLTypeResolver<any, TContext>,
 ): GraphQLNodeDefinitions<TContext>;
 
 // TS_SPECIFIC: This type is only exported by TypeScript
@@ -52,6 +52,6 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId;
  * property on the object.
  */
 export function globalIdField(
-  typeName?: string | null,
+  typeName?: string,
   idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string,
 ): GraphQLFieldConfig<any, any>;
