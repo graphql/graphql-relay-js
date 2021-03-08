@@ -50,7 +50,7 @@ const postData = {
 const { nodeField, nodeInterface } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
-    switch(type) {
+    switch (type) {
       case 'User':
         return userData[id];
       case 'Photo':
