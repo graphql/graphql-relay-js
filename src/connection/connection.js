@@ -52,12 +52,12 @@ export const connectionArgs: GraphQLFieldConfigArgumentMap = {
 };
 
 type ConnectionConfig = {
-  name?: ?string,
+  name?: string,
   nodeType: GraphQLObjectType,
-  resolveNode?: ?GraphQLFieldResolver<any, any>,
-  resolveCursor?: ?GraphQLFieldResolver<any, any>,
-  edgeFields?: ?Thunk<GraphQLFieldConfigMap<any, any>>,
-  connectionFields?: ?Thunk<GraphQLFieldConfigMap<any, any>>,
+  resolveNode?: GraphQLFieldResolver<any, any>,
+  resolveCursor?: GraphQLFieldResolver<any, any>,
+  edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
+  connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
 };
 
 type GraphQLConnectionDefinitions = {
