@@ -22,7 +22,7 @@
     }
   },
   "scripts": {
-    "prepublish": "./resources/prepublish.sh",
+    "preversion": "npm run ci && npm run test",
     "prettier": "prettier --write --list-different .",
     "prettier:check": "prettier --check .",
     "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check && npm run check:spelling",
