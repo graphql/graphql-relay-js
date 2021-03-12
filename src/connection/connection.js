@@ -67,7 +67,7 @@ type GraphQLConnectionDefinitions = {
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
-    ? // $FlowFixMe - if it's a function, we assume a thunk without arguments
+    ? // $FlowFixMe[incompatible-use] - if it's a function, we assume a thunk without arguments
       thingOrThunk()
     : thingOrThunk;
 }
@@ -99,7 +99,7 @@ export function connectionDefinitions(
         resolve: resolveCursor,
         description: 'A cursor for use in pagination',
       },
-      ...(resolveMaybeThunk(edgeFields): any),
+      ...resolveMaybeThunk(edgeFields),
     }),
   });
 
@@ -115,7 +115,7 @@ export function connectionDefinitions(
         type: new GraphQLList(edgeType),
         description: 'A list of edges.',
       },
-      ...(resolveMaybeThunk(connectionFields): any),
+      ...resolveMaybeThunk(connectionFields),
     }),
   });
 

@@ -50,19 +50,19 @@ const executor = {
   name: 'Executor',
 };
 
-const rebels = {
+const rebels = Object.freeze({
   id: '1',
   name: 'Alliance to Restore the Republic',
   ships: ['1', '2', '3', '4', '5'],
-};
+});
 
-const empire = {
+const empire = Object.freeze({
   id: '2',
   name: 'Galactic Empire',
   ships: ['6', '7', '8'],
-};
+});
 
-const data = {
+const data = Object.freeze({
   Faction: {
     '1': rebels,
     '2': empire,
@@ -77,10 +77,21 @@ const data = {
     '7': tieInterceptor,
     '8': executor,
   },
+});
+
+type Ship = {
+  id: string,
+  name: string,
+};
+
+type Faction = {
+  id: string,
+  name: string,
+  ships: $ReadOnlyArray<string>,
 };
 
 let nextShip = 9;
-export function createShip(shipName: string, factionId: string) {
+export function createShip(shipName: string, factionId: string): Ship {
   const newShip = {
     id: String(nextShip++),
     name: shipName,
@@ -90,18 +101,18 @@ export function createShip(shipName: string, factionId: string) {
   return newShip;
 }
 
-export function getShip(id: string) {
+export function getShip(id: string): Ship {
   return data.Ship[id];
 }
 
-export function getFaction(id: string) {
+export function getFaction(id: string): Faction {
   return data.Faction[id];
 }
 
-export function getRebels() {
+export function getRebels(): Faction {
   return rebels;
 }
 
-export function getEmpire() {
+export function getEmpire(): Faction {
   return empire;
 }
