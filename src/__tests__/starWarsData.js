@@ -79,16 +79,16 @@ const data = Object.freeze({
   },
 });
 
-type Ship = {
+type Ship = {|
   id: string,
   name: string,
-};
+|};
 
-type Faction = {
+type Faction = {|
   id: string,
   name: string,
   ships: $ReadOnlyArray<string>,
-};
+|};
 
 let nextShip = 9;
 export function createShip(shipName: string, factionId: string): Ship {
