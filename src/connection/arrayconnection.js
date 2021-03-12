@@ -8,10 +8,10 @@ import type {
   ConnectionCursor,
 } from './connectiontypes';
 
-type ArraySliceMetaInfo = {
+type ArraySliceMetaInfo = {|
   sliceStart: number,
   arrayLength: number,
-};
+|};
 
 /**
  * A simple function that accepts an array and connection arguments, and returns
