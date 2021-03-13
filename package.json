@@ -40,7 +40,6 @@
     "graphql": "^14.0.0 || ^15.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.10.3",
     "@babel/core": "7.10.3",
     "@babel/node": "7.10.3",
     "@babel/plugin-transform-flow-strip-types": "7.10.1",
