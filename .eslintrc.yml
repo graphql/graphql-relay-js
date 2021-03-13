@@ -614,12 +614,6 @@ overrides:
       '@typescript-eslint/semi': off
       '@typescript-eslint/space-before-function-paren': off
       '@typescript-eslint/type-annotation-spacing': off
-  - files: 'resources/**'
-    parserOptions:
-      sourceType: script
-    rules:
-      no-await-in-loop: off
-      no-console: off
   - files: '**/__*__/**'
     rules:
       node/no-unpublished-import: off
@@ -628,15 +622,10 @@ overrides:
     parserOptions:
       sourceType: script
     rules:
-      node/no-unpublished-import: off
       node/no-unpublished-require: off
-      node/no-missing-require: off
       node/no-sync: off
-      node/no-unsupported-features/node-builtins: off
       node/global-require: off
-      import/no-dynamic-require: off
       import/no-extraneous-dependencies: [error, { devDependencies: true }]
       import/no-nodejs-modules: off
       import/no-commonjs: off
-      no-await-in-loop: off
       no-console: off
