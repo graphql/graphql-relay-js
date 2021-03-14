@@ -13,33 +13,33 @@ import {
 import { fromGlobalId, globalIdField, nodeDefinitions } from '../node';
 
 const userData = {
-  '1': {
+  1: {
     id: 1,
     name: 'John Doe',
   },
-  '2': {
+  2: {
     id: 2,
     name: 'Jane Smith',
   },
 };
 
 const photoData = {
-  '1': {
+  1: {
     photoId: 1,
     width: 300,
   },
-  '2': {
+  2: {
     photoId: 2,
     width: 400,
   },
 };
 
 const postData = {
-  '1': {
+  1: {
     id: 1,
     text: 'lorem',
   },
-  '2': {
+  2: {
     id: 2,
     text: 'ipsum',
   },

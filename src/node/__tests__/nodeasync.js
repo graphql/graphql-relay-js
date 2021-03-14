@@ -13,11 +13,11 @@ import {
 import { nodeDefinitions } from '../node';
 
 const userData = {
-  '1': {
+  1: {
     id: 1,
     name: 'John Doe',
   },
-  '2': {
+  2: {
     id: 2,
     name: 'Jane Smith',
   },
