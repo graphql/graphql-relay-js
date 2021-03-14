@@ -1,5 +1,3 @@
-// @flow strict
-
 export type Base64String = string;
 
 export function base64(i: string): Base64String {
