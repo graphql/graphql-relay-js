@@ -1,5 +1,3 @@
-// @flow strict
-
 /**
  * This defines a basic set of data for our Star Wars Schema.
  *

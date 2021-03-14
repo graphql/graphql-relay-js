@@ -1,5 +1,3 @@
-// @flow strict
-
 import { GraphQLList, GraphQLNonNull, getNullableType } from 'graphql';
 
 import type {
