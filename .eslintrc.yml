@@ -44,7 +44,7 @@ rules:
   node/no-unpublished-import: error
   node/no-unpublished-require: error
   node/no-unsupported-features/es-builtins: error
-  node/no-unsupported-features/es-syntax: off # TODO enable
+  node/no-unsupported-features/es-syntax: [error, { ignores: [modules] }]
   node/no-unsupported-features/node-builtins: error
   node/process-exit-as-throw: error
   node/shebang: error
@@ -125,7 +125,7 @@ rules:
   import/max-dependencies: off
   import/no-unassigned-import: error
   import/no-named-default: error
-  import/no-default-export: off
+  import/no-default-export: error
   import/no-named-export: off
   import/no-anonymous-default-export: error
   import/group-exports: off
@@ -313,7 +313,7 @@ rules:
   no-restricted-syntax: off
   no-tabs: error
   no-ternary: off
-  no-underscore-dangle: off
+  no-underscore-dangle: error
   no-unneeded-ternary: error
   one-var: [error, never]
   operator-assignment: error
@@ -593,7 +593,15 @@ overrides:
       '@typescript-eslint/no-loss-of-precision': error
       '@typescript-eslint/no-unused-expressions': error
       '@typescript-eslint/no-unused-vars':
-        [error, { vars: all, args: all, argsIgnorePattern: '^_' }]
+        [
+          error,
+          {
+            vars: all,
+            args: all,
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_T',
+          },
+        ]
       '@typescript-eslint/no-useless-constructor': error
       '@typescript-eslint/require-await': error
       '@typescript-eslint/return-await': error
@@ -617,13 +625,11 @@ overrides:
       '@typescript-eslint/semi': off
       '@typescript-eslint/space-before-function-paren': off
       '@typescript-eslint/type-annotation-spacing': off
-  - files: '**/__*__/**'
+  - files: 'src/**/__*__/**'
     rules:
       node/no-unpublished-import: off
       import/no-extraneous-dependencies: [error, { devDependencies: true }]
   - files: 'resources/**'
-    parserOptions:
-      sourceType: script
     rules:
       node/no-unpublished-require: off
       node/no-sync: off
