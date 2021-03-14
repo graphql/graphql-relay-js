@@ -12,49 +12,49 @@ import {
 
 import { fromGlobalId, globalIdField, nodeDefinitions } from '../node';
 
-const userData = {
-  '1': {
-    id: 1,
+const userData = [
+  {
+    id: '1',
     name: 'John Doe',
   },
-  '2': {
-    id: 2,
+  {
+    id: '2',
     name: 'Jane Smith',
   },
-};
+];
 
-const photoData = {
-  '1': {
-    photoId: 1,
+const photoData = [
+  {
+    photoId: '1',
     width: 300,
   },
-  '2': {
-    photoId: 2,
+  {
+    photoId: '2',
     width: 400,
   },
-};
+];
 
-const postData = {
-  '1': {
-    id: 1,
+const postData = [
+  {
+    id: '1',
     text: 'lorem',
   },
-  '2': {
-    id: 2,
+  {
+    id: '2',
     text: 'ipsum',
   },
-};
+];
 
 const { nodeField, nodeInterface } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
     switch (type) {
       case 'User':
-        return userData[id];
+        return userData.find((obj) => obj.id === id);
       case 'Photo':
-        return photoData[id];
+        return photoData.find((obj) => obj.photoId === id);
       case 'Post':
-        return postData[id];
+        return postData.find((obj) => obj.id === id);
     }
   },
   (obj) => {
@@ -112,12 +112,9 @@ const queryType = new GraphQLObjectType({
     allObjects: {
       type: new GraphQLList(nodeInterface),
       resolve: () => [
-        userData[1],
-        userData[2],
-        photoData[1],
-        photoData[2],
-        postData[1],
-        postData[2],
+        ...userData,
+        ...photoData,
+        ...postData,
       ],
     },
   }),

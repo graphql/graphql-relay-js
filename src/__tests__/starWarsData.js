@@ -62,18 +62,18 @@ const empire = Object.freeze({
 
 const data = Object.freeze({
   Faction: {
-    '1': rebels,
-    '2': empire,
+    [rebels.id]: rebels,
+    [empire.id]: empire,
   },
   Ship: {
-    '1': xwing,
-    '2': ywing,
-    '3': awing,
-    '4': falcon,
-    '5': homeOne,
-    '6': tieFighter,
-    '7': tieInterceptor,
-    '8': executor,
+    [xwing.id]: xwing,
+    [ywing.id]: ywing,
+    [awing.id]: awing,
+    [falcon.id]: falcon,
+    [homeOne.id]: homeOne,
+    [tieFighter.id]: tieFighter,
+    [tieInterceptor.id]: tieInterceptor,
+    [executor.id]: executor,
   },
 });
 

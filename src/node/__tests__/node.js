@@ -13,44 +13,42 @@ import {
 
 import { nodeDefinitions } from '../node';
 
-const userData = {
-  '1': {
-    id: 1,
+const userData = [
+  {
+    id: '1',
     name: 'John Doe',
   },
-  '2': {
-    id: 2,
+  {
+    id: '2',
     name: 'Jane Smith',
   },
-};
+];
 
-const photoData = {
-  '3': {
-    id: 3,
+const photoData = [
+  {
+    id: '3',
     width: 300,
   },
-  '4': {
-    id: 4,
+  {
+    id: '4',
     width: 400,
   },
-};
+];
 
 const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
   (id, _context, info) => {
     expect(info.schema).to.equal(schema);
-    if (userData[id]) {
-      return userData[id];
-    }
-    if (photoData[id]) {
-      return photoData[id];
-    }
+    return (
+      userData.find((obj) => obj.id === id) ??
+      photoData.find((obj) => obj.id === id)
+    );
   },
   (obj) => {
-    if (userData[obj.id]) {
+    if (userData.includes(obj)) {
       return userType;
     }
     // istanbul ignore else (Can't be reached)
-    if (photoData[obj.id]) {
+    if (photoData.includes(obj)) {
       return photoType;
     }
   },

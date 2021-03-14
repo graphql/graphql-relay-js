@@ -12,19 +12,19 @@ import {
 
 import { nodeDefinitions } from '../node';
 
-const userData = {
-  '1': {
-    id: 1,
+const userData = [
+  {
+    id: '1',
     name: 'John Doe',
   },
-  '2': {
-    id: 2,
+  {
+    id: '2',
     name: 'Jane Smith',
   },
-};
+];
 
 const { nodeField, nodeInterface } = nodeDefinitions(
-  (id) => userData[id],
+  (id) => userData.find((obj) => obj.id === id),
   () => userType,
 );
 
