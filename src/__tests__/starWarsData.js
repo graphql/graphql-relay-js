@@ -6,87 +6,44 @@
  * JSON objects in a more complex demo.
  */
 
-const xwing = {
-  id: '1',
-  name: 'X-Wing',
-};
-
-const ywing = {
-  id: '2',
-  name: 'Y-Wing',
-};
-
-const awing = {
-  id: '3',
-  name: 'A-Wing',
-};
-
-// Yeah, technically it's Corellian. But it flew in the service of the rebels,
-// so for the purposes of this demo it's a rebel ship.
-const falcon = {
-  id: '4',
-  name: 'Millenium Falcon',
-};
-
-const homeOne = {
-  id: '5',
-  name: 'Home One',
-};
-
-const tieFighter = {
-  id: '6',
-  name: 'TIE Fighter',
-};
-
-const tieInterceptor = {
-  id: '7',
-  name: 'TIE Interceptor',
-};
-
-const executor = {
-  id: '8',
-  name: 'Executor',
-};
-
-const rebels = Object.freeze({
-  id: '1',
-  name: 'Alliance to Restore the Republic',
-  ships: ['1', '2', '3', '4', '5'],
-});
-
-const empire = Object.freeze({
-  id: '2',
-  name: 'Galactic Empire',
-  ships: ['6', '7', '8'],
-});
-
-const data = Object.freeze({
-  Faction: {
-    '1': rebels,
-    '2': empire,
-  },
-  Ship: {
-    '1': xwing,
-    '2': ywing,
-    '3': awing,
-    '4': falcon,
-    '5': homeOne,
-    '6': tieFighter,
-    '7': tieInterceptor,
-    '8': executor,
-  },
-});
-
 type Ship = {|
   id: string,
   name: string,
 |};
 
+const allShips: Array<Ship> = [
+  { id: '1', name: 'X-Wing' },
+  { id: '2', name: 'Y-Wing' },
+  { id: '3', name: 'A-Wing' },
+
+  // Yeah, technically it's Corellian. But it flew in the service of the rebels,
+  // so for the purposes of this demo it's a rebel ship.
+  { id: '4', name: 'Millenium Falcon' },
+  { id: '5', name: 'Home One' },
+  { id: '6', name: 'TIE Fighter' },
+  { id: '7', name: 'TIE Interceptor' },
+  { id: '8', name: 'Executor' },
+];
+
 type Faction = {|
   id: string,
   name: string,
-  ships: $ReadOnlyArray<string>,
+  ships: Array<string>,
 |};
+
+const rebels: Faction = {
+  id: '1',
+  name: 'Alliance to Restore the Republic',
+  ships: ['1', '2', '3', '4', '5'],
+};
+
+const empire: Faction = {
+  id: '2',
+  name: 'Galactic Empire',
+  ships: ['6', '7', '8'],
+};
+
+const allFactions: Array<Faction> = [rebels, empire];
 
 let nextShip = 9;
 export function createShip(shipName: string, factionId: string): Ship {
@@ -94,17 +51,21 @@ export function createShip(shipName: string, factionId: string): Ship {
     id: String(nextShip++),
     name: shipName,
   };
-  data.Ship[newShip.id] = newShip;
-  data.Faction[factionId].ships.push(newShip.id);
+
+  allShips.push(newShip);
+
+  const faction = allFactions.find((obj) => obj.id === factionId);
+  // eslint-disable-next-line no-unused-expressions
+  faction?.ships.push(newShip.id);
   return newShip;
 }
 
-export function getShip(id: string): Ship {
-  return data.Ship[id];
+export function getShip(id: string): Ship | void {
+  return allShips.find((ship) => ship.id === id);
 }
 
-export function getFaction(id: string): Faction {
-  return data.Faction[id];
+export function getFaction(id: string): Faction | void {
+  return allFactions.find((faction) => faction.id === id);
 }
 
 export function getRebels(): Faction {
