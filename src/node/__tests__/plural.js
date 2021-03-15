@@ -42,11 +42,9 @@ const schema = new GraphQLSchema({
   query: queryType,
 });
 
-const context = { lang: 'en' };
-
 describe('pluralIdentifyingRootField()', () => {
   it('allows fetching', () => {
-    const query = `
+    const source = `
       {
         usernames(usernames:[ "dschafer", "leebyron", "schrockn" ]) {
           username
@@ -55,7 +53,8 @@ describe('pluralIdentifyingRootField()', () => {
       }
     `;
 
-    expect(graphqlSync(schema, query, null, context)).to.deep.equal({
+    const contextValue = { lang: 'en' };
+    expect(graphqlSync({ schema, source, contextValue })).to.deep.equal({
       data: {
         usernames: [
           {
@@ -76,7 +75,7 @@ describe('pluralIdentifyingRootField()', () => {
   });
 
   it('correctly introspects', () => {
-    const query = `
+    const source = `
       {
         __schema {
           queryType {
@@ -111,7 +110,7 @@ describe('pluralIdentifyingRootField()', () => {
       }
     `;
 
-    expect(graphqlSync(schema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         __schema: {
           queryType: {

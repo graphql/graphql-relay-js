@@ -130,7 +130,7 @@ const schema = new GraphQLSchema({
 
 describe('global ID fields', () => {
   it('gives different IDs', () => {
-    const query = `
+    const source = `
       {
         allObjects {
           id
@@ -138,7 +138,7 @@ describe('global ID fields', () => {
       }
     `;
 
-    expect(graphqlSync(schema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         allObjects: [
           { id: 'VXNlcjox' },
@@ -153,7 +153,7 @@ describe('global ID fields', () => {
   });
 
   it('refetches the IDs', () => {
-    const query = `
+    const source = `
       {
         user: node(id: "VXNlcjox") {
           id
@@ -176,7 +176,7 @@ describe('global ID fields', () => {
       }
     `;
 
-    expect(graphqlSync(schema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         user: {
           id: 'VXNlcjox',

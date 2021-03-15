@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { graphqlSync } from 'graphql';
 
-import { StarWarsSchema } from './starWarsSchema';
+import { StarWarsSchema as schema } from './starWarsSchema';
 
 describe('Star Wars connections', () => {
   it('fetches the first ship of the rebels', () => {
-    const query = `
+    const source = `
       query RebelsShipsQuery {
         rebels {
           name,
@@ -21,7 +21,7 @@ describe('Star Wars connections', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         rebels: {
           name: 'Alliance to Restore the Republic',
@@ -38,7 +38,7 @@ describe('Star Wars connections', () => {
   });
 
   it('fetches the first two ships of the rebels with a cursor', () => {
-    const query = `
+    const source = `
       query MoreRebelShipsQuery {
         rebels {
           name,
@@ -54,7 +54,7 @@ describe('Star Wars connections', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         rebels: {
           name: 'Alliance to Restore the Republic',
@@ -76,7 +76,7 @@ describe('Star Wars connections', () => {
   });
 
   it('fetches the next three ships of the rebels with a cursor', () => {
-    const query = `
+    const source = `
       query EndOfRebelShipsQuery {
         rebels {
           name,
@@ -92,7 +92,7 @@ describe('Star Wars connections', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         rebels: {
           name: 'Alliance to Restore the Republic',
@@ -118,7 +118,7 @@ describe('Star Wars connections', () => {
   });
 
   it('fetches no ships of the rebels at the end of connection', () => {
-    const query = `
+    const source = `
       query RebelsQuery {
         rebels {
           name,
@@ -134,7 +134,7 @@ describe('Star Wars connections', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         rebels: {
           name: 'Alliance to Restore the Republic',
@@ -147,7 +147,7 @@ describe('Star Wars connections', () => {
   });
 
   it('identifies the end of the list', () => {
-    const query = `
+    const source = `
       query EndOfRebelShipsQuery {
         rebels {
           name,
@@ -175,7 +175,7 @@ describe('Star Wars connections', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         rebels: {
           name: 'Alliance to Restore the Republic',

@@ -88,7 +88,7 @@ const schema = new GraphQLSchema({
 
 describe('connectionDefinition()', () => {
   it('includes connection and edge fields', () => {
-    const query = `
+    const source = `
       query FriendsQuery {
         user {
           friends(first: 2) {
@@ -104,7 +104,7 @@ describe('connectionDefinition()', () => {
       }
     `;
 
-    expect(graphqlSync(schema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         user: {
           friends: {
@@ -126,7 +126,7 @@ describe('connectionDefinition()', () => {
   });
 
   it('works with forwardConnectionArgs', () => {
-    const query = `
+    const source = `
       query FriendsQuery {
         user {
           friendsForward(first: 2) {
@@ -140,18 +140,11 @@ describe('connectionDefinition()', () => {
       }
     `;
 
-    expect(graphqlSync(schema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         user: {
           friendsForward: {
-            edges: [
-              {
-                node: { name: 'Nick' },
-              },
-              {
-                node: { name: 'Lee' },
-              },
-            ],
+            edges: [{ node: { name: 'Nick' } }, { node: { name: 'Lee' } }],
           },
         },
       },
@@ -159,7 +152,7 @@ describe('connectionDefinition()', () => {
   });
 
   it('works with backwardConnectionArgs', () => {
-    const query = `
+    const source = `
       query FriendsQuery {
         user {
           friendsBackward(last: 2) {
@@ -173,18 +166,11 @@ describe('connectionDefinition()', () => {
       }
     `;
 
-    expect(graphqlSync(schema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         user: {
           friendsBackward: {
-            edges: [
-              {
-                node: { name: 'Joe' },
-              },
-              {
-                node: { name: 'Tim' },
-              },
-            ],
+            edges: [{ node: { name: 'Joe' } }, { node: { name: 'Tim' } }],
           },
         },
       },
