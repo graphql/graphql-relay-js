@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import { graphqlSync } from 'graphql';
 
-import { StarWarsSchema } from './starWarsSchema';
+import { StarWarsSchema as schema } from './starWarsSchema';
 
 describe('Star Wars object identification', () => {
   it('fetches the ID and name of the rebels', () => {
-    const query = `
+    const source = `
       query RebelsQuery {
         rebels {
           id
@@ -15,7 +15,7 @@ describe('Star Wars object identification', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         rebels: {
           id: 'RmFjdGlvbjox',
@@ -26,7 +26,7 @@ describe('Star Wars object identification', () => {
   });
 
   it('refetches the rebels', () => {
-    const query = `
+    const source = `
       query RebelsRefetchQuery {
         node(id: "RmFjdGlvbjox") {
           id
@@ -37,7 +37,7 @@ describe('Star Wars object identification', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
         node: {
           id: 'RmFjdGlvbjox',
@@ -48,7 +48,7 @@ describe('Star Wars object identification', () => {
   });
 
   it('fetches the ID and name of the empire', () => {
-    const query = `
+    const source = `
       query EmpireQuery {
         empire {
           id
@@ -57,18 +57,15 @@ describe('Star Wars object identification', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
-        empire: {
-          id: 'RmFjdGlvbjoy',
-          name: 'Galactic Empire',
-        },
+        empire: { id: 'RmFjdGlvbjoy', name: 'Galactic Empire' },
       },
     });
   });
 
   it('refetches the empire', () => {
-    const query = `
+    const source = `
       query EmpireRefetchQuery {
         node(id: "RmFjdGlvbjoy") {
           id
@@ -79,18 +76,15 @@ describe('Star Wars object identification', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
-        node: {
-          id: 'RmFjdGlvbjoy',
-          name: 'Galactic Empire',
-        },
+        node: { id: 'RmFjdGlvbjoy', name: 'Galactic Empire' },
       },
     });
   });
 
   it('refetches the X-Wing', () => {
-    const query = `
+    const source = `
       query XWingRefetchQuery {
         node(id: "U2hpcDox") {
           id
@@ -101,12 +95,9 @@ describe('Star Wars object identification', () => {
       }
     `;
 
-    expect(graphqlSync(StarWarsSchema, query)).to.deep.equal({
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
-        node: {
-          id: 'U2hpcDox',
-          name: 'X-Wing',
-        },
+        node: { id: 'U2hpcDox', name: 'X-Wing' },
       },
     });
   });

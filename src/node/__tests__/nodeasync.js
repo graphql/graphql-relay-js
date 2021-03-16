@@ -55,7 +55,7 @@ const schema = new GraphQLSchema({
 
 describe('Node interface and fields with async object fetcher', () => {
   it('gets the correct ID for users', async () => {
-    const query = `
+    const source = `
       {
         node(id: "1") {
           id
@@ -63,17 +63,15 @@ describe('Node interface and fields with async object fetcher', () => {
       }
     `;
 
-    expect(await graphql(schema, query)).to.deep.equal({
+    expect(await graphql({ schema, source })).to.deep.equal({
       data: {
-        node: {
-          id: '1',
-        },
+        node: { id: '1' },
       },
     });
   });
 
   it('gets the correct name for users', async () => {
-    const query = `
+    const source = `
       {
         node(id: "1") {
           id
@@ -84,12 +82,9 @@ describe('Node interface and fields with async object fetcher', () => {
       }
     `;
 
-    expect(await graphql(schema, query)).to.deep.equal({
+    expect(await graphql({ schema, source })).to.deep.equal({
       data: {
-        node: {
-          id: '1',
-          name: 'John Doe',
-        },
+        node: { id: '1', name: 'John Doe' },
       },
     });
   });

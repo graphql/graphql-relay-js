@@ -98,7 +98,7 @@ const schema = new GraphQLSchema({
 describe('Node interface and fields', () => {
   describe('refetchability', () => {
     it('gets the correct ID for users', () => {
-      const query = `
+      const source = `
         {
           node(id: "1") {
             id
@@ -106,7 +106,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: { id: '1' },
         },
@@ -114,7 +114,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct IDs for users', () => {
-      const query = `
+      const source = `
         {
           nodes(ids: ["1", "2"]) {
             id
@@ -122,7 +122,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           nodes: [{ id: '1' }, { id: '2' }],
         },
@@ -130,7 +130,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct ID for photos', () => {
-      const query = `
+      const source = `
         {
           node(id: "4") {
             id
@@ -138,7 +138,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: { id: '4' },
         },
@@ -146,7 +146,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct IDs for photos', () => {
-      const query = `
+      const source = `
         {
           nodes(ids: ["3", "4"]) {
             id
@@ -154,7 +154,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           nodes: [{ id: '3' }, { id: '4' }],
         },
@@ -162,7 +162,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct IDs for multiple types', () => {
-      const query = `
+      const source = `
         {
           nodes(ids: ["1", "3"]) {
             id
@@ -170,7 +170,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           nodes: [{ id: '1' }, { id: '3' }],
         },
@@ -178,7 +178,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct name for users', () => {
-      const query = `
+      const source = `
         {
           node(id: "1") {
             id
@@ -189,7 +189,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: {
             id: '1',
@@ -200,7 +200,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct width for photos', () => {
-      const query = `
+      const source = `
         {
           node(id: "4") {
             id
@@ -211,7 +211,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: {
             id: '4',
@@ -222,7 +222,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct type name for users', () => {
-      const query = `
+      const source = `
         {
           node(id: "1") {
             id
@@ -231,7 +231,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: {
             id: '1',
@@ -242,7 +242,7 @@ describe('Node interface and fields', () => {
     });
 
     it('gets the correct type name for photos', () => {
-      const query = `
+      const source = `
         {
           node(id: "4") {
             id
@@ -251,7 +251,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: {
             id: '4',
@@ -262,7 +262,7 @@ describe('Node interface and fields', () => {
     });
 
     it('ignores photo fragments on user', () => {
-      const query = `
+      const source = `
         {
           node(id: "1") {
             id
@@ -273,7 +273,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: { id: '1' },
         },
@@ -281,7 +281,7 @@ describe('Node interface and fields', () => {
     });
 
     it('returns null for bad IDs', () => {
-      const query = `
+      const source = `
         {
           node(id: "5") {
             id
@@ -289,7 +289,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           node: null,
         },
@@ -297,7 +297,7 @@ describe('Node interface and fields', () => {
     });
 
     it('returns nulls for bad IDs', () => {
-      const query = `
+      const source = `
         {
           nodes(ids: ["3", "5"]) {
             id
@@ -305,7 +305,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           nodes: [{ id: '3' }, null],
         },
@@ -315,7 +315,7 @@ describe('Node interface and fields', () => {
 
   describe('introspection', () => {
     it('has correct node interface', () => {
-      const query = `
+      const source = `
         {
           __type(name: "Node") {
             name
@@ -334,7 +334,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           __type: {
             name: 'Node',
@@ -357,7 +357,7 @@ describe('Node interface and fields', () => {
     });
 
     it('has correct node and nodes root fields', () => {
-      const query = `
+      const source = `
         {
           __schema {
             queryType {
@@ -383,7 +383,7 @@ describe('Node interface and fields', () => {
         }
       `;
 
-      expect(graphqlSync(schema, query)).to.deep.equal({
+      expect(graphqlSync({ schema, source })).to.deep.equal({
         data: {
           __schema: {
             queryType: {
