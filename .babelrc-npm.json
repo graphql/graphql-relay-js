@@ -1,0 +1,9 @@
+{
+  "plugins": ["@babel/plugin-transform-flow-strip-types"],
+  "presets": [
+    [
+      "@babel/preset-env",
+      { "modules": "commonjs", "targets": { "node": "12" } }
+    ]
+  ]
+}
