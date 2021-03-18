@@ -1,23 +1,7 @@
-// @noflow
-
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
-
-function rmdirRecursive(dirPath) {
-  if (fs.existsSync(dirPath)) {
-    for (const dirent of fs.readdirSync(dirPath, { withFileTypes: true })) {
-      const fullPath = path.join(dirPath, dirent.name);
-      if (dirent.isDirectory()) {
-        rmdirRecursive(fullPath);
-      } else {
-        fs.unlinkSync(fullPath);
-      }
-    }
-    fs.rmdirSync(dirPath);
-  }
-}
 
 function readdirRecursive(dirPath, opts = {}) {
   const { ignoreDir } = opts;
@@ -40,11 +24,11 @@ function readdirRecursive(dirPath, opts = {}) {
   return result;
 }
 
-function showStats() {
+function showDirStats(dirPath) {
   const fileTypes = {};
   let totalSize = 0;
 
-  for (const filepath of readdirRecursive('./dist')) {
+  for (const filepath of readdirRecursive(dirPath)) {
     const name = filepath.split(path.sep).pop();
     const [base, ...splitExt] = name.split('.');
     const ext = splitExt.join('.');
@@ -52,7 +36,7 @@ function showStats() {
     const filetype = ext ? '*.' + ext : base;
     fileTypes[filetype] = fileTypes[filetype] || { filepaths: [], size: 0 };
 
-    const { size } = fs.lstatSync(path.join('./dist', filepath));
+    const { size } = fs.lstatSync(path.join(dirPath, filepath));
     totalSize += size;
     fileTypes[filetype].size += size;
     fileTypes[filetype].filepaths.push(filepath);
@@ -87,7 +71,6 @@ function showStats() {
 }
 
 module.exports = {
-  rmdirRecursive,
   readdirRecursive,
-  showStats,
+  showDirStats,
 };
