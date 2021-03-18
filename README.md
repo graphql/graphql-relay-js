@@ -9,11 +9,11 @@ This is a library to allow the easy creation of Relay-compliant servers using th
 
 A basic understanding of GraphQL and of the GraphQL.js implementation is needed to provide context for this library.
 
-An overview of GraphQL in general is available in the [README](https://github.com/facebook/graphql/blob/master/README.md) for the [Specification for GraphQL](https://github.com/facebook/graphql).
+An overview of GraphQL in general is available in the [README](https://github.com/graphql/graphql-spec/blob/master/README.md) for the [Specification for GraphQL](https://github.com/graphql/graphql-spec).
 
 This library is designed to work with the [GraphQL.js](https://github.com/graphql/graphql-js) reference implementation of a GraphQL server.
 
-An overview of the functionality that a Relay-compliant GraphQL server should provide is in the [GraphQL Relay Specification](https://facebook.github.io/relay/docs/en/graphql-server-specification.html) on the [Relay website](https://facebook.github.io/relay/). That overview describes a simple set of examples that exist as [tests](src/__tests__) in this repository. A good way to get started with this repository is to walk through that documentation and the corresponding tests in this library together.
+An overview of the functionality that a Relay-compliant GraphQL server should provide is in the [GraphQL Relay Specification](https://relay.dev/docs/guides/graphql-server-specification/) on the [Relay website](https://relay.dev/). That overview describes a simple set of examples that exist as [tests](src/__tests__) in this repository. A good way to get started with this repository is to walk through that documentation and the corresponding tests in this library together.
 
 ## Using Relay Library for GraphQL.js
 
@@ -167,7 +167,7 @@ After cloning this repo, ensure dependencies are installed by running:
 npm install
 ```
 
-This library is written in ES6 and uses [Babel](http://babeljs.io/) for ES5 transpilation and [Flow](http://flowtype.org/) for type safety. Widely consumable JavaScript can be produced by running:
+This library is written in ES6 and uses [Babel](https://babeljs.io/) for ES5 transpilation and [Flow](https://flow.org/) for type safety. Widely consumable JavaScript can be produced by running:
 
 ```sh
 npm run build
@@ -181,25 +181,21 @@ After developing, the full test suite can be evaluated by running:
 npm test
 ```
 
-While actively developing, we recommend running
+## Opening a PR
 
-```sh
-npm run watch
-```
+We actively welcome pull requests. Learn how to [contribute](./.github/CONTRIBUTING.md).
 
-in a terminal. This will watch the file system run lint, tests, and type checking automatically whenever you save a js file.
-
-To lint the JS files and run type interface checks run `npm run lint`.
-
-### Opening a PR
-
-This repository is managed by EasyCLA. Project participants must sign the free ([GraphQL Specification Membership agreement](https://preview-spec-membership.graphql.org) before making a contribution. You only need to do this one time, and it can be signed by [individual contributors](http://individual-spec-membership.graphql.org/) or their [employers](http://corporate-spec-membership.graphql.org/).
+This repository is managed by EasyCLA. Project participants must sign the free ([GraphQL Specification Membership agreement](https://preview-spec-membership.graphql.org) before making a contribution. You only need to do this one time, and it can be signed by [individual contributors](https://individual-spec-membership.graphql.org/) or their [employers](https://corporate-spec-membership.graphql.org/).
 
 To initiate the signature process please open a PR against this repo. The EasyCLA bot will block the merge if we still need a membership agreement from you.
 
 You can find [detailed information here](https://github.com/graphql/graphql-wg/tree/main/membership). If you have issues, please email [operations@graphql.org](mailto:operations@graphql.org).
 
 If your company benefits from GraphQL and you would like to provide essential financial support for the systems and people that power our community, please also consider membership in the [GraphQL Foundation](https://foundation.graphql.org/join).
+
+## Changelog
+
+Changes are tracked as [GitHub releases](https://github.com/graphql/graphql-js/releases).
 
 ## License
 
