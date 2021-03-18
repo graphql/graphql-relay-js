@@ -14,13 +14,6 @@
   },
   "main": "index.js",
   "types": "index.d.ts",
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "ts3.4/*"
-      ]
-    }
-  },
   "engines": {
     "node": "^12.20.0 || ^14.15.0 || >= 15.9.0"
   },
@@ -50,7 +43,6 @@
     "@typescript-eslint/parser": "4.17.0",
     "chai": "4.3.4",
     "cspell": "5.3.7",
-    "downlevel-dts": "0.7.0",
     "eslint": "7.22.0",
     "eslint-plugin-flowtype": "5.3.1",
     "eslint-plugin-import": "2.22.1",
