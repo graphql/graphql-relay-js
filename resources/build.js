@@ -7,7 +7,6 @@ const path = require('path');
 const assert = require('assert');
 
 const babel = require('@babel/core');
-const { main: downlevel } = require('downlevel-dts');
 
 const { rmdirRecursive, readdirRecursive, showStats } = require('./utils');
 
@@ -30,8 +29,6 @@ if (require.main === module) {
       fs.copyFileSync(srcPath, destPath);
     }
   }
-
-  downlevel('./dist', './dist/ts3.4');
 
   fs.copyFileSync('./LICENSE', './dist/LICENSE');
   fs.copyFileSync('./README.md', './dist/README.md');
