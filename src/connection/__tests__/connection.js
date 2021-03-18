@@ -89,7 +89,7 @@ const schema = new GraphQLSchema({
 describe('connectionDefinition()', () => {
   it('includes connection and edge fields', () => {
     const source = `
-      query FriendsQuery {
+      {
         user {
           friends(first: 2) {
             totalCount
@@ -153,7 +153,7 @@ describe('connectionDefinition()', () => {
 
   it('works with backwardConnectionArgs', () => {
     const source = `
-      query FriendsQuery {
+      {
         user {
           friendsBackward(last: 2) {
             edges {

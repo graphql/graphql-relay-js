@@ -7,7 +7,7 @@ import { StarWarsSchema as schema } from './starWarsSchema';
 describe('Star Wars mutations', () => {
   it('mutates the data set', () => {
     const source = `
-      mutation AddBWingQuery($input: IntroduceShipInput!) {
+      mutation ($input: IntroduceShipInput!) {
         introduceShip(input: $input) {
           ship {
             id
