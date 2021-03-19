@@ -1,11 +1,11 @@
-// Flow types for creating connection types in the schema
+// Types for creating connection types in the schema
 export type {
   Connection,
   ConnectionArguments,
   ConnectionCursor,
   Edge,
   PageInfo,
-} from './connection/connectiontypes';
+} from './connection/connection';
 
 // Helpers for creating connection types in the schema
 export {

@@ -49,6 +49,22 @@ export const connectionArgs: GraphQLFieldConfigArgumentMap = {
   ...backwardConnectionArgs,
 };
 
+/**
+ * A type alias for cursors in this implementation.
+ */
+export type ConnectionCursor = string;
+
+/**
+ * A type describing the arguments a connection field receives in GraphQL.
+ */
+export type ConnectionArguments = {
+  before?: ConnectionCursor | null,
+  after?: ConnectionCursor | null,
+  first?: number | null,
+  last?: number | null,
+  ...
+};
+
 type ConnectionConfig = {|
   name?: string,
   nodeType: GraphQLObjectType,
@@ -121,6 +137,22 @@ export function connectionDefinitions(
 }
 
 /**
+ * A type designed to be exposed as a `Connection` over GraphQL.
+ */
+export type Connection<T> = {|
+  edges: Array<Edge<T>>,
+  pageInfo: PageInfo,
+|};
+
+/**
+ * A type designed to be exposed as a `Edge` over GraphQL.
+ */
+export type Edge<T> = {|
+  node: T,
+  cursor: ConnectionCursor,
+|};
+
+/**
  * The common page info type used by all connections.
  */
 const pageInfoType = new GraphQLObjectType({
@@ -145,3 +177,13 @@ const pageInfoType = new GraphQLObjectType({
     },
   }),
 });
+
+/**
+ * A type designed to be exposed as `PageInfo` over GraphQL.
+ */
+export type PageInfo = {|
+  startCursor: ConnectionCursor | null,
+  endCursor: ConnectionCursor | null,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+|};

@@ -4,7 +4,7 @@ import type {
   Connection,
   ConnectionArguments,
   ConnectionCursor,
-} from './connectiontypes';
+} from './connection';
 
 type ArraySliceMetaInfo = {|
   sliceStart: number,

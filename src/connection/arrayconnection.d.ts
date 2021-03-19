@@ -2,7 +2,7 @@ import type {
   Connection,
   ConnectionArguments,
   ConnectionCursor,
-} from './connectiontypes';
+} from './connection';
 
 // TS_SPECIFIC: This type is only exported by TypeScript
 export interface ArraySliceMetaInfo {
