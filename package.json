@@ -22,7 +22,7 @@
     "prettier": "prettier --write --list-different .",
     "prettier:check": "prettier --check .",
     "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check && npm run check:spelling",
-    "testonly": "mocha src/**/__tests__/**/*.js",
+    "testonly": "mocha src/**/__tests__/**/*-test.js",
     "testonly:cover": "nyc npm run testonly",
     "lint": "eslint .",
     "check": "flow check",
