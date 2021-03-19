@@ -7,7 +7,7 @@ import { StarWarsSchema as schema } from './starWarsSchema';
 describe('Star Wars connections', () => {
   it('fetches the first ship of the rebels', () => {
     const source = `
-      query RebelsShipsQuery {
+      {
         rebels {
           name,
           ships(first: 1) {
@@ -39,7 +39,7 @@ describe('Star Wars connections', () => {
 
   it('fetches the first two ships of the rebels with a cursor', () => {
     const source = `
-      query MoreRebelShipsQuery {
+      {
         rebels {
           name,
           ships(first: 2) {
@@ -77,7 +77,7 @@ describe('Star Wars connections', () => {
 
   it('fetches the next three ships of the rebels with a cursor', () => {
     const source = `
-      query EndOfRebelShipsQuery {
+      {
         rebels {
           name,
           ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjE=") {
@@ -119,7 +119,7 @@ describe('Star Wars connections', () => {
 
   it('fetches no ships of the rebels at the end of connection', () => {
     const source = `
-      query RebelsQuery {
+      {
         rebels {
           name,
           ships(first: 3 after: "YXJyYXljb25uZWN0aW9uOjQ=") {
@@ -148,7 +148,7 @@ describe('Star Wars connections', () => {
 
   it('identifies the end of the list', () => {
     const source = `
-      query EndOfRebelShipsQuery {
+      {
         rebels {
           name,
           originalShips: ships(first: 2) {

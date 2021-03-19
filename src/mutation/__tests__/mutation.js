@@ -114,7 +114,7 @@ const schema = new GraphQLSchema({
 describe('mutationWithClientMutationId()', () => {
   it('requires an argument', () => {
     const source = `
-      mutation M {
+      mutation {
         simpleMutation {
           result
         }
@@ -134,7 +134,7 @@ describe('mutationWithClientMutationId()', () => {
 
   it('returns the same client mutation ID', () => {
     const source = `
-      mutation M {
+      mutation {
         simpleMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId
@@ -154,7 +154,7 @@ describe('mutationWithClientMutationId()', () => {
 
   it('supports thunks as input and output fields', () => {
     const source = `
-      mutation M {
+      mutation {
         simpleMutationWithThunkFields(input: {
           inputData: 1234,
           clientMutationId: "abc"
@@ -177,7 +177,7 @@ describe('mutationWithClientMutationId()', () => {
 
   it('supports promise mutations', async () => {
     const source = `
-      mutation M {
+      mutation {
         simplePromiseMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId
@@ -197,7 +197,7 @@ describe('mutationWithClientMutationId()', () => {
 
   it('can access rootValue', () => {
     const source = `
-      mutation M {
+      mutation {
         simpleRootValueMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId
@@ -218,7 +218,7 @@ describe('mutationWithClientMutationId()', () => {
 
   it('supports mutations returning null', () => {
     const source = `
-      mutation M {
+      mutation {
         simpleRootValueMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId

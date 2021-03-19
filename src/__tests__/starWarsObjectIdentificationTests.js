@@ -7,7 +7,7 @@ import { StarWarsSchema as schema } from './starWarsSchema';
 describe('Star Wars object identification', () => {
   it('fetches the ID and name of the rebels', () => {
     const source = `
-      query RebelsQuery {
+      {
         rebels {
           id
           name
@@ -27,7 +27,7 @@ describe('Star Wars object identification', () => {
 
   it('refetches the rebels', () => {
     const source = `
-      query RebelsRefetchQuery {
+      {
         node(id: "RmFjdGlvbjox") {
           id
           ... on Faction {
@@ -49,7 +49,7 @@ describe('Star Wars object identification', () => {
 
   it('fetches the ID and name of the empire', () => {
     const source = `
-      query EmpireQuery {
+      {
         empire {
           id
           name
@@ -66,7 +66,7 @@ describe('Star Wars object identification', () => {
 
   it('refetches the empire', () => {
     const source = `
-      query EmpireRefetchQuery {
+      {
         node(id: "RmFjdGlvbjoy") {
           id
           ... on Faction {
@@ -85,7 +85,7 @@ describe('Star Wars object identification', () => {
 
   it('refetches the X-Wing', () => {
     const source = `
-      query XWingRefetchQuery {
+      {
         node(id: "U2hpcDox") {
           id
           ... on Ship {
