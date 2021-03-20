@@ -25,7 +25,7 @@ export {
   cursorToOffset,
   getOffsetWithDefault,
   offsetToCursor,
-} from './connection/arrayconnection';
+} from './connection/arrayConnection';
 
 // Helper for creating mutations with client mutation IDs
 export { mutationWithClientMutationId } from './mutation/mutation';

@@ -8,7 +8,7 @@ import {
 
 import { nodeDefinitions, globalIdField, fromGlobalId } from '../node/node';
 
-import { connectionFromArray } from '../connection/arrayconnection';
+import { connectionFromArray } from '../connection/arrayConnection';
 
 import {
   connectionArgs,
