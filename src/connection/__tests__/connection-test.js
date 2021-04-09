@@ -8,7 +8,7 @@ import {
   graphqlSync,
 } from 'graphql';
 
-import { connectionFromArray } from '../arrayconnection';
+import { connectionFromArray } from '../arrayConnection';
 
 import {
   backwardConnectionArgs,

@@ -7,7 +7,7 @@ import {
   connectionFromPromisedArray,
   connectionFromPromisedArraySlice,
   cursorForObjectInConnection,
-} from '../arrayconnection';
+} from '../arrayConnection';
 
 describe('connectionFromArray()', () => {
   const letters = ['A', 'B', 'C', 'D', 'E'];
