@@ -27,7 +27,8 @@
     "lint": "eslint .",
     "check": "flow check",
     "check:spelling": "cspell '**/*'",
-    "build": "node resources/build.js"
+    "build": "node resources/build.js",
+    "prepare": "npm run build && cp ./npmDist/* ./"
   },
   "peerDependencies": {
     "graphql": "^14.7.0 || ^15.5.0"
