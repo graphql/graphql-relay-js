@@ -104,7 +104,7 @@ describe('Star Wars connections', () => {
               },
               {
                 cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-                node: { name: 'Millenium Falcon' },
+                node: { name: 'Millennium Falcon' },
               },
               {
                 cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
@@ -196,7 +196,7 @@ describe('Star Wars connections', () => {
                 node: { name: 'A-Wing' },
               },
               {
-                node: { name: 'Millenium Falcon' },
+                node: { name: 'Millennium Falcon' },
               },
               {
                 node: { name: 'Home One' },

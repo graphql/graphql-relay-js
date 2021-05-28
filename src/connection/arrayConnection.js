@@ -125,7 +125,7 @@ export function offsetToCursor(offset: number): ConnectionCursor {
 }
 
 /**
- * Rederives the offset from the cursor string.
+ * Extracts the offset from the cursor string.
  */
 export function cursorToOffset(cursor: ConnectionCursor): number {
   return parseInt(unbase64(cursor).substring(PREFIX.length), 10);

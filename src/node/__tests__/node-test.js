@@ -94,7 +94,7 @@ const schema = new GraphQLSchema({
 });
 
 describe('Node interface and fields', () => {
-  describe('refetchability', () => {
+  describe('Ability to refetch', () => {
     it('gets the correct ID for users', () => {
       const source = `
         {

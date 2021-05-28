@@ -16,20 +16,12 @@
   ],
   "words": [
     "arrayconnection",
-    "connectiontypes",
-    "rederives",
-    "refetchability",
-    "refetches",
     "unbase",
     "unbased",
 
     // Different words used inside tests
 
-    "millenium",
     "corellian",
-    "bwing",
-    "xwing",
-    "ywing",
     "dschafer",
     "leebyron",
     "schrockn",
@@ -42,8 +34,6 @@
     "Xljb",
 
     // TODO: contribute upstream
-    "codecov",
-    "downlevel",
     "transpilation",
 
     // TODO: remove below words
