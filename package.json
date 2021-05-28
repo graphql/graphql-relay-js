@@ -24,7 +24,7 @@
   "scripts": {
     "preversion": "npm run ci && npm run test",
     "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check && npm run check:spelling",
-    "lint": "eslint .",
+    "lint": "eslint --max-warnings 0 .",
     "check": "flow check",
     "testonly": "mocha --full-trace src/**/__tests__/**/*-test.js",
     "testonly:cover": "nyc npm run testonly",
