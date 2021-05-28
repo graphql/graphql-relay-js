@@ -1,6 +1,7 @@
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
+import type { GraphQLFieldConfig } from 'graphql';
 import {
   GraphQLInt,
   GraphQLObjectType,
@@ -15,107 +16,39 @@ function dummyResolve() {
   return { result: 1 };
 }
 
-const simpleMutation = mutationWithClientMutationId({
-  name: 'SimpleMutation',
-  inputFields: {},
-  outputFields: {
-    result: {
-      type: GraphQLInt,
-    },
-  },
-  mutateAndGetPayload: dummyResolve,
-});
+function wrapInSchema(mutationFields: {
+  [field: string]: GraphQLFieldConfig<any, any>,
+}): GraphQLSchema {
+  const queryType = new GraphQLObjectType({
+    name: 'DummyQuery',
+    fields: { dummy: { type: GraphQLInt } },
+  });
 
-const simpleMutationWithDescription = mutationWithClientMutationId({
-  name: 'SimpleMutationWithDescription',
-  description: 'Simple Mutation Description',
-  inputFields: {},
-  outputFields: {
-    result: {
-      type: GraphQLInt,
-    },
-  },
-  mutateAndGetPayload: dummyResolve,
-});
+  const mutationType = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: mutationFields,
+  });
 
-const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
-  name: 'SimpleMutationWithDeprecationReason',
-  inputFields: {},
-  outputFields: {
-    result: {
-      type: GraphQLInt,
-    },
-  },
-  mutateAndGetPayload: dummyResolve,
-  deprecationReason: 'Just because',
-});
-
-const simpleMutationWithThunkFields = mutationWithClientMutationId({
-  name: 'SimpleMutationWithThunkFields',
-  inputFields: () => ({
-    inputData: {
-      type: GraphQLInt,
-    },
-  }),
-  outputFields: () => ({
-    result: {
-      type: GraphQLInt,
-    },
-  }),
-  mutateAndGetPayload: ({ inputData }) => ({ result: inputData }),
-});
-
-const simplePromiseMutation = mutationWithClientMutationId({
-  name: 'SimplePromiseMutation',
-  inputFields: {},
-  outputFields: {
-    result: {
-      type: GraphQLInt,
-    },
-  },
-  mutateAndGetPayload: () => Promise.resolve({ result: 1 }),
-});
-
-const simpleRootValueMutation = mutationWithClientMutationId({
-  name: 'SimpleRootValueMutation',
-  inputFields: {},
-  outputFields: {
-    result: {
-      type: GraphQLInt,
-    },
-  },
-  mutateAndGetPayload: (_params, _context, { rootValue }) => rootValue,
-});
-
-const queryType = new GraphQLObjectType({
-  name: 'Query',
-  fields: () => ({
-    query: { type: queryType },
-  }),
-});
-
-const mutationType = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: {
-    simpleMutation,
-    simpleMutationWithDescription,
-    simpleMutationWithDeprecationReason,
-    simpleMutationWithThunkFields,
-    simplePromiseMutation,
-    simpleRootValueMutation,
-  },
-});
-
-const schema = new GraphQLSchema({
-  query: queryType,
-  mutation: mutationType,
-});
+  return new GraphQLSchema({
+    query: queryType,
+    mutation: mutationType,
+  });
+}
 
 describe('mutationWithClientMutationId()', () => {
   it('requires an argument', () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: dummyResolve,
+    });
+    const schema = wrapInSchema({ someMutation });
     const source = `
       mutation {
-        simpleMutation {
+        someMutation {
           result
         }
       }
@@ -125,7 +58,7 @@ describe('mutationWithClientMutationId()', () => {
       errors: [
         {
           message:
-            'Field "simpleMutation" argument "input" of type "SimpleMutationInput!" is required, but it was not provided.',
+            'Field "someMutation" argument "input" of type "SomeMutationInput!" is required, but it was not provided.',
           locations: [{ line: 3, column: 9 }],
         },
       ],
@@ -133,9 +66,19 @@ describe('mutationWithClientMutationId()', () => {
   });
 
   it('returns the same client mutation ID', () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: dummyResolve,
+    });
+    const schema = wrapInSchema({ someMutation });
+
     const source = `
       mutation {
-        simpleMutation(input: {clientMutationId: "abc"}) {
+        someMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId
         }
@@ -144,21 +87,23 @@ describe('mutationWithClientMutationId()', () => {
 
     expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
-        simpleMutation: {
-          result: 1,
-          clientMutationId: 'abc',
-        },
+        someMutation: { result: 1, clientMutationId: 'abc' },
       },
     });
   });
 
   it('supports thunks as input and output fields', () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: () => ({ inputData: { type: GraphQLInt } }),
+      outputFields: () => ({ result: { type: GraphQLInt } }),
+      mutateAndGetPayload: ({ inputData }) => ({ result: inputData }),
+    });
+    const schema = wrapInSchema({ someMutation });
+
     const source = `
       mutation {
-        simpleMutationWithThunkFields(input: {
-          inputData: 1234,
-          clientMutationId: "abc"
-        }) {
+        someMutation(input: { inputData: 1234, clientMutationId: "abc" }) {
           result
           clientMutationId
         }
@@ -167,18 +112,25 @@ describe('mutationWithClientMutationId()', () => {
 
     expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
-        simpleMutationWithThunkFields: {
-          result: 1234,
-          clientMutationId: 'abc',
-        },
+        someMutation: { result: 1234, clientMutationId: 'abc' },
       },
     });
   });
 
   it('supports promise mutations', async () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: () => Promise.resolve({ result: 1 }),
+    });
+    const schema = wrapInSchema({ someMutation });
+
     const source = `
       mutation {
-        simplePromiseMutation(input: {clientMutationId: "abc"}) {
+        someMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId
         }
@@ -187,18 +139,25 @@ describe('mutationWithClientMutationId()', () => {
 
     expect(await graphql({ schema, source })).to.deep.equal({
       data: {
-        simplePromiseMutation: {
-          result: 1,
-          clientMutationId: 'abc',
-        },
+        someMutation: { result: 1, clientMutationId: 'abc' },
       },
     });
   });
 
   it('can access rootValue', () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: (_params, _context, { rootValue }) => rootValue,
+    });
+    const schema = wrapInSchema({ someMutation });
+
     const source = `
       mutation {
-        simpleRootValueMutation(input: {clientMutationId: "abc"}) {
+        someMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId
         }
@@ -208,18 +167,25 @@ describe('mutationWithClientMutationId()', () => {
 
     expect(graphqlSync({ schema, source, rootValue })).to.deep.equal({
       data: {
-        simpleRootValueMutation: {
-          result: 1,
-          clientMutationId: 'abc',
-        },
+        someMutation: { result: 1, clientMutationId: 'abc' },
       },
     });
   });
 
   it('supports mutations returning null', () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: () => null,
+    });
+    const schema = wrapInSchema({ someMutation });
+
     const source = `
       mutation {
-        simpleRootValueMutation(input: {clientMutationId: "abc"}) {
+        someMutation(input: {clientMutationId: "abc"}) {
           result
           clientMutationId
         }
@@ -228,15 +194,47 @@ describe('mutationWithClientMutationId()', () => {
 
     expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
-        simpleRootValueMutation: {
-          result: null,
-          clientMutationId: 'abc',
-        },
+        someMutation: { result: null, clientMutationId: 'abc' },
       },
     });
   });
 
   describe('introspection', () => {
+    const simpleMutation = mutationWithClientMutationId({
+      name: 'SimpleMutation',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: dummyResolve,
+    });
+
+    const simpleMutationWithDescription = mutationWithClientMutationId({
+      name: 'SimpleMutationWithDescription',
+      description: 'Simple Mutation Description',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: dummyResolve,
+    });
+
+    const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
+      name: 'SimpleMutationWithDeprecationReason',
+      inputFields: {},
+      outputFields: {
+        result: { type: GraphQLInt },
+      },
+      mutateAndGetPayload: dummyResolve,
+      deprecationReason: 'Just because',
+    });
+
+    const schema = wrapInSchema({
+      simpleMutation,
+      simpleMutationWithDescription,
+      simpleMutationWithDeprecationReason,
+    });
+
     it('contains correct input', () => {
       const source = `
         {
@@ -389,66 +387,6 @@ describe('mutationWithClientMutationId()', () => {
                     kind: 'OBJECT',
                   },
                 },
-                {
-                  name: 'simpleMutationWithThunkFields',
-                  args: [
-                    {
-                      name: 'input',
-                      type: {
-                        name: null,
-                        kind: 'NON_NULL',
-                        ofType: {
-                          name: 'SimpleMutationWithThunkFieldsInput',
-                          kind: 'INPUT_OBJECT',
-                        },
-                      },
-                    },
-                  ],
-                  type: {
-                    name: 'SimpleMutationWithThunkFieldsPayload',
-                    kind: 'OBJECT',
-                  },
-                },
-                {
-                  name: 'simplePromiseMutation',
-                  args: [
-                    {
-                      name: 'input',
-                      type: {
-                        name: null,
-                        kind: 'NON_NULL',
-                        ofType: {
-                          name: 'SimplePromiseMutationInput',
-                          kind: 'INPUT_OBJECT',
-                        },
-                      },
-                    },
-                  ],
-                  type: {
-                    name: 'SimplePromiseMutationPayload',
-                    kind: 'OBJECT',
-                  },
-                },
-                {
-                  name: 'simpleRootValueMutation',
-                  args: [
-                    {
-                      name: 'input',
-                      type: {
-                        name: null,
-                        kind: 'NON_NULL',
-                        ofType: {
-                          name: 'SimpleRootValueMutationInput',
-                          kind: 'INPUT_OBJECT',
-                        },
-                      },
-                    },
-                  ],
-                  type: {
-                    name: 'SimpleRootValueMutationPayload',
-                    kind: 'OBJECT',
-                  },
-                },
               ],
             },
           },
@@ -482,18 +420,6 @@ describe('mutationWithClientMutationId()', () => {
                 {
                   name: 'simpleMutationWithDescription',
                   description: 'Simple Mutation Description',
-                },
-                {
-                  name: 'simpleMutationWithThunkFields',
-                  description: null,
-                },
-                {
-                  name: 'simplePromiseMutation',
-                  description: null,
-                },
-                {
-                  name: 'simpleRootValueMutation',
-                  description: null,
                 },
               ],
             },
@@ -536,21 +462,6 @@ describe('mutationWithClientMutationId()', () => {
                   name: 'simpleMutationWithDeprecationReason',
                   isDeprecated: true,
                   deprecationReason: 'Just because',
-                },
-                {
-                  name: 'simpleMutationWithThunkFields',
-                  isDeprecated: false,
-                  deprecationReason: null,
-                },
-                {
-                  name: 'simplePromiseMutation',
-                  isDeprecated: false,
-                  deprecationReason: null,
-                },
-                {
-                  name: 'simpleRootValueMutation',
-                  isDeprecated: false,
-                  deprecationReason: null,
                 },
               ],
             },
