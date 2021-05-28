@@ -55,7 +55,6 @@ export function createShip(shipName: string, factionId: string): Ship {
   allShips.push(newShip);
 
   const faction = allFactions.find((obj) => obj.id === factionId);
-  // eslint-disable-next-line no-unused-expressions
   faction?.ships.push(newShip.id);
   return newShip;
 }
