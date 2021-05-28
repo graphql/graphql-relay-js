@@ -25,7 +25,7 @@ describe('Star Wars object identification', () => {
     });
   });
 
-  it('refetches the rebels', () => {
+  it('fetches the rebels by global ID', () => {
     const source = `
       {
         node(id: "RmFjdGlvbjox") {
@@ -64,7 +64,7 @@ describe('Star Wars object identification', () => {
     });
   });
 
-  it('refetches the empire', () => {
+  it('fetches the empire by global ID', () => {
     const source = `
       {
         node(id: "RmFjdGlvbjoy") {
@@ -83,7 +83,7 @@ describe('Star Wars object identification', () => {
     });
   });
 
-  it('refetches the X-Wing', () => {
+  it('fetches the X-Wing by global ID', () => {
     const source = `
       {
         node(id: "U2hpcDox") {

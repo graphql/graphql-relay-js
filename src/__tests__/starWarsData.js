@@ -18,7 +18,7 @@ const allShips: Array<Ship> = [
 
   // Yeah, technically it's Corellian. But it flew in the service of the rebels,
   // so for the purposes of this demo it's a rebel ship.
-  { id: '4', name: 'Millenium Falcon' },
+  { id: '4', name: 'Millennium Falcon' },
   { id: '5', name: 'Home One' },
   { id: '6', name: 'TIE Fighter' },
   { id: '7', name: 'TIE Interceptor' },

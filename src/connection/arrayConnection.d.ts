@@ -60,7 +60,7 @@ export function connectionFromPromisedArraySlice<T>(
 export function offsetToCursor(offset: number): ConnectionCursor;
 
 /**
- * Rederives the offset from the cursor string.
+ * Extracts the offset from the cursor string.
  */
 export function cursorToOffset(cursor: ConnectionCursor): number;
 

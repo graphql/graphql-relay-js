@@ -145,7 +145,7 @@ describe('global ID fields', () => {
     });
   });
 
-  it('refetches the IDs', () => {
+  it('allows to refetch the IDs', () => {
     const source = `
       {
         user: node(id: "VXNlcjox") {
