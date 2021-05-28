@@ -4,6 +4,9 @@
   "description": "A library to help construct a graphql-js server supporting react-relay.",
   "license": "MIT",
   "private": true,
+  "main": "index",
+  "types": "index.d.ts",
+  "sideEffects": false,
   "homepage": "https://github.com/graphql/graphql-relay-js",
   "bugs": {
     "url": "https://github.com/graphql/graphql-relay-js/issues"
@@ -12,21 +15,22 @@
     "type": "git",
     "url": "https://github.com/graphql/graphql-relay-js.git"
   },
-  "main": "index.js",
-  "types": "index.d.ts",
+  "keywords": [
+    "graphql"
+  ],
   "engines": {
     "node": "^12.20.0 || ^14.15.0 || >= 15.9.0"
   },
   "scripts": {
     "preversion": "npm run ci && npm run test",
-    "prettier": "prettier --write --list-different .",
-    "prettier:check": "prettier --check .",
     "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check && npm run check:spelling",
-    "testonly": "mocha src/**/__tests__/**/*-test.js",
-    "testonly:cover": "nyc npm run testonly",
     "lint": "eslint .",
     "check": "flow check",
-    "check:spelling": "cspell '**/*'",
+    "testonly": "mocha --full-trace src/**/__tests__/**/*-test.js",
+    "testonly:cover": "nyc npm run testonly",
+    "prettier": "prettier --write --list-different .",
+    "prettier:check": "prettier --check .",
+    "check:spelling": "cspell --no-progress '**/*'",
     "build": "node resources/build.js"
   },
   "peerDependencies": {
