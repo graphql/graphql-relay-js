@@ -9,7 +9,10 @@ import {
   GraphQLSchema,
   GraphQLString,
   graphqlSync,
+  printSchema,
 } from 'graphql';
+
+import { dedent } from '../../__testUtils__/dedent';
 
 import { nodeDefinitions } from '../node';
 
@@ -90,7 +93,7 @@ const queryType = new GraphQLObjectType({
 
 const schema = new GraphQLSchema({
   query: queryType,
-  types: [userType, photoType],
+  types: [nodeInterface, userType, photoType],
 });
 
 describe('Node interface and fields', () => {
@@ -311,124 +314,38 @@ describe('Node interface and fields', () => {
     });
   });
 
-  describe('introspection', () => {
-    it('has correct node interface', () => {
-      const source = `
-        {
-          __type(name: "Node") {
-            name
-            kind
-            fields {
-              name
-              type {
-                kind
-                ofType {
-                  name
-                  kind
-                }
-              }
-            }
-          }
-        }
-      `;
+  it('generates correct types', () => {
+    // FIXME remove trimEnd after we update to `graphql@16.0.0`
+    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+      """An object with an ID"""
+      interface Node {
+        """The id of the object."""
+        id: ID!
+      }
 
-      expect(graphqlSync({ schema, source })).to.deep.equal({
-        data: {
-          __type: {
-            name: 'Node',
-            kind: 'INTERFACE',
-            fields: [
-              {
-                name: 'id',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    name: 'ID',
-                    kind: 'SCALAR',
-                  },
-                },
-              },
-            ],
-          },
-        },
-      });
-    });
+      type User implements Node {
+        id: ID!
+        name: String
+      }
 
-    it('has correct node and nodes root fields', () => {
-      const source = `
-        {
-          __schema {
-            queryType {
-              fields {
-                name
-                type {
-                  name
-                  kind
-                }
-                args {
-                  name
-                  type {
-                    kind
-                    ofType {
-                      name
-                      kind
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      `;
+      type Photo implements Node {
+        id: ID!
+        width: Int
+      }
 
-      expect(graphqlSync({ schema, source })).to.deep.equal({
-        data: {
-          __schema: {
-            queryType: {
-              fields: [
-                {
-                  name: 'node',
-                  type: {
-                    name: 'Node',
-                    kind: 'INTERFACE',
-                  },
-                  args: [
-                    {
-                      name: 'id',
-                      type: {
-                        kind: 'NON_NULL',
-                        ofType: {
-                          name: 'ID',
-                          kind: 'SCALAR',
-                        },
-                      },
-                    },
-                  ],
-                },
-                {
-                  name: 'nodes',
-                  type: {
-                    name: null,
-                    kind: 'NON_NULL',
-                  },
-                  args: [
-                    {
-                      name: 'ids',
-                      type: {
-                        kind: 'NON_NULL',
-                        ofType: {
-                          name: null,
-                          kind: 'LIST',
-                        },
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      });
-    });
+      type Query {
+        """Fetches an object given its ID"""
+        node(
+          """The ID of an object"""
+          id: ID!
+        ): Node
+
+        """Fetches objects given their IDs"""
+        nodes(
+          """The IDs of objects"""
+          ids: [ID!]!
+        ): [Node]!
+      }
+    `);
   });
 });
