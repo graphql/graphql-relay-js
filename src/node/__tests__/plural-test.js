@@ -6,7 +6,10 @@ import {
   GraphQLSchema,
   GraphQLString,
   graphqlSync,
+  printSchema,
 } from 'graphql';
+
+import { dedent } from '../../__testUtils__/dedent';
 
 import { pluralIdentifyingRootField } from '../plural';
 
@@ -74,79 +77,18 @@ describe('pluralIdentifyingRootField()', () => {
     });
   });
 
-  it('correctly introspects', () => {
-    const source = `
-      {
-        __schema {
-          queryType {
-            fields {
-              name
-              args {
-                name
-                type {
-                  kind
-                  ofType {
-                    kind
-                    ofType {
-                      kind
-                      ofType {
-                        name
-                        kind
-                      }
-                    }
-                  }
-                }
-              }
-              type {
-                kind
-                ofType {
-                  name
-                  kind
-                }
-              }
-            }
-          }
-        }
+  it('generates correct types', () => {
+    // FIXME remove trimEnd after we update to `graphql@16.0.0`
+    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+      type Query {
+        """Map from a username to the user"""
+        usernames(usernames: [String!]!): [User]
       }
-    `;
 
-    expect(graphqlSync({ schema, source })).to.deep.equal({
-      data: {
-        __schema: {
-          queryType: {
-            fields: [
-              {
-                name: 'usernames',
-                args: [
-                  {
-                    name: 'usernames',
-                    type: {
-                      kind: 'NON_NULL',
-                      ofType: {
-                        kind: 'LIST',
-                        ofType: {
-                          kind: 'NON_NULL',
-                          ofType: {
-                            name: 'String',
-                            kind: 'SCALAR',
-                          },
-                        },
-                      },
-                    },
-                  },
-                ],
-                type: {
-                  kind: 'LIST',
-                  ofType: {
-                    name: 'User',
-                    kind: 'OBJECT',
-                  },
-                },
-              },
-            ],
-          },
-        },
-      },
-    });
+      type User {
+        username: String
+        url: String
+      }
+    `);
   });
 });

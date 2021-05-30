@@ -8,7 +8,10 @@ import {
   GraphQLSchema,
   graphql,
   graphqlSync,
+  printSchema,
 } from 'graphql';
+
+import { dedent } from '../../__testUtils__/dedent';
 
 import { mutationWithClientMutationId } from '../mutation';
 
@@ -20,7 +23,7 @@ function wrapInSchema(mutationFields: {
   [field: string]: GraphQLFieldConfig<any, any>,
 }): GraphQLSchema {
   const queryType = new GraphQLObjectType({
-    name: 'DummyQuery',
+    name: 'Query',
     fields: { dummy: { type: GraphQLInt } },
   });
 
@@ -199,28 +202,10 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
-  describe('introspection', () => {
-    const simpleMutation = mutationWithClientMutationId({
-      name: 'SimpleMutation',
-      inputFields: {},
-      outputFields: {
-        result: { type: GraphQLInt },
-      },
-      mutateAndGetPayload: dummyResolve,
-    });
-
-    const simpleMutationWithDescription = mutationWithClientMutationId({
-      name: 'SimpleMutationWithDescription',
-      description: 'Simple Mutation Description',
-      inputFields: {},
-      outputFields: {
-        result: { type: GraphQLInt },
-      },
-      mutateAndGetPayload: dummyResolve,
-    });
-
-    const simpleMutationWithDeprecationReason = mutationWithClientMutationId({
-      name: 'SimpleMutationWithDeprecationReason',
+  it('generates correct types', () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      description: 'Some Mutation Description',
       inputFields: {},
       outputFields: {
         result: { type: GraphQLInt },
@@ -229,245 +214,27 @@ describe('mutationWithClientMutationId()', () => {
       deprecationReason: 'Just because',
     });
 
-    const schema = wrapInSchema({
-      simpleMutation,
-      simpleMutationWithDescription,
-      simpleMutationWithDeprecationReason,
-    });
+    const schema = wrapInSchema({ someMutation });
 
-    it('contains correct input', () => {
-      const source = `
-        {
-          __type(name: "SimpleMutationInput") {
-            name
-            kind
-            inputFields {
-              name
-              type {
-                name
-                kind
-              }
-            }
-          }
-        }
-      `;
+    // FIXME remove trimEnd after we update to `graphql@16.0.0`
+    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+      type Query {
+        dummy: Int
+      }
 
-      expect(graphqlSync({ schema, source })).to.deep.equal({
-        data: {
-          __type: {
-            name: 'SimpleMutationInput',
-            kind: 'INPUT_OBJECT',
-            inputFields: [
-              {
-                name: 'clientMutationId',
-                type: {
-                  name: 'String',
-                  kind: 'SCALAR',
-                },
-              },
-            ],
-          },
-        },
-      });
-    });
+      type Mutation {
+        """Some Mutation Description"""
+        someMutation(input: SomeMutationInput!): SomeMutationPayload @deprecated(reason: "Just because")
+      }
 
-    it('contains correct payload', () => {
-      const source = `
-        {
-          __type(name: "SimpleMutationPayload") {
-            name
-            kind
-            fields {
-              name
-              type {
-                name
-                kind
-              }
-            }
-          }
-        }
-      `;
+      type SomeMutationPayload {
+        result: Int
+        clientMutationId: String
+      }
 
-      expect(graphqlSync({ schema, source })).to.deep.equal({
-        data: {
-          __type: {
-            name: 'SimpleMutationPayload',
-            kind: 'OBJECT',
-            fields: [
-              {
-                name: 'result',
-                type: {
-                  name: 'Int',
-                  kind: 'SCALAR',
-                },
-              },
-              {
-                name: 'clientMutationId',
-                type: {
-                  name: 'String',
-                  kind: 'SCALAR',
-                },
-              },
-            ],
-          },
-        },
-      });
-    });
-
-    it('contains correct field', () => {
-      const source = `
-        {
-          __schema {
-            mutationType {
-              fields {
-                name
-                args {
-                  name
-                  type {
-                    name
-                    kind
-                    ofType {
-                      name
-                      kind
-                    }
-                  }
-                }
-                type {
-                  name
-                  kind
-                }
-              }
-            }
-          }
-        }
-      `;
-
-      expect(graphqlSync({ schema, source })).to.deep.equal({
-        data: {
-          __schema: {
-            mutationType: {
-              fields: [
-                {
-                  name: 'simpleMutation',
-                  args: [
-                    {
-                      name: 'input',
-                      type: {
-                        name: null,
-                        kind: 'NON_NULL',
-                        ofType: {
-                          name: 'SimpleMutationInput',
-                          kind: 'INPUT_OBJECT',
-                        },
-                      },
-                    },
-                  ],
-                  type: {
-                    name: 'SimpleMutationPayload',
-                    kind: 'OBJECT',
-                  },
-                },
-                {
-                  name: 'simpleMutationWithDescription',
-                  args: [
-                    {
-                      name: 'input',
-                      type: {
-                        name: null,
-                        kind: 'NON_NULL',
-                        ofType: {
-                          name: 'SimpleMutationWithDescriptionInput',
-                          kind: 'INPUT_OBJECT',
-                        },
-                      },
-                    },
-                  ],
-                  type: {
-                    name: 'SimpleMutationWithDescriptionPayload',
-                    kind: 'OBJECT',
-                  },
-                },
-              ],
-            },
-          },
-        },
-      });
-    });
-
-    it('contains correct descriptions', () => {
-      const source = `
-        {
-          __schema {
-            mutationType {
-              fields {
-                name
-                description
-              }
-            }
-          }
-        }
-      `;
-
-      expect(graphqlSync({ schema, source })).to.deep.equal({
-        data: {
-          __schema: {
-            mutationType: {
-              fields: [
-                {
-                  name: 'simpleMutation',
-                  description: null,
-                },
-                {
-                  name: 'simpleMutationWithDescription',
-                  description: 'Simple Mutation Description',
-                },
-              ],
-            },
-          },
-        },
-      });
-    });
-
-    it('contains correct deprecation reasons', () => {
-      const source = `
-        {
-          __schema {
-            mutationType {
-              fields(includeDeprecated: true) {
-                name
-                isDeprecated
-                deprecationReason
-              }
-            }
-          }
-        }
-      `;
-
-      expect(graphqlSync({ schema, source })).to.deep.equal({
-        data: {
-          __schema: {
-            mutationType: {
-              fields: [
-                {
-                  name: 'simpleMutation',
-                  isDeprecated: false,
-                  deprecationReason: null,
-                },
-                {
-                  name: 'simpleMutationWithDescription',
-                  isDeprecated: false,
-                  deprecationReason: null,
-                },
-                {
-                  name: 'simpleMutationWithDeprecationReason',
-                  isDeprecated: true,
-                  deprecationReason: 'Just because',
-                },
-              ],
-            },
-          },
-        },
-      });
-    });
+      input SomeMutationInput {
+        clientMutationId: String
+      }
+    `);
   });
 });
