@@ -75,7 +75,7 @@ rules:
   node/prefer-promises/fs: off
 
   ##############################################################################
-  # `eslint-plugin-import` rule list based on `v2.22.x`
+  # `eslint-plugin-import` rule list based on `v2.23.x`
   ##############################################################################
 
   # Static analysis
@@ -93,6 +93,7 @@ rules:
   import/no-cycle: error
   import/no-useless-path-segments: error
   import/no-relative-parent-imports: off
+  import/no-relative-packages: off
 
   # Helpful warnings
   # https://github.com/benmosher/eslint-plugin-import#helpful-warnings
@@ -110,6 +111,7 @@ rules:
   import/no-commonjs: error
   import/no-amd: error
   import/no-nodejs-modules: error
+  import/no-import-module-exports: off
 
   # Style guide
   # https://github.com/benmosher/eslint-plugin-import#style-guide
@@ -131,7 +133,7 @@ rules:
   import/dynamic-import-chunkname: off
 
   ##############################################################################
-  # ESLint builtin rules list based on `v7.22.x`
+  # ESLint builtin rules list based on `v7.27.x`
   ##############################################################################
 
   # Possible Errors
@@ -286,7 +288,7 @@ rules:
   capitalized-comments: off # maybe
   consistent-this: off
   func-name-matching: off
-  func-names: off
+  func-names: [error, as-needed] # improve debug experience
   func-style: off
   id-denylist: off
   id-length: off
@@ -489,7 +491,7 @@ overrides:
       - plugin:import/typescript
     rules:
       ##########################################################################
-      # `@typescript-eslint/eslint-plugin` rule list based on `v4.17.x`
+      # `@typescript-eslint/eslint-plugin` rule list based on `v4.25.x`
       ##########################################################################
 
       # Supported Rules
@@ -535,7 +537,6 @@ overrides:
       '@typescript-eslint/no-invalid-void-type': error
       '@typescript-eslint/no-require-imports': error
       '@typescript-eslint/no-this-alias': error
-      '@typescript-eslint/no-throw-literal': error
       '@typescript-eslint/no-type-alias': off # TODO consider
       '@typescript-eslint/no-unnecessary-boolean-literal-compare': error
       '@typescript-eslint/no-unnecessary-condition': error
@@ -591,6 +592,7 @@ overrides:
       no-loop-func: off
       no-loss-of-precision: off
       no-redeclare: off
+      no-throw-literal: off
       no-shadow: off
       no-unused-expressions: off
       no-unused-vars: off
@@ -608,6 +610,7 @@ overrides:
       '@typescript-eslint/no-loop-func': error
       '@typescript-eslint/no-loss-of-precision': error
       '@typescript-eslint/no-redeclare': error
+      '@typescript-eslint/no-throw-literal': error
       '@typescript-eslint/no-shadow': error
       '@typescript-eslint/no-unused-expressions': error
       '@typescript-eslint/no-unused-vars':
