@@ -6,7 +6,10 @@ import {
   GraphQLSchema,
   GraphQLString,
   graphqlSync,
+  printSchema,
 } from 'graphql';
+
+import { dedent } from '../../__testUtils__/dedent';
 
 import { connectionFromArray } from '../arrayConnection';
 
@@ -175,5 +178,74 @@ describe('connectionDefinition()', () => {
         },
       },
     });
+  });
+
+  it('generates correct types', () => {
+    // FIXME remove trimEnd after we update to `graphql@16.0.0`
+    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+      type Query {
+        user: User
+      }
+
+      type User {
+        name: String
+        friends(after: String, first: Int, before: String, last: Int): FriendConnection
+        friendsForward(after: String, first: Int): UserConnection
+        friendsBackward(before: String, last: Int): UserConnection
+      }
+
+      """A connection to a list of items."""
+      type FriendConnection {
+        """Information to aid in pagination."""
+        pageInfo: PageInfo!
+
+        """A list of edges."""
+        edges: [FriendEdge]
+        totalCount: Int
+      }
+
+      """Information about pagination in a connection."""
+      type PageInfo {
+        """When paginating forwards, are there more items?"""
+        hasNextPage: Boolean!
+
+        """When paginating backwards, are there more items?"""
+        hasPreviousPage: Boolean!
+
+        """When paginating backwards, the cursor to continue."""
+        startCursor: String
+
+        """When paginating forwards, the cursor to continue."""
+        endCursor: String
+      }
+
+      """An edge in a connection."""
+      type FriendEdge {
+        """The item at the end of the edge"""
+        node: User
+
+        """A cursor for use in pagination"""
+        cursor: String!
+        friendshipTime: String
+      }
+
+      """A connection to a list of items."""
+      type UserConnection {
+        """Information to aid in pagination."""
+        pageInfo: PageInfo!
+
+        """A list of edges."""
+        edges: [UserEdge]
+      }
+
+      """An edge in a connection."""
+      type UserEdge {
+        """The item at the end of the edge"""
+        node: User
+
+        """A cursor for use in pagination"""
+        cursor: String!
+      }
+    `);
   });
 });
