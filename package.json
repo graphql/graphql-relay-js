@@ -34,7 +34,7 @@
     "build": "node resources/build.js"
   },
   "peerDependencies": {
-    "graphql": "^14.7.0 || ^15.5.0"
+    "graphql": "^15.5.0"
   },
   "devDependencies": {
     "@babel/core": "7.14.3",
