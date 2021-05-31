@@ -44,6 +44,7 @@ type MutationConfig = {|
   name: string,
   description?: string,
   deprecationReason?: string,
+  extensions?: { [name: string]: mixed },
   inputFields: Thunk<GraphQLInputFieldConfigMap>,
   outputFields: Thunk<GraphQLFieldConfigMap<any, any>>,
   mutateAndGetPayload: MutationFn,
@@ -56,14 +57,7 @@ type MutationConfig = {|
 export function mutationWithClientMutationId(
   config: MutationConfig,
 ): GraphQLFieldConfig<mixed, mixed> {
-  const {
-    name,
-    description,
-    deprecationReason,
-    inputFields,
-    outputFields,
-    mutateAndGetPayload,
-  } = config;
+  const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
     clientMutationId: {
@@ -89,8 +83,9 @@ export function mutationWithClientMutationId(
 
   return {
     type: outputType,
-    description,
-    deprecationReason,
+    description: config.description,
+    deprecationReason: config.deprecationReason,
+    extensions: config.extensions,
     args: {
       input: { type: new GraphQLNonNull(inputType) },
     },

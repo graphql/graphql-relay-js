@@ -1,5 +1,6 @@
 import type {
   GraphQLFieldConfig,
+  GraphQLFieldExtensions,
   GraphQLInputFieldConfigMap,
   GraphQLFieldConfigMap,
   GraphQLResolveInfo,
@@ -31,10 +32,11 @@ export type MutationFn = (
 export interface MutationConfig {
   name: string;
   description?: string;
+  deprecationReason?: string;
+  extensions?: GraphQLFieldExtensions<any, any>;
   inputFields: Thunk<GraphQLInputFieldConfigMap>;
   outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
   mutateAndGetPayload: MutationFn;
-  deprecationReason?: string;
 }
 
 /**
