@@ -21,9 +21,12 @@ import type {
 export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
   after: {
     type: GraphQLString,
+    description:
+      'Returns the items in the list that come after the specified cursor.',
   },
   first: {
     type: GraphQLInt,
+    description: 'Returns the first n items from the list.',
   },
 };
 
@@ -34,9 +37,12 @@ export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
 export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
   before: {
     type: GraphQLString,
+    description:
+      'Returns the items in the list that come before the specified cursor.',
   },
   last: {
     type: GraphQLInt,
+    description: 'Returns the last n items from the list.',
   },
 };
 

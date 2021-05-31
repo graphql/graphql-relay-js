@@ -189,9 +189,33 @@ describe('connectionDefinition()', () => {
 
       type User {
         name: String
-        friends(after: String, first: Int, before: String, last: Int): FriendConnection
-        friendsForward(after: String, first: Int): UserConnection
-        friendsBackward(before: String, last: Int): UserConnection
+        friends(
+          """Returns the items in the list that come after the specified cursor."""
+          after: String
+
+          """Returns the first n items from the list."""
+          first: Int
+
+          """Returns the items in the list that come before the specified cursor."""
+          before: String
+
+          """Returns the last n items from the list."""
+          last: Int
+        ): FriendConnection
+        friendsForward(
+          """Returns the items in the list that come after the specified cursor."""
+          after: String
+
+          """Returns the first n items from the list."""
+          first: Int
+        ): UserConnection
+        friendsBackward(
+          """Returns the items in the list that come before the specified cursor."""
+          before: String
+
+          """Returns the last n items from the list."""
+          last: Int
+        ): UserConnection
       }
 
       """A connection to a list of items."""
