@@ -1,9 +1,11 @@
 import type {
+  GraphQLNonNull,
+  GraphQLNamedType,
+  GraphQLScalarType,
+  GraphQLObjectType,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldConfigMap,
   GraphQLFieldResolver,
-  GraphQLObjectType,
-  GraphQLScalarType,
   Thunk,
 } from 'graphql';
 
@@ -58,7 +60,7 @@ export interface ConnectionArguments {
 
 export interface ConnectionConfig {
   name?: string;
-  nodeType: GraphQLObjectType;
+  nodeType: GraphQLNamedType | GraphQLNonNull<GraphQLNamedType>;
   resolveNode?: GraphQLFieldResolver<any, any>;
   resolveCursor?: GraphQLFieldResolver<any, any>;
   edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>;

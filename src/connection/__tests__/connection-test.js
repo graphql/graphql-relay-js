@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { describe, it } from 'mocha';
 import {
   GraphQLInt,
+  GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLString,
@@ -54,7 +55,7 @@ const userType = new GraphQLObjectType({
 
 const { connectionType: friendConnection } = connectionDefinitions({
   name: 'Friend',
-  nodeType: userType,
+  nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
   edgeFields: () => ({
     friendshipTime: {
@@ -71,7 +72,7 @@ const { connectionType: friendConnection } = connectionDefinitions({
 });
 
 const { connectionType: userConnection } = connectionDefinitions({
-  nodeType: userType,
+  nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
 });
 
@@ -246,7 +247,7 @@ describe('connectionDefinition()', () => {
       """An edge in a connection."""
       type FriendEdge {
         """The item at the end of the edge"""
-        node: User
+        node: User!
 
         """A cursor for use in pagination"""
         cursor: String!
@@ -265,7 +266,7 @@ describe('connectionDefinition()', () => {
       """An edge in a connection."""
       type UserEdge {
         """The item at the end of the edge"""
-        node: User
+        node: User!
 
         """A cursor for use in pagination"""
         cursor: String!
