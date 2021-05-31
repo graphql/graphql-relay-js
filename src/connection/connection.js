@@ -103,25 +103,21 @@ export function connectionDefinitions(
 ): GraphQLConnectionDefinitions {
   const { nodeType } = config;
   const name = config.name ?? getNamedType(nodeType).name;
-  const edgeFields = config.edgeFields ?? {};
-  const connectionFields = config.connectionFields ?? {};
-  const resolveNode = config.resolveNode;
-  const resolveCursor = config.resolveCursor;
   const edgeType = new GraphQLObjectType({
     name: name + 'Edge',
     description: 'An edge in a connection.',
     fields: () => ({
       node: {
         type: nodeType,
-        resolve: resolveNode,
+        resolve: config.resolveNode,
         description: 'The item at the end of the edge',
       },
       cursor: {
         type: new GraphQLNonNull(GraphQLString),
-        resolve: resolveCursor,
+        resolve: config.resolveCursor,
         description: 'A cursor for use in pagination',
       },
-      ...resolveMaybeThunk(edgeFields),
+      ...resolveMaybeThunk(config.edgeFields ?? {}),
     }),
   });
 
@@ -137,7 +133,7 @@ export function connectionDefinitions(
         type: new GraphQLList(edgeType),
         description: 'A list of edges.',
       },
-      ...resolveMaybeThunk(connectionFields),
+      ...resolveMaybeThunk(config.connectionFields ?? {}),
     }),
   });
 
