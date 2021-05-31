@@ -1,13 +1,15 @@
 import {
-  GraphQLBoolean,
-  GraphQLInt,
-  GraphQLNonNull,
   GraphQLList,
+  GraphQLNonNull,
   GraphQLObjectType,
+  GraphQLInt,
   GraphQLString,
+  GraphQLBoolean,
+  getNamedType,
 } from 'graphql';
 
 import type {
+  GraphQLNamedType,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldConfigMap,
   GraphQLFieldResolver,
@@ -73,7 +75,7 @@ export type ConnectionArguments = {
 
 type ConnectionConfig = {|
   name?: string,
-  nodeType: GraphQLObjectType,
+  nodeType: GraphQLNamedType | GraphQLNonNull<GraphQLNamedType>,
   resolveNode?: GraphQLFieldResolver<any, any>,
   resolveCursor?: GraphQLFieldResolver<any, any>,
   edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
@@ -100,7 +102,7 @@ export function connectionDefinitions(
   config: ConnectionConfig,
 ): GraphQLConnectionDefinitions {
   const { nodeType } = config;
-  const name = config.name ?? nodeType.name;
+  const name = config.name ?? getNamedType(nodeType).name;
   const edgeFields = config.edgeFields ?? {};
   const connectionFields = config.connectionFields ?? {};
   const resolveNode = config.resolveNode;
