@@ -203,15 +203,35 @@ describe('mutationWithClientMutationId()', () => {
   });
 
   it('generates correct types', () => {
+    const description = 'Some Mutation Description';
+    const deprecationReason = 'Just because';
+    const extensions = Object.freeze({});
+
+    const someMutationField = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      description,
+      deprecationReason,
+      extensions,
+      inputFields: {},
+      outputFields: {},
+      mutateAndGetPayload: dummyResolve,
+    });
+
+    expect(someMutationField).to.include({
+      description,
+      deprecationReason,
+      extensions,
+    });
+  });
+
+  it('generates correct types', () => {
     const someMutation = mutationWithClientMutationId({
       name: 'SomeMutation',
-      description: 'Some Mutation Description',
       inputFields: {},
       outputFields: {
         result: { type: GraphQLInt },
       },
       mutateAndGetPayload: dummyResolve,
-      deprecationReason: 'Just because',
     });
 
     const schema = wrapInSchema({ someMutation });
@@ -223,8 +243,7 @@ describe('mutationWithClientMutationId()', () => {
       }
 
       type Mutation {
-        """Some Mutation Description"""
-        someMutation(input: SomeMutationInput!): SomeMutationPayload @deprecated(reason: "Just because")
+        someMutation(input: SomeMutationInput!): SomeMutationPayload
       }
 
       type SomeMutationPayload {
