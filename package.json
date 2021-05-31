@@ -22,7 +22,7 @@
     "node": "^12.20.0 || ^14.15.0 || >= 15.9.0"
   },
   "scripts": {
-    "preversion": "npm run ci && npm run test",
+    "preversion": "npm ci && npm run test",
     "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check && npm run check:spelling",
     "lint": "eslint --max-warnings 0 .",
     "check": "flow check",
