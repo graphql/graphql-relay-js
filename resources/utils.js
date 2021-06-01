@@ -2,6 +2,16 @@
 
 const fs = require('fs');
 const path = require('path');
+const childProcess = require('child_process');
+
+function exec(command, options) {
+  const output = childProcess.execSync(command, {
+    maxBuffer: 10 * 1024 * 1024, // 10MB
+    encoding: 'utf-8',
+    ...options,
+  });
+  return output && output.trimEnd();
+}
 
 function readdirRecursive(dirPath, opts = {}) {
   const { ignoreDir } = opts;
@@ -71,6 +81,7 @@ function showDirStats(dirPath) {
 }
 
 module.exports = {
+  exec,
   readdirRecursive,
   showDirStats,
 };

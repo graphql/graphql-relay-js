@@ -119,7 +119,11 @@ rules:
   import/exports-last: off
   import/no-duplicates: error
   import/no-namespace: error
-  import/extensions: [error, never] # TODO: switch to ignorePackages
+  import/extensions:
+    - error
+    - ignorePackages
+    - ts: never # TODO: remove once TS supports extensions
+      js: never # TODO: remove
   import/order: [error, { newlines-between: always-and-inside-groups }]
   import/newline-after-import: error
   import/prefer-default-export: off
