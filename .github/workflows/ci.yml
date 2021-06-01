@@ -1,7 +1,7 @@
 name: CI
 on: [push, pull_request]
 env:
-  NODE_VERSION_USED_FOR_DEVELOPMENT: 14
+  NODE_VERSION_USED_FOR_DEVELOPMENT: 16
 jobs:
   lint:
     name: Lint source files
@@ -54,6 +54,24 @@ jobs:
             git ls-files -iX all.gitignore
             exit 1
           fi
+
+  checkPackageLock:
+    name: Check health of package-lock.json file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION_USED_FOR_DEVELOPMENT }}
+
+      - name: Run npm install
+        run: npm install --package-lock-only --engine-strict --strict-peer-deps
+
+      - name: Check that package-lock.json is in sync with package.json
+        run: git diff --exit-code package-lock.json
 
   coverage:
     name: Measure test coverage
