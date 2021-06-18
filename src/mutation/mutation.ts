@@ -13,11 +13,11 @@ import type {
   Thunk,
 } from 'graphql';
 
-type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => mixed;
+type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
-    ? // $FlowFixMe[incompatible-use] - if it's a function, we assume a thunk without arguments
+    ? // @ts-expect-error - if it's a function, we assume a thunk without arguments
       thingOrThunk()
     : thingOrThunk;
 }
@@ -36,15 +36,15 @@ function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
  * input field, and it should return an Object with a key for each
  * output field. It may return synchronously, or return a Promise.
  */
-type MutationConfig = {
-  name: string,
-  description?: string,
-  deprecationReason?: string,
-  extensions?: { [name: string]: mixed },
-  inputFields: Thunk<GraphQLInputFieldConfigMap>,
-  outputFields: Thunk<GraphQLFieldConfigMap<any, any>>,
-  mutateAndGetPayload: MutationFn,
-};
+interface MutationConfig {
+  name: string;
+  description?: string;
+  deprecationReason?: string;
+  extensions?: { [name: string]: unknown };
+  inputFields: Thunk<GraphQLInputFieldConfigMap>;
+  outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
+  mutateAndGetPayload: MutationFn;
+}
 
 /**
  * Returns a GraphQLFieldConfig for the mutation described by the
@@ -52,7 +52,7 @@ type MutationConfig = {
  */
 export function mutationWithClientMutationId(
   config: MutationConfig,
-): GraphQLFieldConfig<mixed, mixed> {
+): GraphQLFieldConfig<unknown, unknown> {
   const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
@@ -93,9 +93,9 @@ export function mutationWithClientMutationId(
       }
       return injectClientMutationId(payload);
 
-      function injectClientMutationId(data: mixed) {
+      function injectClientMutationId(data: unknown) {
         if (typeof data === 'object' && data !== null) {
-          // $FlowFixMe[cannot-write] It's bad idea to mutate data but we need to pass clientMutationId somehow. Maybe in future we figure out better solution satisfying all our test cases.
+          // @ts-expect-error FIXME It's bad idea to mutate data but we need to pass clientMutationId somehow. Maybe in future we figure out better solution satisfying all our test cases.
           data.clientMutationId = clientMutationId;
         }
 
@@ -107,10 +107,6 @@ export function mutationWithClientMutationId(
 
 // FIXME: Temporary until graphql-js resolves this issue
 // See, https://github.com/graphql/graphql-js/pull/3243#issuecomment-919510590
-declare function isPromiseLike(value: mixed): boolean %checks(value instanceof
-  Promise);
-
-// eslint-disable-next-line no-redeclare
-function isPromiseLike(value) {
+function isPromiseLike(value: any): value is Promise<unknown> {
   return typeof value?.then === 'function';
 }

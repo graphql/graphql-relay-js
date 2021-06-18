@@ -6,10 +6,10 @@ import type {
   ConnectionCursor,
 } from './connection';
 
-type ArraySliceMetaInfo = {
-  sliceStart: number,
-  arrayLength: number,
-};
+interface ArraySliceMetaInfo {
+  sliceStart: number;
+  arrayLength: number;
+}
 
 /**
  * A simple function that accepts an array and connection arguments, and returns
@@ -17,7 +17,7 @@ type ArraySliceMetaInfo = {
  * so pagination will only work if the array is static.
  */
 export function connectionFromArray<T>(
-  data: $ReadOnlyArray<T>,
+  data: ReadonlyArray<T>,
   args: ConnectionArguments,
 ): Connection<T> {
   return connectionFromArraySlice(data, args, {
@@ -31,7 +31,7 @@ export function connectionFromArray<T>(
  * promised connection.
  */
 export function connectionFromPromisedArray<T>(
-  dataPromise: Promise<$ReadOnlyArray<T>>,
+  dataPromise: Promise<ReadonlyArray<T>>,
   args: ConnectionArguments,
 ): Promise<Connection<T>> {
   return dataPromise.then((data) => connectionFromArray(data, args));
@@ -47,7 +47,7 @@ export function connectionFromPromisedArray<T>(
  * total result large enough to cover the range specified in `args`.
  */
 export function connectionFromArraySlice<T>(
-  arraySlice: $ReadOnlyArray<T>,
+  arraySlice: ReadonlyArray<T>,
   args: ConnectionArguments,
   meta: ArraySliceMetaInfo,
 ): Connection<T> {
@@ -115,7 +115,7 @@ export function connectionFromArraySlice<T>(
  * and returns a promised connection.
  */
 export function connectionFromPromisedArraySlice<T>(
-  dataPromise: Promise<$ReadOnlyArray<T>>,
+  dataPromise: Promise<ReadonlyArray<T>>,
   args: ConnectionArguments,
   arrayInfo: ArraySliceMetaInfo,
 ): Promise<Connection<T>> {
@@ -144,7 +144,7 @@ export function cursorToOffset(cursor: ConnectionCursor): number {
  * Return the cursor associated with an object in an array.
  */
 export function cursorForObjectInConnection<T>(
-  data: $ReadOnlyArray<T>,
+  data: ReadonlyArray<T>,
   object: T,
 ): ConnectionCursor | null {
   const offset = data.indexOf(object);
@@ -160,7 +160,7 @@ export function cursorForObjectInConnection<T>(
  * otherwise it will be the default.
  */
 export function getOffsetWithDefault(
-  cursor: ConnectionCursor | null | void,
+  cursor: ConnectionCursor | null | undefined,
   defaultOffset: number,
 ): number {
   if (typeof cursor !== 'string') {

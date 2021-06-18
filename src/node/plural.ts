@@ -7,21 +7,21 @@ import type {
   GraphQLResolveInfo,
 } from 'graphql';
 
-type PluralIdentifyingRootFieldConfig = {
-  argName: string,
-  inputType: GraphQLInputType,
-  outputType: GraphQLOutputType,
+interface PluralIdentifyingRootFieldConfig {
+  argName: string;
+  inputType: GraphQLInputType;
+  outputType: GraphQLOutputType;
   resolveSingleInput: (
     input: any,
     context: any,
     info: GraphQLResolveInfo,
-  ) => mixed,
-  description?: string,
-};
+  ) => unknown;
+  description?: string;
+}
 
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig,
-): GraphQLFieldConfig<mixed, mixed> {
+): GraphQLFieldConfig<unknown, unknown> {
   return {
     description: config.description,
     type: new GraphQLList(config.outputType),
@@ -36,7 +36,7 @@ export function pluralIdentifyingRootField(
     },
     resolve(_obj, args, context, info) {
       const inputs = args[config.argName];
-      return inputs.map((input: mixed) =>
+      return inputs.map((input: unknown) =>
         config.resolveSingleInput(input, context, info),
       );
     },

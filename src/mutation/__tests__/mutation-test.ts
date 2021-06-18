@@ -20,7 +20,7 @@ function dummyResolve() {
 }
 
 function wrapInSchema(mutationFields: {
-  [field: string]: GraphQLFieldConfig<any, any>,
+  [field: string]: GraphQLFieldConfig<any, any>;
 }): GraphQLSchema {
   const queryType = new GraphQLObjectType({
     name: 'Query',

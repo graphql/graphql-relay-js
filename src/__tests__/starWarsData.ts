@@ -6,10 +6,10 @@
  * JSON objects in a more complex demo.
  */
 
-type Ship = {
-  id: string,
-  name: string,
-};
+interface Ship {
+  id: string;
+  name: string;
+}
 
 const allShips: Array<Ship> = [
   { id: '1', name: 'X-Wing' },
@@ -25,11 +25,11 @@ const allShips: Array<Ship> = [
   { id: '8', name: 'Executor' },
 ];
 
-type Faction = {
-  id: string,
-  name: string,
-  ships: Array<string>,
-};
+interface Faction {
+  id: string;
+  name: string;
+  ships: Array<string>;
+}
 
 const rebels: Faction = {
   id: '1',
@@ -59,11 +59,11 @@ export function createShip(shipName: string, factionId: string): Ship {
   return newShip;
 }
 
-export function getShip(id: string): Ship | void {
+export function getShip(id: string): Ship | undefined {
   return allShips.find((ship) => ship.id === id);
 }
 
-export function getFaction(id: string): Faction | void {
+export function getFaction(id: string): Faction | undefined {
   return allFactions.find((faction) => faction.id === id);
 }
 
