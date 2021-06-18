@@ -101,9 +101,7 @@ export function connectionFromArraySlice<T>(
   return {
     edges,
     pageInfo: {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       startCursor: firstEdge ? firstEdge.cursor : null,
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       endCursor: lastEdge ? lastEdge.cursor : null,
       hasPreviousPage:
         typeof last === 'number' ? startOffset > lowerBound : false,

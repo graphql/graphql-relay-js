@@ -5,3 +5,5 @@ npmDist
 
 # Ignore Flow typings for 3rd-party libraries
 /flow-typed
+
+src/**/*.d.ts
