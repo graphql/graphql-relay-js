@@ -90,7 +90,7 @@ function toBase64Char(bitMap6: number): string {
   return b64CharacterSet.charAt(bitMap6);
 }
 
-function fromBase64Char(base64Char: string | void): number {
+function fromBase64Char(base64Char: string | undefined): number {
   if (base64Char === undefined) {
     return -1;
   }
@@ -100,7 +100,8 @@ function fromBase64Char(base64Char: string | void): number {
 function stringToUTF8Array(input: string): Array<number> {
   const result = [];
   for (const utfChar of input) {
-    const code = utfChar.codePointAt(0);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const code = utfChar.codePointAt(0)!;
     if (code < 0x80) {
       result.push(code);
     } else if (code < 0x800) {

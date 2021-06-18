@@ -55,6 +55,7 @@ const userType = new GraphQLObjectType({
 
 const { connectionType: friendConnection } = connectionDefinitions({
   name: 'Friend',
+  // @ts-expect-error
   nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
   edgeFields: () => ({
@@ -72,6 +73,7 @@ const { connectionType: friendConnection } = connectionDefinitions({
 });
 
 const { connectionType: userConnection } = connectionDefinitions({
+  // @ts-expect-error
   nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
 });
