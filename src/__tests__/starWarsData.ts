@@ -59,11 +59,11 @@ export function createShip(shipName: string, factionId: string): Ship {
   return newShip;
 }
 
-export function getShip(id: string): Ship | void {
+export function getShip(id: string): Ship | undefined {
   return allShips.find((ship) => ship.id === id);
 }
 
-export function getFaction(id: string): Faction | void {
+export function getFaction(id: string): Faction | undefined {
   return allFactions.find((faction) => faction.id === id);
 }
 
