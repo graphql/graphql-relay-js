@@ -15,13 +15,13 @@ type PluralIdentifyingRootFieldConfig = {
     input: any,
     context: any,
     info: GraphQLResolveInfo,
-  ) => mixed,
+  ) => unknown,
   description?: string,
 };
 
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig,
-): GraphQLFieldConfig<mixed, mixed> {
+): GraphQLFieldConfig<unknown, unknown> {
   return {
     description: config.description,
     type: new GraphQLList(config.outputType),

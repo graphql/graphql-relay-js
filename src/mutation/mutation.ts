@@ -15,7 +15,7 @@ import type {
 
 import isPromise from 'graphql/jsutils/isPromise';
 
-type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => mixed;
+type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
@@ -42,7 +42,7 @@ type MutationConfig = {
   name: string,
   description?: string,
   deprecationReason?: string,
-  extensions?: { [name: string]: mixed },
+  extensions?: { [name: string]: unknown },
   inputFields: Thunk<GraphQLInputFieldConfigMap>,
   outputFields: Thunk<GraphQLFieldConfigMap<any, any>>,
   mutateAndGetPayload: MutationFn,
@@ -54,7 +54,7 @@ type MutationConfig = {
  */
 export function mutationWithClientMutationId(
   config: MutationConfig,
-): GraphQLFieldConfig<mixed, mixed> {
+): GraphQLFieldConfig<unknown, unknown> {
   const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
     ...resolveMaybeThunk(inputFields),
@@ -95,7 +95,7 @@ export function mutationWithClientMutationId(
       }
       return injectClientMutationId(payload);
 
-      function injectClientMutationId(data: mixed) {
+      function injectClientMutationId(data: unknown) {
         if (typeof data === 'object' && data !== null) {
           // $FlowFixMe[cannot-write] It's bad idea to mutate data but we need to pass clientMutationId somehow. Maybe in future we figure out better solution satisfying all our test cases.
           data.clientMutationId = clientMutationId;
