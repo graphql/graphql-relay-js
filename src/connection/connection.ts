@@ -88,7 +88,7 @@ type GraphQLConnectionDefinitions = {
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
-    ? // $FlowFixMe[incompatible-use] - if it's a function, we assume a thunk without arguments
+    ? // @ts-expect-error - if it's a function, we assume a thunk without arguments
       thingOrThunk()
     : thingOrThunk;
 }
@@ -105,6 +105,7 @@ export function connectionDefinitions(
   const edgeType = new GraphQLObjectType({
     name: name + 'Edge',
     description: 'An edge in a connection.',
+    // @ts-expect-error TODO FIXME
     fields: () => ({
       node: {
         type: nodeType,

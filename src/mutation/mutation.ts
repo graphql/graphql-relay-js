@@ -19,7 +19,7 @@ type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
-    ? // $FlowFixMe[incompatible-use] - if it's a function, we assume a thunk without arguments
+    ? // @ts-expect-error - if it's a function, we assume a thunk without arguments
       thingOrThunk()
     : thingOrThunk;
 }
@@ -91,13 +91,14 @@ export function mutationWithClientMutationId(
       const { clientMutationId } = input;
       const payload = mutateAndGetPayload(input, context, info);
       if (isPromise(payload)) {
+        // @ts-expect-error FIXME
         return payload.then(injectClientMutationId);
       }
       return injectClientMutationId(payload);
 
       function injectClientMutationId(data: unknown) {
         if (typeof data === 'object' && data !== null) {
-          // $FlowFixMe[cannot-write] It's bad idea to mutate data but we need to pass clientMutationId somehow. Maybe in future we figure out better solution satisfying all our test cases.
+          // @ts-expect-error FIXME It's bad idea to mutate data but we need to pass clientMutationId somehow. Maybe in future we figure out better solution satisfying all our test cases.
           data.clientMutationId = clientMutationId;
         }
 
