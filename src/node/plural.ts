@@ -8,15 +8,15 @@ import type {
 } from 'graphql';
 
 type PluralIdentifyingRootFieldConfig = {
-  argName: string,
-  inputType: GraphQLInputType,
-  outputType: GraphQLOutputType,
+  argName: string;
+  inputType: GraphQLInputType;
+  outputType: GraphQLOutputType;
   resolveSingleInput: (
     input: any,
     context: any,
     info: GraphQLResolveInfo,
-  ) => unknown,
-  description?: string,
+  ) => unknown;
+  description?: string;
 };
 
 export function pluralIdentifyingRootField(

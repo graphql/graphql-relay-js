@@ -7,8 +7,8 @@
  */
 
 type Ship = {
-  id: string,
-  name: string,
+  id: string;
+  name: string;
 };
 
 const allShips: Array<Ship> = [
@@ -26,9 +26,9 @@ const allShips: Array<Ship> = [
 ];
 
 type Faction = {
-  id: string,
-  name: string,
-  ships: Array<string>,
+  id: string;
+  name: string;
+  ships: Array<string>;
 };
 
 const rebels: Faction = {

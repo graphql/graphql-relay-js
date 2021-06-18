@@ -39,13 +39,13 @@ function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
  * output field. It may return synchronously, or return a Promise.
  */
 type MutationConfig = {
-  name: string,
-  description?: string,
-  deprecationReason?: string,
-  extensions?: { [name: string]: unknown },
-  inputFields: Thunk<GraphQLInputFieldConfigMap>,
-  outputFields: Thunk<GraphQLFieldConfigMap<any, any>>,
-  mutateAndGetPayload: MutationFn,
+  name: string;
+  description?: string;
+  deprecationReason?: string;
+  extensions?: { [name: string]: unknown };
+  inputFields: Thunk<GraphQLInputFieldConfigMap>;
+  outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
+  mutateAndGetPayload: MutationFn;
 };
 
 /**

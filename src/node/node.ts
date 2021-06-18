@@ -14,9 +14,9 @@ import type {
 import { base64, unbase64 } from '../utils/base64';
 
 type GraphQLNodeDefinitions<TContext> = {
-  nodeInterface: GraphQLInterfaceType,
-  nodeField: GraphQLFieldConfig<unknown, TContext>,
-  nodesField: GraphQLFieldConfig<unknown, TContext>,
+  nodeInterface: GraphQLInterfaceType;
+  nodeField: GraphQLFieldConfig<unknown, TContext>;
+  nodesField: GraphQLFieldConfig<unknown, TContext>;
 };
 
 /**
@@ -30,7 +30,11 @@ type GraphQLNodeDefinitions<TContext> = {
  * interface without a provided `resolveType` method.
  */
 export function nodeDefinitions<TContext>(
-  fetchById: (id: string, context: TContext, info: GraphQLResolveInfo) => unknown,
+  fetchById: (
+    id: string,
+    context: TContext,
+    info: GraphQLResolveInfo,
+  ) => unknown,
   typeResolver?: GraphQLTypeResolver<any, TContext>,
 ): GraphQLNodeDefinitions<TContext> {
   const nodeInterface = new GraphQLInterfaceType({
@@ -76,8 +80,8 @@ export function nodeDefinitions<TContext>(
 }
 
 type ResolvedGlobalId = {
-  type: string,
-  id: string,
+  type: string;
+  id: string;
 };
 
 /**

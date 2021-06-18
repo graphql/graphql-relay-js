@@ -7,8 +7,8 @@ import type {
 } from './connection';
 
 type ArraySliceMetaInfo = {
-  sliceStart: number,
-  arrayLength: number,
+  sliceStart: number;
+  arrayLength: number;
 };
 
 /**
