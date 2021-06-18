@@ -5,7 +5,13 @@
   "license": "MIT",
   "private": true,
   "main": "index",
-  "types": "index.d.ts",
+  "typesVersions": {
+    ">=4.1.0": {
+      "*": [
+        "*"
+      ]
+    }
+  },
   "sideEffects": false,
   "homepage": "https://github.com/graphql/graphql-relay-js",
   "bugs": {
@@ -25,8 +31,8 @@
     "preversion": "npm ci && npm run test",
     "test": "npm run lint && npm run check && npm run testonly && npm run prettier:check && npm run check:spelling",
     "lint": "eslint --max-warnings 0 .",
-    "check": "flow check",
-    "testonly": "mocha --full-trace src/**/__tests__/**/*-test.js",
+    "check": "tsc --pretty",
+    "testonly": "mocha --full-trace src/**/__tests__/**/*-test.ts",
     "testonly:cover": "nyc npm run testonly",
     "prettier": "prettier --write --list-different .",
     "prettier:check": "prettier --check .",
@@ -40,15 +46,17 @@
     "@babel/core": "7.15.5",
     "@babel/eslint-parser": "7.15.4",
     "@babel/node": "7.15.4",
-    "@babel/plugin-transform-flow-strip-types": "7.14.5",
+    "@babel/plugin-transform-typescript": "7.14.6",
     "@babel/preset-env": "7.15.6",
     "@babel/register": "7.15.3",
+    "@types/chai": "4.2.19",
+    "@types/mocha": "8.2.2",
+    "@types/node": "15.12.5",
     "@typescript-eslint/eslint-plugin": "4.31.0",
     "@typescript-eslint/parser": "4.31.0",
     "chai": "4.3.4",
     "cspell": "5.9.0",
     "eslint": "7.32.0",
-    "eslint-plugin-flowtype": "5.9.2",
     "eslint-plugin-import": "2.24.2",
     "eslint-plugin-istanbul": "0.1.2",
     "eslint-plugin-node": "11.1.0",

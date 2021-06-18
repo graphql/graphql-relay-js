@@ -167,7 +167,7 @@ After cloning this repo, ensure dependencies are installed by running:
 npm install
 ```
 
-This library is written in ES6 and uses [Babel](https://babeljs.io/) for ES5 transpilation and [Flow](https://flow.org/) for type safety. Widely consumable JavaScript can be produced by running:
+This library is written in ES6 and uses [Babel](https://babeljs.io/) for ES5 transpilation and [TypeScript](https://www.typescriptlang.org/) for type safety. Widely consumable JavaScript can be produced by running:
 
 ```sh
 npm run build

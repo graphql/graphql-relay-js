@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 
+const ts = require('typescript');
 const babel = require('@babel/core');
 
 const {
@@ -24,16 +25,57 @@ if (require.main === module) {
     const destPath = path.join('./npmDist', filepath);
 
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
-    if (filepath.endsWith('.js')) {
-      const flowBody = '// @flow strict\n' + fs.readFileSync(srcPath, 'utf-8');
-      writeGeneratedFile(destPath + '.flow', flowBody);
-
+    if (filepath.endsWith('.ts')) {
       const cjs = babelBuild(srcPath, { envName: 'cjs' });
-      writeGeneratedFile(destPath, cjs);
-    } else if (filepath.endsWith('.d.ts')) {
-      fs.copyFileSync(srcPath, destPath);
+      writeGeneratedFile(destPath.replace(/\.ts$/, '.js'), cjs);
     }
   }
+
+  // Based on https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#getting-the-dts-from-a-javascript-file
+  const tsConfig = JSON.parse(
+    fs.readFileSync(require.resolve('../tsconfig.json'), 'utf-8'),
+  );
+  assert(
+    tsConfig.compilerOptions,
+    '"tsconfig.json" should have `compilerOptions`',
+  );
+  const tsOptions = {
+    ...tsConfig.compilerOptions,
+    noEmit: false,
+    declaration: true,
+    declarationDir: './npmDist',
+    emitDeclarationOnly: true,
+  };
+
+  const tsHost = ts.createCompilerHost(tsOptions);
+  tsHost.writeFile = (filepath, body) => {
+    writeGeneratedFile(filepath, body);
+  };
+
+  const tsProgram = ts.createProgram(['src/index.ts'], tsOptions, tsHost);
+  const tsResult = tsProgram.emit();
+  assert(
+    !tsResult.emitSkipped,
+    'Fail to generate `*.d.ts` files, please run `npm run check`',
+  );
+
+  assert(packageJSON.types === undefined, 'Unexpected "types" in package.json');
+  const supportedTSVersions = Object.keys(packageJSON.typesVersions);
+  assert(
+    supportedTSVersions.length === 1,
+    'Property "typesVersions" should have exactly one key.',
+  );
+  // TODO: revisit once TS implements https://github.com/microsoft/TypeScript/issues/32166
+  const notSupportedTSVersionFile = 'NotSupportedTSVersion.d.ts';
+  fs.writeFileSync(
+    path.join('./npmDist', notSupportedTSVersionFile),
+    // Provoke syntax error to show this message
+    `"Package 'graphql' support only TS versions that are ${supportedTSVersions[0]}".`,
+  );
+  packageJSON.typesVersions = {
+    ...packageJSON.typesVersions,
+    '*': { '*': [notSupportedTSVersionFile] },
+  };
 
   fs.copyFileSync('./LICENSE', './npmDist/LICENSE');
   fs.copyFileSync('./README.md', './npmDist/README.md');

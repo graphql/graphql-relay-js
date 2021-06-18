@@ -2,6 +2,3 @@
 node_modules
 coverage
 npmDist
-
-# Ignore Flow typings for 3rd-party libraries
-/flow-typed

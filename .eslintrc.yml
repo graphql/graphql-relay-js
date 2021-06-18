@@ -428,61 +428,6 @@ rules:
   yield-star-spacing: off
 
 overrides:
-  - files: 'src/**/*.js'
-    parser: '@babel/eslint-parser'
-    parserOptions:
-      sourceType: module
-    plugins:
-      - flowtype
-
-    rules:
-      ##############################################################################
-      # `eslint-plugin-flowtype` rule list based on `v5.3.x`
-      # https://github.com/gajus/eslint-plugin-flowtype#eslint-plugin-flowtype
-      ##############################################################################
-
-      flowtype/array-style-complex-type: error
-      flowtype/array-style-simple-type: error
-      flowtype/define-flow-type: error
-      flowtype/newline-after-flow-annotation: error
-      flowtype/no-dupe-keys: error
-      flowtype/no-existential-type: off # checked by Flow
-      flowtype/no-flow-fix-me-comments: off
-      flowtype/no-mixed: off
-      flowtype/no-mutable-array: off
-      flowtype/no-primitive-constructor-types: error
-      flowtype/no-types-missing-file-annotation: off
-      flowtype/no-unused-expressions: off
-      flowtype/no-weak-types: [error, { any: false }]
-      flowtype/require-compound-type-alias: off
-      flowtype/require-exact-type: [error, never]
-      flowtype/require-indexer-name: error
-      flowtype/require-inexact-type: off # checked by Flow
-      flowtype/require-parameter-type: off
-      flowtype/require-readonly-react-props: off
-      flowtype/require-return-type: off
-      flowtype/require-types-at-top: off
-      flowtype/require-valid-file-annotation: off
-      flowtype/require-variable-type: off
-      flowtype/sort-keys: off
-      flowtype/spread-exact-type: off
-      flowtype/type-id-match: [error, '^[A-Z]']
-      flowtype/type-import-style: [error, declaration]
-      flowtype/use-flow-type: error
-
-      # Bellow rules are disabled because coflicts with Prettier, see:
-      # https://github.com/prettier/eslint-config-prettier/blob/master/flowtype.js
-      flowtype/arrow-parens: off
-      flowtype/boolean-style: off
-      flowtype/delimiter-dangle: off
-      flowtype/generic-spacing: off
-      flowtype/object-type-curly-spacing: off
-      flowtype/object-type-delimiter: off
-      flowtype/semi: off
-      flowtype/space-after-type-colon: off
-      flowtype/space-before-generic-bracket: off
-      flowtype/space-before-type-colon: off
-      flowtype/union-intersection-spacing: off
   - files: '**/*.ts'
     parser: '@typescript-eslint/parser'
     parserOptions:
@@ -505,7 +450,7 @@ overrides:
       '@typescript-eslint/ban-ts-comment': [error, { 'ts-expect-error': false }]
       '@typescript-eslint/ban-tslint-comment': error
       '@typescript-eslint/ban-types': error
-      '@typescript-eslint/class-literal-property-style': off # TODO enable after TS conversion
+      '@typescript-eslint/class-literal-property-style': error
       '@typescript-eslint/consistent-indexed-object-style': off # TODO enable after TS conversion
       '@typescript-eslint/consistent-type-assertions':
         [error, { assertionStyle: as, objectLiteralTypeAssertions: never }]
@@ -527,7 +472,7 @@ overrides:
       '@typescript-eslint/no-extraneous-class': off # TODO consider
       '@typescript-eslint/no-floating-promises': error
       '@typescript-eslint/no-for-in-array': error
-      '@typescript-eslint/no-implicit-any-catch': off # TODO: Enable after TS convertion
+      '@typescript-eslint/no-implicit-any-catch': error
       '@typescript-eslint/no-implied-eval': error
       '@typescript-eslint/no-inferrable-types':
         [error, { ignoreParameters: true, ignoreProperties: true }]
@@ -542,7 +487,7 @@ overrides:
       '@typescript-eslint/no-this-alias': error
       '@typescript-eslint/no-type-alias': off # TODO consider
       '@typescript-eslint/no-unnecessary-boolean-literal-compare': error
-      '@typescript-eslint/no-unnecessary-condition': error
+      '@typescript-eslint/no-unnecessary-condition': off # TODO temporarily disabled
       '@typescript-eslint/no-unnecessary-qualifier': error
       '@typescript-eslint/no-unnecessary-type-arguments': error
       '@typescript-eslint/no-unnecessary-type-assertion': error
@@ -555,7 +500,7 @@ overrides:
       '@typescript-eslint/non-nullable-type-assertion-style': error
       '@typescript-eslint/prefer-as-const': off # TODO consider
       '@typescript-eslint/prefer-enum-initializers': off # TODO consider
-      '@typescript-eslint/prefer-for-of': off # TODO switch to error after TS migration
+      '@typescript-eslint/prefer-for-of': error
       '@typescript-eslint/prefer-function-type': error
       '@typescript-eslint/prefer-includes': off # TODO switch to error after IE11 drop
       '@typescript-eslint/prefer-literal-enum-member': error
@@ -630,7 +575,7 @@ overrides:
       '@typescript-eslint/require-await': error
       '@typescript-eslint/return-await': error
 
-      # Disable for JS, Flow and TS
+      # Disable for JS and TS
       '@typescript-eslint/init-declarations': off
       '@typescript-eslint/no-magic-numbers': off
       '@typescript-eslint/no-use-before-define': off
