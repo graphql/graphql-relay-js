@@ -70,7 +70,6 @@ export type ConnectionArguments = {
   after?: ConnectionCursor | null,
   first?: number | null,
   last?: number | null,
-  ...
 };
 
 type ConnectionConfig = {
