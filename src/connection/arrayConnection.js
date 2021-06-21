@@ -121,7 +121,7 @@ const PREFIX = 'arrayconnection:';
  * Creates the cursor string from an offset.
  */
 export function offsetToCursor(offset: number): ConnectionCursor {
-  return base64(PREFIX + offset);
+  return base64(PREFIX + offset.toString());
 }
 
 /**
