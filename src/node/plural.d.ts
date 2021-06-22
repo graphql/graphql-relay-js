@@ -14,7 +14,7 @@ export interface PluralIdentifyingRootFieldConfig {
     input: any,
     context: any,
     info: GraphQLResolveInfo,
-  ) => any;
+  ) => unknown;
   description?: string;
 }
 
