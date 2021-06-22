@@ -5,6 +5,11 @@ const path = require('path');
 const assert = require('assert');
 
 const babel = require('@babel/core');
+const prettier = require('prettier');
+
+const prettierConfig = JSON.parse(
+  fs.readFileSync(require.resolve('../.prettierrc'), 'utf-8'),
+);
 
 const { readdirRecursive, showDirStats } = require('./utils');
 
@@ -20,10 +25,10 @@ if (require.main === module) {
     fs.mkdirSync(path.dirname(destPath), { recursive: true });
     if (filepath.endsWith('.js')) {
       const flowBody = '// @flow strict\n' + fs.readFileSync(srcPath, 'utf-8');
-      fs.writeFileSync(destPath + '.flow', flowBody);
+      writeGeneratedFile(destPath + '.flow', flowBody);
 
       const cjs = babelBuild(srcPath, { envName: 'cjs' });
-      fs.writeFileSync(destPath, cjs);
+      writeGeneratedFile(destPath, cjs);
     } else if (filepath.endsWith('.d.ts')) {
       fs.copyFileSync(srcPath, destPath);
     }
@@ -80,4 +85,9 @@ function buildPackageJSON() {
   }
 
   return packageJSON;
+}
+
+function writeGeneratedFile(filepath, body) {
+  const formatted = prettier.format(body, { filepath, ...prettierConfig });
+  fs.writeFileSync(filepath, formatted);
 }
