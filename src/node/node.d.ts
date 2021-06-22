@@ -23,7 +23,11 @@ export interface GraphQLNodeDefinitions<TContext> {
  * interface without a provided `resolveType` method.
  */
 export function nodeDefinitions<TContext>(
-  idFetcher: (id: string, context: TContext, info: GraphQLResolveInfo) => any,
+  fetchById: (
+    id: string,
+    context: TContext,
+    info: GraphQLResolveInfo,
+  ) => unknown,
   typeResolver?: GraphQLTypeResolver<any, TContext>,
 ): GraphQLNodeDefinitions<TContext>;
 
@@ -37,7 +41,7 @@ export interface ResolvedGlobalId {
  * Takes a type name and an ID specific to that type name, and returns a
  * "global ID" that is unique among all types.
  */
-export function toGlobalId(type: string, id: string): string;
+export function toGlobalId(type: string | number, id: string): string;
 
 /**
  * Takes the "global ID" created by toGlobalID, and returns the type name and ID
@@ -51,7 +55,11 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId;
  * by calling idFetcher on the object, or if not provided, by accessing the `id`
  * property on the object.
  */
-export function globalIdField(
+export function globalIdField<TContext>(
   typeName?: string,
-  idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string,
-): GraphQLFieldConfig<any, any>;
+  idFetcher?: (
+    obj: any,
+    context: TContext,
+    info: GraphQLResolveInfo,
+  ) => string | number,
+): GraphQLFieldConfig<any, TContext>;

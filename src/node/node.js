@@ -30,7 +30,7 @@ type GraphQLNodeDefinitions<TContext> = {|
  * interface without a provided `resolveType` method.
  */
 export function nodeDefinitions<TContext>(
-  idFetcher: (id: string, context: TContext, info: GraphQLResolveInfo) => any,
+  fetchById: (id: string, context: TContext, info: GraphQLResolveInfo) => mixed,
   typeResolver?: GraphQLTypeResolver<any, TContext>,
 ): GraphQLNodeDefinitions<TContext> {
   const nodeInterface = new GraphQLInterfaceType({
@@ -54,7 +54,7 @@ export function nodeDefinitions<TContext>(
         description: 'The ID of an object',
       },
     },
-    resolve: (_obj, { id }, context, info) => idFetcher(id, context, info),
+    resolve: (_obj, { id }, context, info) => fetchById(id, context, info),
   };
 
   const nodesField = {
@@ -69,7 +69,7 @@ export function nodeDefinitions<TContext>(
       },
     },
     resolve: (_obj, { ids }, context, info) =>
-      ids.map((id) => idFetcher(id, context, info)),
+      ids.map((id) => fetchById(id, context, info)),
   };
 
   return { nodeInterface, nodeField, nodesField };
@@ -84,8 +84,8 @@ type ResolvedGlobalId = {|
  * Takes a type name and an ID specific to that type name, and returns a
  * "global ID" that is unique among all types.
  */
-export function toGlobalId(type: string, id: string): string {
-  return base64([type, id].join(':'));
+export function toGlobalId(type: string, id: string | number): string {
+  return base64([type, GraphQLID.serialize(id)].join(':'));
 }
 
 /**
@@ -107,10 +107,14 @@ export function fromGlobalId(globalId: string): ResolvedGlobalId {
  * by calling idFetcher on the object, or if not provided, by accessing the `id`
  * property on the object.
  */
-export function globalIdField(
+export function globalIdField<TContext>(
   typeName?: string,
-  idFetcher?: (object: any, context: any, info: GraphQLResolveInfo) => string,
-): GraphQLFieldConfig<any, mixed> {
+  idFetcher?: (
+    obj: any,
+    context: TContext,
+    info: GraphQLResolveInfo,
+  ) => string | number,
+): GraphQLFieldConfig<any, TContext> {
   return {
     description: 'The ID of an object',
     type: new GraphQLNonNull(GraphQLID),
