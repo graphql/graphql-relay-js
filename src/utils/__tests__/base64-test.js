@@ -3,8 +3,8 @@ import { expect } from 'chai';
 
 import { base64, unbase64 } from '../base64';
 
-const exampleUtf8 = 'Some examples: ❤😀';
-const exampleBase64 = 'U29tZSBleGFtcGxlczog4p2k8J+YgA==';
+const exampleUtf8 = 'Some examples:  ͢❤😀';
+const exampleBase64 = 'U29tZSBleGFtcGxlczogIM2i4p2k8J+YgA==';
 
 describe('base64 conversion', () => {
   it('converts from utf-8 to base64', () => {

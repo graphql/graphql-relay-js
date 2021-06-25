@@ -3,7 +3,6 @@ parserOptions:
   ecmaVersion: 2020
 env:
   es6: true
-  node: true
 reportUnusedDisableDirectives: true
 plugins:
   - node
@@ -659,6 +658,8 @@ overrides:
       node/no-unpublished-import: off
       import/no-extraneous-dependencies: [error, { devDependencies: true }]
   - files: 'resources/**'
+    env:
+      node: true
     rules:
       node/no-unpublished-require: off
       node/no-sync: off
