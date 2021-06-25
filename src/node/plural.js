@@ -15,7 +15,7 @@ type PluralIdentifyingRootFieldConfig = {|
     input: any,
     context: any,
     info: GraphQLResolveInfo,
-  ) => ?any,
+  ) => mixed,
   description?: string,
 |};
 

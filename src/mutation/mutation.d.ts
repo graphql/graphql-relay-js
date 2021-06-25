@@ -12,7 +12,7 @@ export type MutationFn = (
   object: any,
   ctx: any,
   info: GraphQLResolveInfo,
-) => Promise<any> | any;
+) => unknown;
 
 // TS_SPECIFIC: This type is only exported by TypeScript
 /**
