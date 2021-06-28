@@ -2,6 +2,7 @@ import { describe, it } from 'mocha';
 import { expect } from 'chai';
 
 import {
+  offsetToCursor,
   connectionFromArray,
   connectionFromArraySlice,
   connectionFromPromisedArray,
@@ -289,11 +290,7 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns all elements if cursors are on the outside', () => {
-      const c = connectionFromArray(arrayABCDE, {
-        before: 'YXJyYXljb25uZWN0aW9uOjY=' /* offsetToCursor(6) */,
-        after: 'YXJyYXljb25uZWN0aW9uOi0x' /* offsetToCursor(-1) */,
-      });
-      expect(c).to.deep.equal({
+      const allEdges = {
         edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
           startCursor: cursorA,
@@ -301,7 +298,21 @@ describe('connectionFromArray()', () => {
           hasPreviousPage: false,
           hasNextPage: false,
         },
-      });
+      };
+
+      expect(
+        connectionFromArray(arrayABCDE, { before: offsetToCursor(6) }),
+      ).to.deep.equal(allEdges);
+      expect(
+        connectionFromArray(arrayABCDE, { before: offsetToCursor(-1) }),
+      ).to.deep.equal(allEdges);
+
+      expect(
+        connectionFromArray(arrayABCDE, { after: offsetToCursor(6) }),
+      ).to.deep.equal(allEdges);
+      expect(
+        connectionFromArray(arrayABCDE, { after: offsetToCursor(-1) }),
+      ).to.deep.equal(allEdges);
     });
 
     it('returns no elements if cursors cross', () => {
