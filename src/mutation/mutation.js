@@ -91,10 +91,18 @@ export function mutationWithClientMutationId(
       const { clientMutationId } = input;
       const payload = mutateAndGetPayload(input, context, info);
       if (isPromise(payload)) {
-        return payload.then((data) => ({ ...data, clientMutationId }));
+        return payload.then(injectClientMutationId);
       }
+      return injectClientMutationId(payload);
 
-      return { ...payload, clientMutationId };
+      function injectClientMutationId(data: mixed) {
+        if (typeof data === 'object' && data !== null) {
+          // $FlowFixMe[cannot-write] It's bad idea to mutate data but we need to pass clientMutationId somehow. Maybe in future we figure out better solution satisfying all our test cases.
+          data.clientMutationId = clientMutationId;
+        }
+
+        return data;
+      }
     },
   };
 }
