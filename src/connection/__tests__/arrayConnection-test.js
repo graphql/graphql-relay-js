@@ -9,38 +9,29 @@ import {
   cursorForObjectInConnection,
 } from '../arrayConnection';
 
-describe('connectionFromArray()', () => {
-  const letters = ['A', 'B', 'C', 'D', 'E'];
+const arrayABCDE = ['A', 'B', 'C', 'D', 'E'];
 
+const cursorA = 'YXJyYXljb25uZWN0aW9uOjA=';
+const cursorB = 'YXJyYXljb25uZWN0aW9uOjE=';
+const cursorC = 'YXJyYXljb25uZWN0aW9uOjI=';
+const cursorD = 'YXJyYXljb25uZWN0aW9uOjM=';
+const cursorE = 'YXJyYXljb25uZWN0aW9uOjQ=';
+
+const edgeA = { node: 'A', cursor: cursorA };
+const edgeB = { node: 'B', cursor: cursorB };
+const edgeC = { node: 'C', cursor: cursorC };
+const edgeD = { node: 'D', cursor: cursorD };
+const edgeE = { node: 'E', cursor: cursorE };
+
+describe('connectionFromArray()', () => {
   describe('basic slicing', () => {
     it('returns all elements without filters', () => {
-      const c = connectionFromArray(letters, {});
+      const c = connectionFromArray(arrayABCDE, {});
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'A',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          },
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-          {
-            node: 'E',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-          },
-        ],
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+          startCursor: cursorA,
+          endCursor: cursorE,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -48,18 +39,12 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects a smaller first', () => {
-      const c = connectionFromArray(letters, { first: 2 });
+      const c = connectionFromArray(arrayABCDE, { first: 2 });
       expect(c).to.deep.equal({
-        edges: [
-          { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-        ],
+        edges: [edgeA, edgeB],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+          startCursor: cursorA,
+          endCursor: cursorB,
           hasPreviousPage: false,
           hasNextPage: true,
         },
@@ -67,33 +52,12 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects an overly large first', () => {
-      const c = connectionFromArray(letters, { first: 10 });
+      const c = connectionFromArray(arrayABCDE, { first: 10 });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'A',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          },
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-          {
-            node: 'E',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-          },
-        ],
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+          startCursor: cursorA,
+          endCursor: cursorE,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -101,21 +65,12 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects a smaller last', () => {
-      const c = connectionFromArray(letters, { last: 2 });
+      const c = connectionFromArray(arrayABCDE, { last: 2 });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-          {
-            node: 'E',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-          },
-        ],
+        edges: [edgeD, edgeE],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+          startCursor: cursorD,
+          endCursor: cursorE,
           hasPreviousPage: true,
           hasNextPage: false,
         },
@@ -123,33 +78,12 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects an overly large last', () => {
-      const c = connectionFromArray(letters, { last: 10 });
+      const c = connectionFromArray(arrayABCDE, { last: 10 });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'A',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          },
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-          {
-            node: 'E',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-          },
-        ],
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+          startCursor: cursorA,
+          endCursor: cursorE,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -159,24 +93,15 @@ describe('connectionFromArray()', () => {
 
   describe('pagination', () => {
     it('respects first and after', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         first: 2,
-        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        after: cursorB,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-        ],
+        edges: [edgeC, edgeD],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+          startCursor: cursorC,
+          endCursor: cursorD,
           hasPreviousPage: false,
           hasNextPage: true,
         },
@@ -184,28 +109,15 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after with long first', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         first: 10,
-        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        after: cursorB,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-          {
-            node: 'E',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-          },
-        ],
+        edges: [edgeC, edgeD, edgeE],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+          startCursor: cursorC,
+          endCursor: cursorE,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -213,24 +125,15 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and before', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         last: 2,
-        before: 'YXJyYXljb25uZWN0aW9uOjM=',
+        before: cursorD,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-        ],
+        edges: [edgeB, edgeC],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          startCursor: cursorB,
+          endCursor: cursorC,
           hasPreviousPage: true,
           hasNextPage: false,
         },
@@ -238,28 +141,15 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and before with long last', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         last: 10,
-        before: 'YXJyYXljb25uZWN0aW9uOjM=',
+        before: cursorD,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'A',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          },
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-        ],
+        edges: [edgeA, edgeB, edgeC],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          startCursor: cursorA,
+          endCursor: cursorC,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -267,25 +157,16 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after and before, too few', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         first: 2,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
-        before: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        after: cursorA,
+        before: cursorE,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-        ],
+        edges: [edgeB, edgeC],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+          startCursor: cursorB,
+          endCursor: cursorC,
           hasPreviousPage: false,
           hasNextPage: true,
         },
@@ -293,29 +174,16 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after and before, too many', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         first: 4,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
-        before: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        after: cursorA,
+        before: cursorE,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-        ],
+        edges: [edgeB, edgeC, edgeD],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+          startCursor: cursorB,
+          endCursor: cursorD,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -323,29 +191,16 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects first and after and before, exactly right', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         first: 3,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
-        before: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        after: cursorA,
+        before: cursorE,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-        ],
+        edges: [edgeB, edgeC, edgeD],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+          startCursor: cursorB,
+          endCursor: cursorD,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -353,25 +208,16 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and after and before, too few', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         last: 2,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
-        before: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        after: cursorA,
+        before: cursorE,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-        ],
+        edges: [edgeC, edgeD],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+          startCursor: cursorC,
+          endCursor: cursorD,
           hasPreviousPage: true,
           hasNextPage: false,
         },
@@ -379,29 +225,16 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and after and before, too many', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         last: 4,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
-        before: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        after: cursorA,
+        before: cursorE,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-        ],
+        edges: [edgeB, edgeC, edgeD],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+          startCursor: cursorB,
+          endCursor: cursorD,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -409,29 +242,16 @@ describe('connectionFromArray()', () => {
     });
 
     it('respects last and after and before, exactly right', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         last: 3,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
-        before: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        after: cursorA,
+        before: cursorE,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-        ],
+        edges: [edgeB, edgeC, edgeD],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+          startCursor: cursorB,
+          endCursor: cursorD,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -442,47 +262,26 @@ describe('connectionFromArray()', () => {
   describe('cursor edge cases', () => {
     it('throws an error if first < 0', () => {
       expect(() => {
-        connectionFromArray(letters, { first: -1 });
+        connectionFromArray(arrayABCDE, { first: -1 });
       }).to.throw('Argument "first" must be a non-negative integer');
     });
 
     it('throws an error if last < 0', () => {
       expect(() => {
-        connectionFromArray(letters, { last: -1 });
+        connectionFromArray(arrayABCDE, { last: -1 });
       }).to.throw('Argument "last" must be a non-negative integer');
     });
 
     it('returns all elements if cursors are invalid', () => {
-      const c = connectionFromArray(letters, {
+      const c = connectionFromArray(arrayABCDE, {
         before: 'invalid',
         after: 'invalid',
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'A',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          },
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-          {
-            node: 'E',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-          },
-        ],
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+          startCursor: cursorA,
+          endCursor: cursorE,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -490,36 +289,15 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns all elements if cursors are on the outside', () => {
-      const c = connectionFromArray(letters, {
-        before: 'YXJyYXljb25uZWN0aW9uOjYK',
-        after: 'YXJyYXljb25uZWN0aW9uOi0xCg==',
+      const c = connectionFromArray(arrayABCDE, {
+        before: 'YXJyYXljb25uZWN0aW9uOjY=' /* offsetToCursor(6) */,
+        after: 'YXJyYXljb25uZWN0aW9uOi0x' /* offsetToCursor(-1) */,
       });
       expect(c).to.deep.equal({
-        edges: [
-          {
-            node: 'A',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          },
-          {
-            node: 'B',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-          },
-          {
-            node: 'C',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-          },
-          {
-            node: 'D',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-          },
-          {
-            node: 'E',
-            cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-          },
-        ],
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
-          startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-          endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+          startCursor: cursorA,
+          endCursor: cursorE,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -527,9 +305,9 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns no elements if cursors cross', () => {
-      const c = connectionFromArray(letters, {
-        before: 'YXJyYXljb25uZWN0aW9uOjI=',
-        after: 'YXJyYXljb25uZWN0aW9uOjQ=',
+      const c = connectionFromArray(arrayABCDE, {
+        before: cursorC,
+        after: cursorE,
       });
       expect(c).to.deep.equal({
         edges: [],
@@ -545,48 +323,28 @@ describe('connectionFromArray()', () => {
 
   describe('cursorForObjectInConnection()', () => {
     it("returns an edge's cursor, given an array and a member object", () => {
-      const letterBCursor = cursorForObjectInConnection(letters, 'B');
-      expect(letterBCursor).to.equal('YXJyYXljb25uZWN0aW9uOjE=');
+      const letterBCursor = cursorForObjectInConnection(arrayABCDE, 'B');
+      expect(letterBCursor).to.equal(cursorB);
     });
 
     it('returns null, given an array and a non-member object', () => {
-      const letterFCursor = cursorForObjectInConnection(letters, 'F');
+      const letterFCursor = cursorForObjectInConnection(arrayABCDE, 'F');
       expect(letterFCursor).to.equal(null);
     });
   });
 });
 
 describe('connectionFromPromisedArray()', () => {
-  const letters = Promise.resolve(['A', 'B', 'C', 'D', 'E']);
-
   it('returns all elements without filters', async () => {
-    const c = await connectionFromPromisedArray(letters, {});
+    const c = await connectionFromPromisedArray(
+      Promise.resolve(arrayABCDE),
+      {},
+    );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'A',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-        },
-        {
-          node: 'B',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-        },
-        {
-          node: 'C',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        },
-        {
-          node: 'D',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-        },
-        {
-          node: 'E',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-        },
-      ],
+      edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        startCursor: cursorA,
+        endCursor: cursorE,
         hasPreviousPage: false,
         hasNextPage: false,
       },
@@ -594,18 +352,14 @@ describe('connectionFromPromisedArray()', () => {
   });
 
   it('respects a smaller first', async () => {
-    const c = await connectionFromPromisedArray(letters, { first: 2 });
+    const c = await connectionFromPromisedArray(Promise.resolve(arrayABCDE), {
+      first: 2,
+    });
     expect(c).to.deep.equal({
-      edges: [
-        { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
-        {
-          node: 'B',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-        },
-      ],
+      edges: [edgeA, edgeB],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        startCursor: cursorA,
+        endCursor: cursorB,
         hasPreviousPage: false,
         hasNextPage: true,
       },
@@ -614,14 +368,12 @@ describe('connectionFromPromisedArray()', () => {
 });
 
 describe('connectionFromArraySlice()', () => {
-  const letters = ['A', 'B', 'C', 'D', 'E'];
-
   it('works with a just-right array slice', () => {
     const c = connectionFromArraySlice(
-      letters.slice(1, 3),
+      arrayABCDE.slice(1, 3),
       {
         first: 2,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
+        after: cursorA,
       },
       {
         sliceStart: 1,
@@ -629,19 +381,10 @@ describe('connectionFromArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'B',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-        },
-        {
-          node: 'C',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        },
-      ],
+      edges: [edgeB, edgeC],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        startCursor: cursorB,
+        endCursor: cursorC,
         hasPreviousPage: false,
         hasNextPage: true,
       },
@@ -650,10 +393,10 @@ describe('connectionFromArraySlice()', () => {
 
   it('works with an oversized array slice ("left" side)', () => {
     const c = connectionFromArraySlice(
-      letters.slice(0, 3),
+      arrayABCDE.slice(0, 3),
       {
         first: 2,
-        after: 'YXJyYXljb25uZWN0aW9uOjA=',
+        after: cursorA,
       },
       {
         sliceStart: 0,
@@ -661,19 +404,10 @@ describe('connectionFromArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'B',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-        },
-        {
-          node: 'C',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        },
-      ],
+      edges: [edgeB, edgeC],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        startCursor: cursorB,
+        endCursor: cursorC,
         hasPreviousPage: false,
         hasNextPage: true,
       },
@@ -682,10 +416,10 @@ describe('connectionFromArraySlice()', () => {
 
   it('works with an oversized array slice ("right" side)', () => {
     const c = connectionFromArraySlice(
-      letters.slice(2, 4),
+      arrayABCDE.slice(2, 4),
       {
         first: 1,
-        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        after: cursorB,
       },
       {
         sliceStart: 2,
@@ -693,15 +427,10 @@ describe('connectionFromArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'C',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        },
-      ],
+      edges: [edgeC],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        startCursor: cursorC,
+        endCursor: cursorC,
         hasPreviousPage: false,
         hasNextPage: true,
       },
@@ -710,10 +439,10 @@ describe('connectionFromArraySlice()', () => {
 
   it('works with an oversized array slice (both sides)', () => {
     const c = connectionFromArraySlice(
-      letters.slice(1, 4),
+      arrayABCDE.slice(1, 4),
       {
         first: 1,
-        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        after: cursorB,
       },
       {
         sliceStart: 1,
@@ -721,15 +450,10 @@ describe('connectionFromArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'C',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        },
-      ],
+      edges: [edgeC],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
+        startCursor: cursorC,
+        endCursor: cursorC,
         hasPreviousPage: false,
         hasNextPage: true,
       },
@@ -738,10 +462,10 @@ describe('connectionFromArraySlice()', () => {
 
   it('works with an undersized array slice ("left" side)', () => {
     const c = connectionFromArraySlice(
-      letters.slice(3, 5),
+      arrayABCDE.slice(3, 5),
       {
         first: 3,
-        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        after: cursorB,
       },
       {
         sliceStart: 3,
@@ -749,19 +473,10 @@ describe('connectionFromArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'D',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-        },
-        {
-          node: 'E',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
-        },
-      ],
+      edges: [edgeD, edgeE],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjQ=',
+        startCursor: cursorD,
+        endCursor: cursorE,
         hasPreviousPage: false,
         hasNextPage: false,
       },
@@ -770,10 +485,10 @@ describe('connectionFromArraySlice()', () => {
 
   it('works with an undersized array slice ("right" side)', () => {
     const c = connectionFromArraySlice(
-      letters.slice(2, 4),
+      arrayABCDE.slice(2, 4),
       {
         first: 3,
-        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        after: cursorB,
       },
       {
         sliceStart: 2,
@@ -781,19 +496,10 @@ describe('connectionFromArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'C',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        },
-        {
-          node: 'D',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-        },
-      ],
+      edges: [edgeC, edgeD],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjI=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+        startCursor: cursorC,
+        endCursor: cursorD,
         hasPreviousPage: false,
         hasNextPage: true,
       },
@@ -802,10 +508,10 @@ describe('connectionFromArraySlice()', () => {
 
   it('works with an undersized array slice (both sides)', () => {
     const c = connectionFromArraySlice(
-      letters.slice(3, 4),
+      arrayABCDE.slice(3, 4),
       {
         first: 3,
-        after: 'YXJyYXljb25uZWN0aW9uOjE=',
+        after: cursorB,
       },
       {
         sliceStart: 3,
@@ -813,15 +519,10 @@ describe('connectionFromArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        {
-          node: 'D',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-        },
-      ],
+      edges: [edgeD],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjM=',
+        startCursor: cursorD,
+        endCursor: cursorD,
         hasPreviousPage: false,
         hasNextPage: true,
       },
@@ -831,9 +532,8 @@ describe('connectionFromArraySlice()', () => {
 
 describe('connectionFromPromisedArraySlice()', () => {
   it('respects a smaller first', async () => {
-    const letters = Promise.resolve(['A', 'B', 'C']);
     const c = await connectionFromPromisedArraySlice(
-      letters,
+      Promise.resolve(arrayABCDE),
       { first: 2 },
       {
         sliceStart: 0,
@@ -841,16 +541,10 @@ describe('connectionFromPromisedArraySlice()', () => {
       },
     );
     expect(c).to.deep.equal({
-      edges: [
-        { node: 'A', cursor: 'YXJyYXljb25uZWN0aW9uOjA=' },
-        {
-          node: 'B',
-          cursor: 'YXJyYXljb25uZWN0aW9uOjE=',
-        },
-      ],
+      edges: [edgeA, edgeB],
       pageInfo: {
-        startCursor: 'YXJyYXljb25uZWN0aW9uOjA=',
-        endCursor: 'YXJyYXljb25uZWN0aW9uOjE=',
+        startCursor: cursorA,
+        endCursor: cursorB,
         hasPreviousPage: false,
         hasNextPage: true,
       },
