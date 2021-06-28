@@ -54,11 +54,20 @@ export function connectionFromArraySlice<T>(
   const { after, before, first, last } = args;
   const { sliceStart, arrayLength } = meta;
   const sliceEnd = sliceStart + arraySlice.length;
-  const beforeOffset = getOffsetWithDefault(before, arrayLength);
-  const afterOffset = getOffsetWithDefault(after, -1);
 
-  let startOffset = Math.max(sliceStart - 1, afterOffset, -1) + 1;
-  let endOffset = Math.min(sliceEnd, beforeOffset, arrayLength);
+  let startOffset = Math.max(sliceStart, 0);
+  let endOffset = Math.min(sliceEnd, arrayLength);
+
+  const afterOffset = getOffsetWithDefault(after, -1);
+  if (0 <= afterOffset && afterOffset < arrayLength) {
+    startOffset = Math.max(startOffset, afterOffset + 1);
+  }
+
+  const beforeOffset = getOffsetWithDefault(before, endOffset);
+  if (0 <= beforeOffset && beforeOffset < arrayLength) {
+    endOffset = Math.min(endOffset, beforeOffset);
+  }
+
   if (typeof first === 'number') {
     if (first < 0) {
       throw new Error('Argument "first" must be a non-negative integer');
@@ -76,8 +85,8 @@ export function connectionFromArraySlice<T>(
 
   // If supplied slice is too large, trim it down before mapping over it.
   const slice = arraySlice.slice(
-    Math.max(startOffset - sliceStart, 0),
-    arraySlice.length - (sliceEnd - endOffset),
+    startOffset - sliceStart,
+    endOffset - sliceStart,
   );
 
   const edges = slice.map((value, index) => ({
