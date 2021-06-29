@@ -33,9 +33,12 @@ const queryType = new GraphQLObjectType({
       description: 'Map from a username to the user',
       inputType: GraphQLString,
       outputType: userType,
-      resolveSingleInput: (username, { lang }) => ({
+      resolveSingleInput: (
+        username: string,
+        context: { lang: string, ... },
+      ) => ({
         username,
-        url: `www.facebook.com/${username}?lang=${lang}`,
+        url: `www.facebook.com/${username}?lang=${context.lang}`,
       }),
     }),
   }),
