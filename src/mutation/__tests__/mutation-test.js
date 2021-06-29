@@ -196,8 +196,42 @@ describe('mutationWithClientMutationId()', () => {
     `;
 
     expect(graphqlSync({ schema, source })).to.deep.equal({
+      data: { someMutation: null },
+    });
+  });
+
+  it('supports mutations returning custom classes', () => {
+    class SomeClass {
+      getSomeGeneratedData() {
+        return 1;
+      }
+    }
+
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: {},
+      outputFields: {
+        result: {
+          type: GraphQLInt,
+          resolve: (obj) => obj.getSomeGeneratedData(),
+        },
+      },
+      mutateAndGetPayload: () => new SomeClass(),
+    });
+    const schema = wrapInSchema({ someMutation });
+
+    const source = `
+      mutation {
+        someMutation(input: {clientMutationId: "abc"}) {
+          result
+          clientMutationId
+        }
+      }
+    `;
+
+    expect(graphqlSync({ schema, source })).to.deep.equal({
       data: {
-        someMutation: { result: null, clientMutationId: 'abc' },
+        someMutation: { result: 1, clientMutationId: 'abc' },
       },
     });
   });
