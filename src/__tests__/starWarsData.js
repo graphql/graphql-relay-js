@@ -6,10 +6,10 @@
  * JSON objects in a more complex demo.
  */
 
-type Ship = {|
+type Ship = {
   id: string,
   name: string,
-|};
+};
 
 const allShips: Array<Ship> = [
   { id: '1', name: 'X-Wing' },
@@ -25,11 +25,11 @@ const allShips: Array<Ship> = [
   { id: '8', name: 'Executor' },
 ];
 
-type Faction = {|
+type Faction = {
   id: string,
   name: string,
   ships: Array<string>,
-|};
+};
 
 const rebels: Faction = {
   id: '1',
