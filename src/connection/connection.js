@@ -73,19 +73,19 @@ export type ConnectionArguments = {
   ...
 };
 
-type ConnectionConfig = {|
+type ConnectionConfig = {
   name?: string,
   nodeType: GraphQLNamedType | GraphQLNonNull<GraphQLNamedType>,
   resolveNode?: GraphQLFieldResolver<any, any>,
   resolveCursor?: GraphQLFieldResolver<any, any>,
   edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
   connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
-|};
+};
 
-type GraphQLConnectionDefinitions = {|
+type GraphQLConnectionDefinitions = {
   edgeType: GraphQLObjectType,
   connectionType: GraphQLObjectType,
-|};
+};
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
@@ -143,18 +143,18 @@ export function connectionDefinitions(
 /**
  * A type designed to be exposed as a `Connection` over GraphQL.
  */
-export type Connection<T> = {|
+export type Connection<T> = {
   edges: Array<Edge<T>>,
   pageInfo: PageInfo,
-|};
+};
 
 /**
  * A type designed to be exposed as a `Edge` over GraphQL.
  */
-export type Edge<T> = {|
+export type Edge<T> = {
   node: T,
   cursor: ConnectionCursor,
-|};
+};
 
 /**
  * The common page info type used by all connections.
@@ -185,9 +185,9 @@ const pageInfoType = new GraphQLObjectType({
 /**
  * A type designed to be exposed as `PageInfo` over GraphQL.
  */
-export type PageInfo = {|
+export type PageInfo = {
   startCursor: ConnectionCursor | null,
   endCursor: ConnectionCursor | null,
   hasPreviousPage: boolean,
   hasNextPage: boolean,
-|};
+};
