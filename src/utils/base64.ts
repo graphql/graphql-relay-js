@@ -90,7 +90,7 @@ function toBase64Char(bitMap6: number): string {
   return b64CharacterSet.charAt(bitMap6);
 }
 
-function fromBase64Char(base64Char: string | void): number {
+function fromBase64Char(base64Char: string | undefined): number {
   if (base64Char === undefined) {
     return -1;
   }
