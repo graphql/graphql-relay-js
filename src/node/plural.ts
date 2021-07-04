@@ -7,7 +7,7 @@ import type {
   GraphQLResolveInfo,
 } from 'graphql';
 
-interface PluralIdentifyingRootFieldConfig {
+export interface PluralIdentifyingRootFieldConfig {
   argName: string;
   inputType: GraphQLInputType;
   outputType: GraphQLOutputType;

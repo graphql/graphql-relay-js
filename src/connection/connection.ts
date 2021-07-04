@@ -10,17 +10,25 @@ import {
 
 import type {
   GraphQLNamedType,
+  GraphQLScalarType,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldConfigMap,
   GraphQLFieldResolver,
   Thunk,
 } from 'graphql';
 
+export interface ForwardConnectionArgs {
+  after: { type: GraphQLScalarType };
+  first: { type: GraphQLScalarType };
+}
+
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with forward pagination.
  */
-export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
+export const forwardConnectionArgs:
+  | ForwardConnectionArgs
+  | GraphQLFieldConfigArgumentMap = {
   after: {
     type: GraphQLString,
     description:
@@ -32,11 +40,17 @@ export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
   },
 };
 
+export interface BackwardConnectionArgs {
+  before: { type: GraphQLScalarType };
+  last: { type: GraphQLScalarType };
+}
+
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with backward pagination.
  */
-export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
+export const backwardConnectionArgs: BackwardConnectionArgs &
+  GraphQLFieldConfigArgumentMap = {
   before: {
     type: GraphQLString,
     description:
@@ -52,7 +66,9 @@ export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with bidirectional pagination.
  */
-export const connectionArgs: GraphQLFieldConfigArgumentMap = {
+export const connectionArgs: BackwardConnectionArgs &
+  ForwardConnectionArgs &
+  GraphQLFieldConfigArgumentMap = {
   ...forwardConnectionArgs,
   ...backwardConnectionArgs,
 };

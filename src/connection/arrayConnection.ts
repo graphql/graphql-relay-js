@@ -6,7 +6,7 @@ import type {
   ConnectionCursor,
 } from './connection';
 
-interface ArraySliceMetaInfo {
+export interface ArraySliceMetaInfo {
   sliceStart: number;
   arrayLength: number;
 }

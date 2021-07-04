@@ -15,7 +15,11 @@ import type {
 
 import isPromise from 'graphql/jsutils/isPromise';
 
-type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
+export type MutationFn = (
+  object: any,
+  ctx: any,
+  info: GraphQLResolveInfo,
+) => unknown;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
@@ -38,7 +42,7 @@ function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
  * input field, and it should return an Object with a key for each
  * output field. It may return synchronously, or return a Promise.
  */
-interface MutationConfig {
+export interface MutationConfig {
   name: string;
   description?: string;
   deprecationReason?: string;

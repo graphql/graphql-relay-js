@@ -13,7 +13,7 @@ import type {
 
 import { base64, unbase64 } from '../utils/base64';
 
-interface GraphQLNodeDefinitions<TContext> {
+export interface GraphQLNodeDefinitions<TContext> {
   nodeInterface: GraphQLInterfaceType;
   nodeField: GraphQLFieldConfig<unknown, TContext>;
   nodesField: GraphQLFieldConfig<unknown, TContext>;
@@ -79,7 +79,7 @@ export function nodeDefinitions<TContext>(
   return { nodeInterface, nodeField, nodesField };
 }
 
-interface ResolvedGlobalId {
+export interface ResolvedGlobalId {
   type: string;
   id: string;
 }
