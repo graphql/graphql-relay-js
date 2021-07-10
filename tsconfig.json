@@ -1,13 +1,12 @@
 {
+  "include": ["src/**/*"],
   "compilerOptions": {
     "module": "commonjs",
-    "lib": ["es6", "esnext.asynciterable"],
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "types": [],
+    "lib": ["es2019", "es2020.promise", "es2020.bigint", "es2020.string"],
+    "target": "es2019",
+    "strict": true,
     "noEmit": true,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true
   }
 }

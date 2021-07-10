@@ -29,7 +29,7 @@ const allUsers = [
   { name: 'Tim', friends: [0, 1, 2, 3] },
 ];
 
-const userType = new GraphQLObjectType({
+const userType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
     name: {
@@ -55,6 +55,7 @@ const userType = new GraphQLObjectType({
 
 const { connectionType: friendConnection } = connectionDefinitions({
   name: 'Friend',
+  // @ts-expect-error TODO FIXME
   nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
   edgeFields: () => ({
@@ -72,6 +73,7 @@ const { connectionType: friendConnection } = connectionDefinitions({
 });
 
 const { connectionType: userConnection } = connectionDefinitions({
+  // @ts-expect-error TODO FIXME
   nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
 });

@@ -10,40 +10,57 @@ import {
 
 import type {
   GraphQLNamedType,
+  GraphQLScalarType,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldConfigMap,
   GraphQLFieldResolver,
   Thunk,
 } from 'graphql';
 
+export interface ForwardConnectionArgs {
+  after: { type: GraphQLScalarType };
+  first: { type: GraphQLScalarType };
+}
+
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with forward pagination.
  */
-export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
+export const forwardConnectionArgs: ForwardConnectionArgs &
+  GraphQLFieldConfigArgumentMap = {
   after: {
     type: GraphQLString,
+    // @ts-expect-error FIXME
     description:
       'Returns the items in the list that come after the specified cursor.',
   },
   first: {
     type: GraphQLInt,
+    // @ts-expect-error FIXME
     description: 'Returns the first n items from the list.',
   },
 };
+
+export interface BackwardConnectionArgs {
+  before: { type: GraphQLScalarType };
+  last: { type: GraphQLScalarType };
+}
 
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with backward pagination.
  */
-export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
+export const backwardConnectionArgs: BackwardConnectionArgs &
+  GraphQLFieldConfigArgumentMap = {
   before: {
     type: GraphQLString,
+    // @ts-expect-error FIXME
     description:
       'Returns the items in the list that come before the specified cursor.',
   },
   last: {
     type: GraphQLInt,
+    // @ts-expect-error FIXME
     description: 'Returns the last n items from the list.',
   },
 };
@@ -52,7 +69,9 @@ export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with bidirectional pagination.
  */
-export const connectionArgs: GraphQLFieldConfigArgumentMap = {
+export const connectionArgs: BackwardConnectionArgs &
+  ForwardConnectionArgs &
+  GraphQLFieldConfigArgumentMap = {
   ...forwardConnectionArgs,
   ...backwardConnectionArgs,
 };
@@ -65,31 +84,30 @@ export type ConnectionCursor = string;
 /**
  * A type describing the arguments a connection field receives in GraphQL.
  */
-export type ConnectionArguments = {
-  before?: ConnectionCursor | null,
-  after?: ConnectionCursor | null,
-  first?: number | null,
-  last?: number | null,
-  ...
-};
+export interface ConnectionArguments {
+  before?: ConnectionCursor | null;
+  after?: ConnectionCursor | null;
+  first?: number | null;
+  last?: number | null;
+}
 
-type ConnectionConfig = {
-  name?: string,
-  nodeType: GraphQLNamedType | GraphQLNonNull<GraphQLNamedType>,
-  resolveNode?: GraphQLFieldResolver<any, any>,
-  resolveCursor?: GraphQLFieldResolver<any, any>,
-  edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
-  connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
-};
+interface ConnectionConfig {
+  name?: string;
+  nodeType: GraphQLNamedType | GraphQLNonNull<GraphQLNamedType>;
+  resolveNode?: GraphQLFieldResolver<any, any>;
+  resolveCursor?: GraphQLFieldResolver<any, any>;
+  edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
+  connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
+}
 
-type GraphQLConnectionDefinitions = {
-  edgeType: GraphQLObjectType,
-  connectionType: GraphQLObjectType,
-};
+interface GraphQLConnectionDefinitions {
+  edgeType: GraphQLObjectType;
+  connectionType: GraphQLObjectType;
+}
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
-    ? // $FlowFixMe[incompatible-use] - if it's a function, we assume a thunk without arguments
+    ? // @ts-expect-error - if it's a function, we assume a thunk without arguments
       thingOrThunk()
     : thingOrThunk;
 }
@@ -106,6 +124,7 @@ export function connectionDefinitions(
   const edgeType = new GraphQLObjectType({
     name: name + 'Edge',
     description: 'An edge in a connection.',
+    // @ts-expect-error TODO FIXME
     fields: () => ({
       node: {
         type: nodeType,
@@ -143,18 +162,18 @@ export function connectionDefinitions(
 /**
  * A type designed to be exposed as a `Connection` over GraphQL.
  */
-export type Connection<T> = {
-  edges: Array<Edge<T>>,
-  pageInfo: PageInfo,
-};
+export interface Connection<T> {
+  edges: Array<Edge<T>>;
+  pageInfo: PageInfo;
+}
 
 /**
  * A type designed to be exposed as a `Edge` over GraphQL.
  */
-export type Edge<T> = {
-  node: T,
-  cursor: ConnectionCursor,
-};
+export interface Edge<T> {
+  node: T;
+  cursor: ConnectionCursor;
+}
 
 /**
  * The common page info type used by all connections.
@@ -185,9 +204,9 @@ const pageInfoType = new GraphQLObjectType({
 /**
  * A type designed to be exposed as `PageInfo` over GraphQL.
  */
-export type PageInfo = {
-  startCursor: ConnectionCursor | null,
-  endCursor: ConnectionCursor | null,
-  hasPreviousPage: boolean,
-  hasNextPage: boolean,
-};
+export interface PageInfo {
+  startCursor: ConnectionCursor | null;
+  endCursor: ConnectionCursor | null;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}

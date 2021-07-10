@@ -19,9 +19,9 @@ function dummyResolve() {
   return { result: 1 };
 }
 
-function wrapInSchema(mutationFields: {
-  [field: string]: GraphQLFieldConfig<any, any>,
-}): GraphQLSchema {
+function wrapInSchema(
+  mutationFields: Record<string, GraphQLFieldConfig<any, any>>,
+): GraphQLSchema {
   const queryType = new GraphQLObjectType({
     name: 'Query',
     fields: { dummy: { type: GraphQLInt } },

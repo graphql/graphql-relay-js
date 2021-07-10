@@ -13,11 +13,11 @@ import type {
 
 import { base64, unbase64 } from '../utils/base64';
 
-type GraphQLNodeDefinitions<TContext> = {
-  nodeInterface: GraphQLInterfaceType,
-  nodeField: GraphQLFieldConfig<mixed, TContext>,
-  nodesField: GraphQLFieldConfig<mixed, TContext>,
-};
+export interface GraphQLNodeDefinitions<TContext> {
+  nodeInterface: GraphQLInterfaceType;
+  nodeField: GraphQLFieldConfig<unknown, TContext>;
+  nodesField: GraphQLFieldConfig<unknown, TContext>;
+}
 
 /**
  * Given a function to map from an ID to an underlying object, and a function
@@ -30,7 +30,11 @@ type GraphQLNodeDefinitions<TContext> = {
  * interface without a provided `resolveType` method.
  */
 export function nodeDefinitions<TContext>(
-  fetchById: (id: string, context: TContext, info: GraphQLResolveInfo) => mixed,
+  fetchById: (
+    id: string,
+    context: TContext,
+    info: GraphQLResolveInfo,
+  ) => unknown,
   typeResolver?: GraphQLTypeResolver<any, TContext>,
 ): GraphQLNodeDefinitions<TContext> {
   const nodeInterface = new GraphQLInterfaceType({
@@ -45,7 +49,7 @@ export function nodeDefinitions<TContext>(
     resolveType: typeResolver,
   });
 
-  const nodeField = {
+  const nodeField: GraphQLFieldConfig<unknown, TContext> = {
     description: 'Fetches an object given its ID',
     type: nodeInterface,
     args: {
@@ -57,7 +61,7 @@ export function nodeDefinitions<TContext>(
     resolve: (_obj, { id }, context, info) => fetchById(id, context, info),
   };
 
-  const nodesField = {
+  const nodesField: GraphQLFieldConfig<unknown, TContext> = {
     description: 'Fetches objects given their IDs',
     type: new GraphQLNonNull(new GraphQLList(nodeInterface)),
     args: {
@@ -69,16 +73,16 @@ export function nodeDefinitions<TContext>(
       },
     },
     resolve: (_obj, { ids }, context, info) =>
-      ids.map((id) => fetchById(id, context, info)),
+      ids.map((id: string) => fetchById(id, context, info)),
   };
 
   return { nodeInterface, nodeField, nodesField };
 }
 
-type ResolvedGlobalId = {
-  type: string,
-  id: string,
-};
+export interface ResolvedGlobalId {
+  type: string;
+  id: string;
+}
 
 /**
  * Takes a type name and an ID specific to that type name, and returns a
