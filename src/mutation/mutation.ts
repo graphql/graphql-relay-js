@@ -42,7 +42,7 @@ type MutationConfig = {
   name: string;
   description?: string;
   deprecationReason?: string;
-  extensions?: { [name: string]: unknown };
+  extensions?: Record<string, unknown>;
   inputFields: Thunk<GraphQLInputFieldConfigMap>;
   outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
   mutateAndGetPayload: MutationFn;

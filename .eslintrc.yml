@@ -450,8 +450,8 @@ overrides:
       '@typescript-eslint/ban-ts-comment': [error, { 'ts-expect-error': false }]
       '@typescript-eslint/ban-tslint-comment': error
       '@typescript-eslint/ban-types': error
-      '@typescript-eslint/class-literal-property-style': off # TODO enable after TS conversion
-      '@typescript-eslint/consistent-indexed-object-style': off # TODO enable after TS conversion
+      '@typescript-eslint/class-literal-property-style': error
+      '@typescript-eslint/consistent-indexed-object-style': error
       '@typescript-eslint/consistent-type-assertions':
         [error, { assertionStyle: as, objectLiteralTypeAssertions: never }]
       '@typescript-eslint/consistent-type-definitions': off # TODO consider
@@ -472,7 +472,7 @@ overrides:
       '@typescript-eslint/no-extraneous-class': off # TODO consider
       '@typescript-eslint/no-floating-promises': error
       '@typescript-eslint/no-for-in-array': error
-      '@typescript-eslint/no-implicit-any-catch': off # TODO: Enable after TS convertion
+      '@typescript-eslint/no-implicit-any-catch': error
       '@typescript-eslint/no-implied-eval': error
       '@typescript-eslint/no-inferrable-types':
         [error, { ignoreParameters: true, ignoreProperties: true }]
@@ -500,7 +500,7 @@ overrides:
       '@typescript-eslint/non-nullable-type-assertion-style': error
       '@typescript-eslint/prefer-as-const': off # TODO consider
       '@typescript-eslint/prefer-enum-initializers': off # TODO consider
-      '@typescript-eslint/prefer-for-of': off # TODO switch to error after TS migration
+      '@typescript-eslint/prefer-for-of': error
       '@typescript-eslint/prefer-function-type': error
       '@typescript-eslint/prefer-includes': off # TODO switch to error after IE11 drop
       '@typescript-eslint/prefer-literal-enum-member': error
