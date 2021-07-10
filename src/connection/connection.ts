@@ -65,26 +65,26 @@ export type ConnectionCursor = string;
 /**
  * A type describing the arguments a connection field receives in GraphQL.
  */
-export type ConnectionArguments = {
+export interface ConnectionArguments {
   before?: ConnectionCursor | null;
   after?: ConnectionCursor | null;
   first?: number | null;
   last?: number | null;
-};
+}
 
-type ConnectionConfig = {
+interface ConnectionConfig {
   name?: string;
   nodeType: GraphQLNamedType | GraphQLNonNull<GraphQLNamedType>;
   resolveNode?: GraphQLFieldResolver<any, any>;
   resolveCursor?: GraphQLFieldResolver<any, any>;
   edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
   connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
-};
+}
 
-type GraphQLConnectionDefinitions = {
+interface GraphQLConnectionDefinitions {
   edgeType: GraphQLObjectType;
   connectionType: GraphQLObjectType;
-};
+}
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
   return typeof thingOrThunk === 'function'
@@ -143,18 +143,18 @@ export function connectionDefinitions(
 /**
  * A type designed to be exposed as a `Connection` over GraphQL.
  */
-export type Connection<T> = {
+export interface Connection<T> {
   edges: Array<Edge<T>>;
   pageInfo: PageInfo;
-};
+}
 
 /**
  * A type designed to be exposed as a `Edge` over GraphQL.
  */
-export type Edge<T> = {
+export interface Edge<T> {
   node: T;
   cursor: ConnectionCursor;
-};
+}
 
 /**
  * The common page info type used by all connections.
@@ -185,9 +185,9 @@ const pageInfoType = new GraphQLObjectType({
 /**
  * A type designed to be exposed as `PageInfo` over GraphQL.
  */
-export type PageInfo = {
+export interface PageInfo {
   startCursor: ConnectionCursor | null;
   endCursor: ConnectionCursor | null;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-};
+}

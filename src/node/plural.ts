@@ -7,7 +7,7 @@ import type {
   GraphQLResolveInfo,
 } from 'graphql';
 
-type PluralIdentifyingRootFieldConfig = {
+interface PluralIdentifyingRootFieldConfig {
   argName: string;
   inputType: GraphQLInputType;
   outputType: GraphQLOutputType;
@@ -17,7 +17,7 @@ type PluralIdentifyingRootFieldConfig = {
     info: GraphQLResolveInfo,
   ) => unknown;
   description?: string;
-};
+}
 
 export function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig,
