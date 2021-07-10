@@ -29,7 +29,7 @@ const allUsers = [
   { name: 'Tim', friends: [0, 1, 2, 3] },
 ];
 
-const userType = new GraphQLObjectType({
+const userType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
     name: {

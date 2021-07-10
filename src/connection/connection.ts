@@ -26,16 +26,17 @@ export interface ForwardConnectionArgs {
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with forward pagination.
  */
-export const forwardConnectionArgs:
-  | ForwardConnectionArgs
-  | GraphQLFieldConfigArgumentMap = {
+export const forwardConnectionArgs: ForwardConnectionArgs &
+  GraphQLFieldConfigArgumentMap = {
   after: {
     type: GraphQLString,
+    // @ts-expect-error FIXME
     description:
       'Returns the items in the list that come after the specified cursor.',
   },
   first: {
     type: GraphQLInt,
+    // @ts-expect-error FIXME
     description: 'Returns the first n items from the list.',
   },
 };
@@ -53,11 +54,13 @@ export const backwardConnectionArgs: BackwardConnectionArgs &
   GraphQLFieldConfigArgumentMap = {
   before: {
     type: GraphQLString,
+    // @ts-expect-error FIXME
     description:
       'Returns the items in the list that come before the specified cursor.',
   },
   last: {
     type: GraphQLInt,
+    // @ts-expect-error FIXME
     description: 'Returns the last n items from the list.',
   },
 };

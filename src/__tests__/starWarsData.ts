@@ -6,7 +6,7 @@
  * JSON objects in a more complex demo.
  */
 
-interface Ship {
+export interface Ship {
   id: string;
   name: string;
 }
@@ -25,7 +25,7 @@ const allShips: Array<Ship> = [
   { id: '8', name: 'Executor' },
 ];
 
-interface Faction {
+export interface Faction {
   id: string;
   name: string;
   ships: Array<string>;

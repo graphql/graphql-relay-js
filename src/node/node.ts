@@ -49,7 +49,7 @@ export function nodeDefinitions<TContext>(
     resolveType: typeResolver,
   });
 
-  const nodeField = {
+  const nodeField: GraphQLFieldConfig<unknown, TContext> = {
     description: 'Fetches an object given its ID',
     type: nodeInterface,
     args: {
@@ -61,7 +61,7 @@ export function nodeDefinitions<TContext>(
     resolve: (_obj, { id }, context, info) => fetchById(id, context, info),
   };
 
-  const nodesField = {
+  const nodesField: GraphQLFieldConfig<unknown, TContext> = {
     description: 'Fetches objects given their IDs',
     type: new GraphQLNonNull(new GraphQLList(nodeInterface)),
     args: {
@@ -73,7 +73,7 @@ export function nodeDefinitions<TContext>(
       },
     },
     resolve: (_obj, { ids }, context, info) =>
-      ids.map((id) => fetchById(id, context, info)),
+      ids.map((id: string) => fetchById(id, context, info)),
   };
 
   return { nodeInterface, nodeField, nodesField };
