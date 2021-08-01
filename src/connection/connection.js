@@ -9,7 +9,7 @@ import {
 } from 'graphql';
 
 import type {
-  GraphQLNamedType,
+  GraphQLOutputType,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldConfigMap,
   GraphQLFieldResolver,
@@ -75,7 +75,7 @@ export type ConnectionArguments = {
 
 type ConnectionConfig = {
   name?: string,
-  nodeType: GraphQLNamedType | GraphQLNonNull<GraphQLNamedType>,
+  nodeType: GraphQLOutputType,
   resolveNode?: GraphQLFieldResolver<any, any>,
   resolveCursor?: GraphQLFieldResolver<any, any>,
   edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
