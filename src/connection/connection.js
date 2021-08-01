@@ -20,33 +20,35 @@ import type {
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with forward pagination.
  */
-export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
-  after: {
-    type: GraphQLString,
-    description:
-      'Returns the items in the list that come after the specified cursor.',
-  },
-  first: {
-    type: GraphQLInt,
-    description: 'Returns the first n items from the list.',
-  },
-};
+export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap =
+  Object.freeze({
+    after: {
+      type: GraphQLString,
+      description:
+        'Returns the items in the list that come after the specified cursor.',
+    },
+    first: {
+      type: GraphQLInt,
+      description: 'Returns the first n items from the list.',
+    },
+  });
 
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with backward pagination.
  */
-export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap = {
-  before: {
-    type: GraphQLString,
-    description:
-      'Returns the items in the list that come before the specified cursor.',
-  },
-  last: {
-    type: GraphQLInt,
-    description: 'Returns the last n items from the list.',
-  },
-};
+export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap =
+  Object.freeze({
+    before: {
+      type: GraphQLString,
+      description:
+        'Returns the items in the list that come before the specified cursor.',
+    },
+    last: {
+      type: GraphQLInt,
+      description: 'Returns the last n items from the list.',
+    },
+  });
 
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
