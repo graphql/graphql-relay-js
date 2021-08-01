@@ -4,8 +4,7 @@ import type {
   ConnectionCursor,
 } from './connection';
 
-// TS_SPECIFIC: This type is only exported by TypeScript
-export interface ArraySliceMetaInfo {
+interface ArraySliceMetaInfo {
   sliceStart: number;
   arrayLength: number;
 }
