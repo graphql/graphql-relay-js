@@ -5,8 +5,7 @@ import type {
   GraphQLTypeResolver,
 } from 'graphql';
 
-// TS_SPECIFIC: This type is only exported by TypeScript
-export interface GraphQLNodeDefinitions<TContext> {
+interface GraphQLNodeDefinitions<TContext> {
   nodeInterface: GraphQLInterfaceType;
   nodeField: GraphQLFieldConfig<any, TContext>;
   nodesField: GraphQLFieldConfig<any, TContext>;
@@ -31,8 +30,7 @@ export function nodeDefinitions<TContext>(
   typeResolver?: GraphQLTypeResolver<any, TContext>,
 ): GraphQLNodeDefinitions<TContext>;
 
-// TS_SPECIFIC: This type is only exported by TypeScript
-export interface ResolvedGlobalId {
+interface ResolvedGlobalId {
   type: string;
   id: string;
 }

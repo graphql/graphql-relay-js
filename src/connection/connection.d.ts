@@ -9,8 +9,7 @@ import type {
   Thunk,
 } from 'graphql';
 
-// TS_SPECIFIC: This type is only exported by TypeScript. Flow uses the spread operator instead.
-export interface ForwardConnectionArgs {
+interface ForwardConnectionArgs {
   after: { type: GraphQLScalarType };
   first: { type: GraphQLScalarType };
 }
@@ -22,8 +21,7 @@ export interface ForwardConnectionArgs {
 export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap &
   ForwardConnectionArgs;
 
-// TS_SPECIFIC: This type is only exported by TypeScript. Flow uses the spread operator instead.
-export interface BackwardConnectionArgs {
+interface BackwardConnectionArgs {
   before: { type: GraphQLScalarType };
   last: { type: GraphQLScalarType };
 }

@@ -5,8 +5,7 @@ import type {
   GraphQLResolveInfo,
 } from 'graphql';
 
-// TS_SPECIFIC: This type is only exported by TypeScript
-export interface PluralIdentifyingRootFieldConfig {
+interface PluralIdentifyingRootFieldConfig {
   argName: string;
   inputType: GraphQLInputType;
   outputType: GraphQLOutputType;
