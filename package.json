@@ -56,7 +56,7 @@
     "graphql": "15.5.3",
     "mocha": "9.0.1",
     "nyc": "15.1.0",
-    "prettier": "2.3.2",
+    "prettier": "2.4.0",
     "typescript": "4.4.2"
   }
 }
