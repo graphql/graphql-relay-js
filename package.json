@@ -54,7 +54,7 @@
     "eslint-plugin-node": "11.1.0",
     "flow-bin": "0.159.0",
     "graphql": "15.5.3",
-    "mocha": "9.0.1",
+    "mocha": "9.1.1",
     "nyc": "15.1.0",
     "prettier": "2.4.0",
     "typescript": "4.4.2"
