@@ -147,6 +147,53 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
+  /* FIXME fail because of this https://github.com/graphql/graphql-js/pull/3243#issuecomment-919510590
+  it.only('JS specific: handles `then` as field name', async () => {
+    const someMutation = mutationWithClientMutationId({
+      name: 'SomeMutation',
+      inputFields: {},
+      outputFields: {
+        result: {
+          type: new GraphQLObjectType({
+            name: 'Payload',
+            fields: {
+              then: { type: GraphQLString },
+            },
+          }),
+        },
+      },
+      mutateAndGetPayload() {
+        return {
+          then() {
+            return new Date(0);
+          }
+        };
+      },
+    });
+    const schema = wrapInSchema({ someMutation });
+
+    const source = `
+      mutation {
+        someMutation(input: {clientMutationId: "abc"}) {
+          clientMutationId
+          result { then }
+        }
+      }
+    `;
+
+    expect(await graphql({ schema, source })).to.deep.equal({
+      data: {
+        someMutation: {
+          clientMutationId: 'abc',
+          result: {
+            then: '',
+          },
+        },
+      },
+    });
+  });
+  */
+
   it('can access rootValue', () => {
     const someMutation = mutationWithClientMutationId({
       name: 'SomeMutation',

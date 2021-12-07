@@ -13,8 +13,6 @@ import type {
   Thunk,
 } from 'graphql';
 
-import isPromise from 'graphql/jsutils/isPromise';
-
 type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => mixed;
 
 function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
@@ -90,7 +88,7 @@ export function mutationWithClientMutationId(
     resolve: (_, { input }, context, info) => {
       const { clientMutationId } = input;
       const payload = mutateAndGetPayload(input, context, info);
-      if (isPromise(payload)) {
+      if (payload instanceof Promise) {
         return payload.then(injectClientMutationId);
       }
       return injectClientMutationId(payload);
