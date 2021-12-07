@@ -36,7 +36,7 @@ export function pluralIdentifyingRootField(
     },
     resolve(_obj, args, context, info) {
       const inputs = args[config.argName];
-      return inputs.map((input) =>
+      return inputs.map((input: mixed) =>
         config.resolveSingleInput(input, context, info),
       );
     },
