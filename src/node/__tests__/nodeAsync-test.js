@@ -28,7 +28,7 @@ const { nodeField, nodeInterface } = nodeDefinitions(
   () => userType,
 );
 
-const userType = new GraphQLObjectType({
+const userType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
   interfaces: [nodeInterface],
   fields: () => ({
