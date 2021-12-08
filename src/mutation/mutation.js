@@ -88,7 +88,7 @@ export function mutationWithClientMutationId(
     resolve: (_, { input }, context, info) => {
       const { clientMutationId } = input;
       const payload = mutateAndGetPayload(input, context, info);
-      if (payload instanceof Promise) {
+      if (isPromiseLike(payload)) {
         return payload.then(injectClientMutationId);
       }
       return injectClientMutationId(payload);
@@ -103,4 +103,14 @@ export function mutationWithClientMutationId(
       }
     },
   };
+}
+
+// FIXME: Temporary until graphql-js resolves this issue
+// See, https://github.com/graphql/graphql-js/pull/3243#issuecomment-919510590
+declare function isPromiseLike(value: mixed): boolean %checks(value instanceof
+  Promise);
+
+// eslint-disable-next-line no-redeclare
+function isPromiseLike(value) {
+  return typeof value?.then === 'function';
 }
