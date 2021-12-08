@@ -72,7 +72,7 @@ const { nodeField, nodeInterface } = nodeDefinitions(
   },
 );
 
-const userType = new GraphQLObjectType({
+const userType: GraphQLObjectType = new GraphQLObjectType({
   name: 'User',
   interfaces: [nodeInterface],
   fields: () => ({
@@ -83,7 +83,7 @@ const userType = new GraphQLObjectType({
   }),
 });
 
-const photoType = new GraphQLObjectType({
+const photoType: GraphQLObjectType = new GraphQLObjectType({
   name: 'Photo',
   interfaces: [nodeInterface],
   fields: () => ({
@@ -94,7 +94,7 @@ const photoType = new GraphQLObjectType({
   }),
 });
 
-const postType = new GraphQLObjectType({
+const postType: GraphQLObjectType = new GraphQLObjectType({
   name: 'Post',
   interfaces: [nodeInterface],
   fields: () => ({
