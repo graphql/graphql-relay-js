@@ -58,5 +58,8 @@
     "nyc": "15.1.0",
     "prettier": "2.4.0",
     "typescript": "4.4.2"
+  },
+  "publishConfig": {
+    "tag": "latest"
   }
 }
