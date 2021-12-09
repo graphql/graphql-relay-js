@@ -5,17 +5,18 @@ const path = require('path');
 const assert = require('assert');
 
 const babel = require('@babel/core');
-const prettier = require('prettier');
 
-const prettierConfig = JSON.parse(
-  fs.readFileSync(require.resolve('../.prettierrc'), 'utf-8'),
-);
-
-const { readdirRecursive, showDirStats } = require('./utils');
+const {
+  writeGeneratedFile,
+  readdirRecursive,
+  showDirStats,
+} = require('./utils');
 
 if (require.main === module) {
   fs.rmSync('./npmDist', { recursive: true, force: true });
   fs.mkdirSync('./npmDist');
+
+  const packageJSON = buildPackageJSON();
 
   const srcFiles = readdirRecursive('./src', { ignoreDir: /^__.*__$/ });
   for (const filepath of srcFiles) {
@@ -38,11 +39,7 @@ if (require.main === module) {
   fs.copyFileSync('./README.md', './npmDist/README.md');
 
   // Should be done as the last step so only valid packages can be published
-  const packageJSON = buildPackageJSON();
-  fs.writeFileSync(
-    './npmDist/package.json',
-    JSON.stringify(packageJSON, null, 2),
-  );
+  writeGeneratedFile('./npmDist/package.json', JSON.stringify(packageJSON));
 
   showDirStats('./npmDist');
 }
@@ -65,6 +62,10 @@ function buildPackageJSON() {
   delete packageJSON.scripts;
   delete packageJSON.devDependencies;
 
+  // TODO: move to integration tests
+  const publishTag = packageJSON.publishConfig?.tag;
+  assert(publishTag != null, 'Should have packageJSON.publishConfig defined!');
+
   const { version } = packageJSON;
   const versionMatch = /^\d+\.\d+\.\d+-?(?<preReleaseTag>.*)?$/.exec(version);
   if (!versionMatch) {
@@ -74,20 +75,20 @@ function buildPackageJSON() {
   const { preReleaseTag } = versionMatch.groups;
 
   if (preReleaseTag != null) {
-    const [tag] = preReleaseTag.split('.');
+    const splittedTag = preReleaseTag.split('.');
+    // Note: `experimental-*` take precedence over `alpha`, `beta` or `rc`.
+    const versionTag = splittedTag[2] ?? splittedTag[0];
     assert(
-      tag.startsWith('experimental-') || ['alpha', 'beta', 'rc'].includes(tag),
-      `"${tag}" tag is supported.`,
+      ['alpha', 'beta', 'rc'].includes(versionTag) ||
+        versionTag.startsWith('experimental-'),
+      `"${versionTag}" tag is not supported.`,
     );
-
-    assert(!packageJSON.publishConfig, 'Can not override "publishConfig".');
-    packageJSON.publishConfig = { tag: tag || 'latest' };
+    assert.equal(
+      versionTag,
+      publishTag,
+      'Publish tag and version tag should match!',
+    );
   }
 
   return packageJSON;
-}
-
-function writeGeneratedFile(filepath, body) {
-  const formatted = prettier.format(body, { filepath, ...prettierConfig });
-  fs.writeFileSync(filepath, formatted);
 }
