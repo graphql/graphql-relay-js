@@ -14,7 +14,7 @@ interface ArraySliceMetaInfo {
  * a connection object for use in GraphQL. It uses array offsets as pagination,
  * so pagination will only work if the array is static.
  */
-export function connectionFromArray<T>(
+export declare function connectionFromArray<T>(
   data: ReadonlyArray<T>,
   args: ConnectionArguments,
 ): Connection<T>;
@@ -23,7 +23,7 @@ export function connectionFromArray<T>(
  * A version of `connectionFromArray` that takes a promised array, and returns a
  * promised connection.
  */
-export function connectionFromPromisedArray<T>(
+export declare function connectionFromPromisedArray<T>(
   dataPromise: Promise<ReadonlyArray<T>>,
   args: ConnectionArguments,
 ): Promise<Connection<T>>;
@@ -37,7 +37,7 @@ export function connectionFromPromisedArray<T>(
  * to materialize the entire array, and instead wish pass in a slice of the
  * total result large enough to cover the range specified in `args`.
  */
-export function connectionFromArraySlice<T>(
+export declare function connectionFromArraySlice<T>(
   arraySlice: ReadonlyArray<T>,
   args: ConnectionArguments,
   meta: ArraySliceMetaInfo,
@@ -47,7 +47,7 @@ export function connectionFromArraySlice<T>(
  * A version of `connectionFromArraySlice` that takes a promised array slice,
  * and returns a promised connection.
  */
-export function connectionFromPromisedArraySlice<T>(
+export declare function connectionFromPromisedArraySlice<T>(
   dataPromise: Promise<ReadonlyArray<T>>,
   args: ConnectionArguments,
   arrayInfo: ArraySliceMetaInfo,
@@ -56,17 +56,17 @@ export function connectionFromPromisedArraySlice<T>(
 /**
  * Creates the cursor string from an offset.
  */
-export function offsetToCursor(offset: number): ConnectionCursor;
+export declare function offsetToCursor(offset: number): ConnectionCursor;
 
 /**
  * Extracts the offset from the cursor string.
  */
-export function cursorToOffset(cursor: ConnectionCursor): number;
+export declare function cursorToOffset(cursor: ConnectionCursor): number;
 
 /**
  * Return the cursor associated with an object in an array.
  */
-export function cursorForObjectInConnection<T>(
+export declare function cursorForObjectInConnection<T>(
   data: ReadonlyArray<T>,
   object: T,
 ): ConnectionCursor | null;
@@ -76,7 +76,7 @@ export function cursorForObjectInConnection<T>(
  * to use; if the cursor contains a valid offset, that will be used,
  * otherwise it will be the default.
  */
-export function getOffsetWithDefault(
+export declare function getOffsetWithDefault(
   cursor: ConnectionCursor | null | undefined,
   defaultOffset: number,
 ): number;

@@ -74,7 +74,7 @@ export interface GraphQLConnectionDefinitions {
  * Returns a GraphQLObjectType for a connection with the given name,
  * and whose nodes are of the specified type.
  */
-export function connectionDefinitions(
+export declare function connectionDefinitions(
   config: ConnectionConfig,
 ): GraphQLConnectionDefinitions;
 

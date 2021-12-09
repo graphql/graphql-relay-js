@@ -37,6 +37,6 @@ interface MutationConfig {
  * Returns a GraphQLFieldConfig for the mutation described by the
  * provided MutationConfig.
  */
-export function mutationWithClientMutationId(
+export declare function mutationWithClientMutationId(
   config: MutationConfig,
 ): GraphQLFieldConfig<any, any>;
