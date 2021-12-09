@@ -1,50 +1,35 @@
 import type {
   GraphQLNonNull,
-  GraphQLNamedOutputType,
-  GraphQLScalarType,
   GraphQLObjectType,
+  GraphQLNamedOutputType,
   GraphQLFieldConfigArgumentMap,
   GraphQLFieldConfigMap,
   GraphQLFieldResolver,
   Thunk,
 } from 'graphql';
 
-interface ForwardConnectionArgs {
-  after: { type: GraphQLScalarType };
-  first: { type: GraphQLScalarType };
-}
-
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with forward pagination.
  */
-export const forwardConnectionArgs: GraphQLFieldConfigArgumentMap &
-  ForwardConnectionArgs;
-
-interface BackwardConnectionArgs {
-  before: { type: GraphQLScalarType };
-  last: { type: GraphQLScalarType };
-}
+export declare const forwardConnectionArgs: GraphQLFieldConfigArgumentMap;
 
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with backward pagination.
  */
-export const backwardConnectionArgs: GraphQLFieldConfigArgumentMap &
-  BackwardConnectionArgs;
+export declare const backwardConnectionArgs: GraphQLFieldConfigArgumentMap;
 
 /**
  * Returns a GraphQLFieldConfigArgumentMap appropriate to include on a field
  * whose return type is a connection type with bidirectional pagination.
  */
-export const connectionArgs: GraphQLFieldConfigArgumentMap &
-  ForwardConnectionArgs &
-  BackwardConnectionArgs;
+export declare const connectionArgs: GraphQLFieldConfigArgumentMap;
 
 /**
  * A type alias for cursors in this implementation.
  */
-export type ConnectionCursor = string;
+export declare type ConnectionCursor = string;
 
 /**
  * A type describing the arguments a connection field receives in GraphQL.

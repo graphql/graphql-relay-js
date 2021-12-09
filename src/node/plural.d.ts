@@ -19,4 +19,4 @@ interface PluralIdentifyingRootFieldConfig {
 
 export declare function pluralIdentifyingRootField(
   config: PluralIdentifyingRootFieldConfig,
-): GraphQLFieldConfig<any, any>;
+): GraphQLFieldConfig<unknown, unknown>;
