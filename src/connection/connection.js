@@ -75,7 +75,7 @@ export type ConnectionArguments = {
   ...
 };
 
-type ConnectionConfig = {
+export type ConnectionConfig = {
   name?: string,
   nodeType: GraphQLNamedOutputType | GraphQLNonNull<GraphQLNamedOutputType>,
   resolveNode?: GraphQLFieldResolver<any, any>,
@@ -84,7 +84,7 @@ type ConnectionConfig = {
   connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>,
 };
 
-type GraphQLConnectionDefinitions = {
+export type GraphQLConnectionDefinitions = {
   edgeType: GraphQLObjectType,
   connectionType: GraphQLObjectType,
 };

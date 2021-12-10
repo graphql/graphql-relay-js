@@ -3,6 +3,8 @@ export type {
   Connection,
   ConnectionArguments,
   ConnectionCursor,
+  ConnectionConfig,
+  GraphQLConnectionDefinitions,
   Edge,
   PageInfo,
 } from './connection/connection';
