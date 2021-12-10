@@ -7,7 +7,11 @@ import type {
   Thunk,
 } from 'graphql';
 
-type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
+declare type MutationFn = (
+  object: any,
+  ctx: any,
+  info: GraphQLResolveInfo,
+) => unknown;
 
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
@@ -39,4 +43,4 @@ interface MutationConfig {
  */
 export declare function mutationWithClientMutationId(
   config: MutationConfig,
-): GraphQLFieldConfig<any, any>;
+): GraphQLFieldConfig<unknown, unknown>;

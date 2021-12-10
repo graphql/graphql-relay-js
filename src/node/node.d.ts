@@ -7,8 +7,8 @@ import type {
 
 interface GraphQLNodeDefinitions<TContext> {
   nodeInterface: GraphQLInterfaceType;
-  nodeField: GraphQLFieldConfig<any, TContext>;
-  nodesField: GraphQLFieldConfig<any, TContext>;
+  nodeField: GraphQLFieldConfig<unknown, TContext>;
+  nodesField: GraphQLFieldConfig<unknown, TContext>;
 }
 
 /**
@@ -39,7 +39,7 @@ interface ResolvedGlobalId {
  * Takes a type name and an ID specific to that type name, and returns a
  * "global ID" that is unique among all types.
  */
-export declare function toGlobalId(type: string | number, id: string): string;
+export declare function toGlobalId(type: string, id: string | number): string;
 
 /**
  * Takes the "global ID" created by toGlobalID, and returns the type name and ID
