@@ -7,6 +7,7 @@ import {
 
 import type {
   GraphQLFieldConfig,
+  GraphQLFieldExtensions,
   GraphQLInputFieldConfigMap,
   GraphQLFieldConfigMap,
   GraphQLResolveInfo,
@@ -40,7 +41,7 @@ interface MutationConfig {
   name: string;
   description?: string;
   deprecationReason?: string;
-  extensions?: { [name: string]: unknown };
+  extensions?: GraphQLFieldExtensions<any, any>;
   inputFields: Thunk<GraphQLInputFieldConfigMap>;
   outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
   mutateAndGetPayload: MutationFn;
