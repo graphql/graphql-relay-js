@@ -40,7 +40,7 @@ function wrapInSchema(mutationFields: {
 }
 
 describe('mutationWithClientMutationId()', () => {
-  it.only('requires an argument', () => {
+  it('requires an argument', () => {
     const someMutation = mutationWithClientMutationId({
       name: 'SomeMutation',
       inputFields: {},
