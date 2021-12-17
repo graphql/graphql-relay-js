@@ -25,7 +25,7 @@ const userData = [
 
 const { nodeField, nodeInterface } = nodeDefinitions(
   (id) => userData.find((obj) => obj.id === id),
-  () => userType,
+  () => userType.name,
 );
 
 const userType: GraphQLObjectType = new GraphQLObjectType({

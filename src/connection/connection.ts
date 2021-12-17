@@ -6,14 +6,15 @@ import {
   GraphQLString,
   GraphQLBoolean,
   getNamedType,
+  resolveObjMapThunk,
 } from 'graphql';
 
 import type {
   GraphQLNamedOutputType,
   GraphQLFieldConfigArgumentMap,
-  GraphQLFieldConfigMap,
+  GraphQLFieldConfig,
   GraphQLFieldResolver,
-  Thunk,
+  ThunkObjMap,
 } from 'graphql';
 
 /**
@@ -79,20 +80,13 @@ export interface ConnectionConfig {
   nodeType: GraphQLNamedOutputType | GraphQLNonNull<GraphQLNamedOutputType>;
   resolveNode?: GraphQLFieldResolver<any, any>;
   resolveCursor?: GraphQLFieldResolver<any, any>;
-  edgeFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
-  connectionFields?: Thunk<GraphQLFieldConfigMap<any, any>>;
+  edgeFields?: ThunkObjMap<GraphQLFieldConfig<any, any>>;
+  connectionFields?: ThunkObjMap<GraphQLFieldConfig<any, any>>;
 }
 
 export interface GraphQLConnectionDefinitions {
   edgeType: GraphQLObjectType;
   connectionType: GraphQLObjectType;
-}
-
-function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
-  return typeof thingOrThunk === 'function'
-    ? // @ts-expect-error - if it's a function, we assume a thunk without arguments
-      thingOrThunk()
-    : thingOrThunk;
 }
 
 /**
@@ -118,7 +112,7 @@ export function connectionDefinitions(
         resolve: config.resolveCursor,
         description: 'A cursor for use in pagination',
       },
-      ...resolveMaybeThunk(config.edgeFields ?? {}),
+      ...resolveObjMapThunk(config.edgeFields ?? {}),
     }),
   });
 
@@ -134,7 +128,7 @@ export function connectionDefinitions(
         type: new GraphQLList(edgeType),
         description: 'A list of edges.',
       },
-      ...resolveMaybeThunk(config.connectionFields ?? {}),
+      ...resolveObjMapThunk(config.connectionFields ?? {}),
     }),
   });
 

@@ -59,15 +59,15 @@ const { nodeField, nodeInterface } = nodeDefinitions(
   },
   (obj) => {
     if (obj.name) {
-      return userType;
+      return userType.name;
     }
     if (obj.photoId) {
-      return photoType;
+      return photoType.name;
     }
 
     // istanbul ignore else (Can't be reached)
     if (obj.text) {
-      return postType;
+      return postType.name;
     }
   },
 );

@@ -48,11 +48,11 @@ const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
   },
   (obj) => {
     if (userData.includes(obj)) {
-      return userType;
+      return userType.name;
     }
     // istanbul ignore else (Can't be reached)
     if (photoData.includes(obj)) {
-      return photoType;
+      return photoType.name;
     }
   },
 );
@@ -315,8 +315,7 @@ describe('Node interface and fields', () => {
   });
 
   it('generates correct types', () => {
-    // FIXME remove trimEnd after we update to `graphql@16.0.0`
-    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+    expect(printSchema(schema)).to.deep.equal(dedent`
       """An object with an ID"""
       interface Node {
         """The id of the object."""

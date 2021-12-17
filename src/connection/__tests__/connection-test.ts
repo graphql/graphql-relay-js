@@ -55,7 +55,6 @@ const userType = new GraphQLObjectType({
 
 const { connectionType: friendConnection } = connectionDefinitions({
   name: 'Friend',
-  // @ts-expect-error
   nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
   edgeFields: () => ({
@@ -73,7 +72,6 @@ const { connectionType: friendConnection } = connectionDefinitions({
 });
 
 const { connectionType: userConnection } = connectionDefinitions({
-  // @ts-expect-error
   nodeType: new GraphQLNonNull(userType),
   resolveNode: (edge) => allUsers[edge.node],
 });
@@ -184,8 +182,7 @@ describe('connectionDefinition()', () => {
   });
 
   it('generates correct types', () => {
-    // FIXME remove trimEnd after we update to `graphql@16.0.0`
-    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+    expect(printSchema(schema)).to.deep.equal(dedent`
       type Query {
         user: User
       }

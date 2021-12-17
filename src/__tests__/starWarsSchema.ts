@@ -116,7 +116,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
         return getShip(id);
     }
   },
-  (obj) => (obj.ships ? factionType : shipType),
+  (obj) => (obj.ships ? factionType.name : shipType.name),
 );
 
 /**
