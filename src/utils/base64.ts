@@ -126,29 +126,42 @@ function utf8ArrayToString(input: Array<number>) {
   for (let i = 0; i < input.length; ) {
     const a = input[i++];
     if ((a & 0x80) === 0) {
-      result += String.fromCodePoint(a);
+      result += fromCodePoint(a);
       continue;
     }
 
     const b = input[i++];
     if ((a & 0xe0) === 0xc0) {
-      result += String.fromCodePoint(((a & 0x1f) << 6) | (b & 0x3f));
+      result += fromCodePoint(((a & 0x1f) << 6) | (b & 0x3f));
       continue;
     }
 
     const c = input[i++];
     if ((a & 0xf0) === 0xe0) {
-      result += String.fromCodePoint(
+      result += fromCodePoint(
         ((a & 0x0f) << 12) | ((b & 0x3f) << 6) | (c & 0x3f),
       );
       continue;
     }
 
     const d = input[i++];
-    result += String.fromCodePoint(
+    result += fromCodePoint(
       ((a & 0x07) << 18) | ((b & 0x3f) << 12) | ((c & 0x3f) << 6) | (d & 0x3f),
     );
   }
 
   return result;
+}
+
+function fromCodePoint(code: number): string {
+  if (code > 0x10ffff) {
+    /*
+     * Previously we used Node's API for parsing Base64 and following code
+     * Buffer.from(i, 'base64').toString('utf8')
+     * That silently ignored incorrect input and returned empty string instead
+     * Let's keep this behaviour for a time being and hopefully fix it in the future.
+     */
+    return '';
+  }
+  return String.fromCodePoint(code);
 }

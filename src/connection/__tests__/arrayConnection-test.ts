@@ -274,11 +274,19 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns all elements if cursors are invalid', () => {
-      const c = connectionFromArray(arrayABCDE, {
-        before: 'invalid',
-        after: 'invalid',
+      const c1 = connectionFromArray(arrayABCDE, {
+        before: 'InvalidBase64',
+        after: 'InvalidBase64',
       });
-      expect(c).to.deep.equal({
+
+      const invalidUnicodeInBase64 = '9JCAgA=='; // U+110000
+      const c2 = connectionFromArray(arrayABCDE, {
+        before: invalidUnicodeInBase64,
+        after: invalidUnicodeInBase64,
+      });
+
+      expect(c1).to.deep.equal(c2);
+      expect(c1).to.deep.equal({
         edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
           startCursor: cursorA,
