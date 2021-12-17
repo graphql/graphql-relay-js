@@ -78,8 +78,7 @@ describe('pluralIdentifyingRootField()', () => {
   });
 
   it('generates correct types', () => {
-    // FIXME remove trimEnd after we update to `graphql@16.0.0`
-    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+    expect(printSchema(schema)).to.deep.equal(dedent`
       type Query {
         """Map from a username to the user"""
         usernames(usernames: [String!]!): [User]

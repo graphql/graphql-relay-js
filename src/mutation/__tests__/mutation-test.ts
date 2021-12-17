@@ -8,6 +8,7 @@ import {
   GraphQLSchema,
   graphql,
   graphqlSync,
+  printType,
   printSchema,
 } from 'graphql';
 
@@ -48,24 +49,17 @@ describe('mutationWithClientMutationId()', () => {
       },
       mutateAndGetPayload: dummyResolve,
     });
-    const schema = wrapInSchema({ someMutation });
-    const source = `
-      mutation {
-        someMutation {
-          result
-        }
-      }
-    `;
 
-    expect(graphqlSync({ schema, source })).to.deep.equal({
-      errors: [
-        {
-          message:
-            'Field "someMutation" argument "input" of type "SomeMutationInput!" is required, but it was not provided.',
-          locations: [{ line: 3, column: 9 }],
-        },
-      ],
+    const wrapperType = new GraphQLObjectType({
+      name: 'WrapperType',
+      fields: { someMutation },
     });
+
+    expect(printType(wrapperType)).to.deep.equal(dedent`
+      type WrapperType {
+        someMutation(input: SomeMutationInput!): SomeMutationPayload
+      }
+    `);
   });
 
   it('returns the same client mutation ID', () => {
@@ -317,8 +311,7 @@ describe('mutationWithClientMutationId()', () => {
 
     const schema = wrapInSchema({ someMutation });
 
-    // FIXME remove trimEnd after we update to `graphql@16.0.0`
-    expect(printSchema(schema).trimEnd()).to.deep.equal(dedent`
+    expect(printSchema(schema)).to.deep.equal(dedent`
       type Query {
         dummy: Int
       }

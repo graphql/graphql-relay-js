@@ -3,25 +3,18 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString,
+  resolveObjMapThunk,
 } from 'graphql';
 
 import type {
   GraphQLFieldConfig,
   GraphQLFieldExtensions,
-  GraphQLInputFieldConfigMap,
-  GraphQLFieldConfigMap,
+  GraphQLInputFieldConfig,
   GraphQLResolveInfo,
-  Thunk,
+  ThunkObjMap,
 } from 'graphql';
 
 type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
-
-function resolveMaybeThunk<T>(thingOrThunk: Thunk<T>): T {
-  return typeof thingOrThunk === 'function'
-    ? // @ts-expect-error - if it's a function, we assume a thunk without arguments
-      thingOrThunk()
-    : thingOrThunk;
-}
 
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
@@ -42,8 +35,8 @@ interface MutationConfig {
   description?: string;
   deprecationReason?: string;
   extensions?: GraphQLFieldExtensions<any, any>;
-  inputFields: Thunk<GraphQLInputFieldConfigMap>;
-  outputFields: Thunk<GraphQLFieldConfigMap<any, any>>;
+  inputFields: ThunkObjMap<GraphQLInputFieldConfig>;
+  outputFields: ThunkObjMap<GraphQLFieldConfig<any, any>>;
   mutateAndGetPayload: MutationFn;
 }
 
@@ -56,13 +49,13 @@ export function mutationWithClientMutationId(
 ): GraphQLFieldConfig<unknown, unknown> {
   const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
-    ...resolveMaybeThunk(inputFields),
+    ...resolveObjMapThunk(inputFields),
     clientMutationId: {
       type: GraphQLString,
     },
   });
   const augmentedOutputFields = () => ({
-    ...resolveMaybeThunk(outputFields),
+    ...resolveObjMapThunk(outputFields),
     clientMutationId: {
       type: GraphQLString,
     },
