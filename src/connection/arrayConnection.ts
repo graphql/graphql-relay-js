@@ -58,28 +58,32 @@ export function connectionFromArraySlice<T>(
   let startOffset = Math.max(sliceStart, 0);
   let endOffset = Math.min(sliceEnd, arrayLength);
 
+  let firstEdgeOffset = 0;
   const afterOffset = getOffsetWithDefault(after, -1);
   if (0 <= afterOffset && afterOffset < arrayLength) {
     startOffset = Math.max(startOffset, afterOffset + 1);
+    firstEdgeOffset = afterOffset + 1;
   }
 
-  const beforeOffset = getOffsetWithDefault(before, endOffset);
+  let lastEdgeOffset = arrayLength - 1;
+  const beforeOffset = getOffsetWithDefault(before, arrayLength);
   if (0 <= beforeOffset && beforeOffset < arrayLength) {
     endOffset = Math.min(endOffset, beforeOffset);
+    lastEdgeOffset = beforeOffset - 1;
   }
+
+  const numberEdgesAfterCursors = lastEdgeOffset - firstEdgeOffset + 1;
 
   if (typeof first === 'number') {
     if (first < 0) {
       throw new Error('Argument "first" must be a non-negative integer');
     }
-
     endOffset = Math.min(endOffset, startOffset + first);
   }
   if (typeof last === 'number') {
     if (last < 0) {
       throw new Error('Argument "last" must be a non-negative integer');
     }
-
     startOffset = Math.max(startOffset, endOffset - last);
   }
 
@@ -96,16 +100,30 @@ export function connectionFromArraySlice<T>(
 
   const firstEdge = edges[0];
   const lastEdge = edges[edges.length - 1];
-  const lowerBound = after != null ? afterOffset + 1 : 0;
-  const upperBound = before != null ? beforeOffset : arrayLength;
+
+  // Determine hasPreviousPage
+  let hasPreviousPage = false;
+  if (typeof last === 'number') {
+    hasPreviousPage = numberEdgesAfterCursors > last;
+  } else if (after) {
+    hasPreviousPage = afterOffset >= 0;
+  }
+
+  // Determine hasNextPage
+  let hasNextPage = false;
+  if (typeof first === 'number') {
+    hasNextPage = numberEdgesAfterCursors > first;
+  } else if (before) {
+    hasNextPage = beforeOffset < arrayLength;
+  }
+
   return {
     edges,
     pageInfo: {
       startCursor: firstEdge ? firstEdge.cursor : null,
       endCursor: lastEdge ? lastEdge.cursor : null,
-      hasPreviousPage:
-        typeof last === 'number' ? startOffset > lowerBound : false,
-      hasNextPage: typeof first === 'number' ? endOffset < upperBound : false,
+      hasPreviousPage,
+      hasNextPage,
     },
   };
 }
