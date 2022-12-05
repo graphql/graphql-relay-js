@@ -14,7 +14,7 @@ import type {
   ThunkObjMap,
 } from 'graphql';
 
-type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
+type MutationFn<TInput = any, TOutput = unknown, TContext = any> = (object: TInput, ctx: TContext, info: GraphQLResolveInfo) => TOutput;
 
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
@@ -30,22 +30,22 @@ type MutationFn = (object: any, ctx: any, info: GraphQLResolveInfo) => unknown;
  * input field, and it should return an Object with a key for each
  * output field. It may return synchronously, or return a Promise.
  */
-interface MutationConfig {
+interface MutationConfig<TInput = any, TOutput = unknown, TContext = any> {
   name: string;
   description?: string;
   deprecationReason?: string;
   extensions?: GraphQLFieldExtensions<any, any>;
   inputFields: ThunkObjMap<GraphQLInputFieldConfig>;
-  outputFields: ThunkObjMap<GraphQLFieldConfig<any, any>>;
-  mutateAndGetPayload: MutationFn;
+  outputFields: ThunkObjMap<GraphQLFieldConfig<TOutput, TContext>>;
+  mutateAndGetPayload: MutationFn<TInput, TOutput, TContext>;
 }
 
 /**
  * Returns a GraphQLFieldConfig for the mutation described by the
  * provided MutationConfig.
  */
-export function mutationWithClientMutationId(
-  config: MutationConfig,
+export function mutationWithClientMutationId<TInput, TOutput>(
+  config: MutationConfig<TInput, TOutput>,
 ): GraphQLFieldConfig<unknown, unknown> {
   const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
