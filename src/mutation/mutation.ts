@@ -44,8 +44,8 @@ interface MutationConfig<TInput = any, TOutput = unknown, TContext = any> {
  * Returns a GraphQLFieldConfig for the mutation described by the
  * provided MutationConfig.
  */
-export function mutationWithClientMutationId<TInput, TOutput>(
-  config: MutationConfig<TInput, TOutput>,
+export function mutationWithClientMutationId<TInput = any, TOutput = unknown, TContext = any>(
+  config: MutationConfig<TInput, TOutput, TContext>,
 ): GraphQLFieldConfig<unknown, unknown> {
   const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
