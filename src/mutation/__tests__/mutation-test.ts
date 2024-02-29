@@ -277,7 +277,7 @@ describe('mutationWithClientMutationId()', () => {
     });
   });
 
-  it('generates correct types', () => {
+  it('passes through extensions', () => {
     const description = 'Some Mutation Description';
     const deprecationReason = 'Just because';
     const extensions = Object.freeze({});
