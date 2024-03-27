@@ -93,6 +93,170 @@ describe('connectionFromArray()', () => {
   });
 
   describe('pagination', () => {
+    it('respects first', () => {
+      let c = connectionFromArray(arrayABCDE, {
+        first: 2,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 0,
+      });
+      expect(c).to.deep.equal({
+        edges: [],
+        pageInfo: {
+          startCursor: null,
+          endCursor: null,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 5,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 100,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+    });
+
+    it('respects last', () => {
+      let c = connectionFromArray(arrayABCDE, {
+        last: 2,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorD,
+          endCursor: cursorE,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        last: 0,
+      });
+      expect(c).to.deep.equal({
+        edges: [],
+        pageInfo: {
+          startCursor: null,
+          endCursor: null,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        last: 5,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        last: 100,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+    });
+
+    it('respects after', () => {
+      let c = connectionFromArray(arrayABCDE, {
+        after: cursorB,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorC,
+          endCursor: cursorE,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        after: cursorE,
+      });
+      expect(c).to.deep.equal({
+        edges: [],
+        pageInfo: {
+          startCursor: null,
+          endCursor: null,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+    });
+
+    it('respects before', () => {
+      let c = connectionFromArray(arrayABCDE, {
+        before: cursorC,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        before: cursorA,
+      });
+      expect(c).to.deep.equal({
+        edges: [],
+        pageInfo: {
+          startCursor: null,
+          endCursor: null,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+    });
+
     it('respects first and after', () => {
       const c = connectionFromArray(arrayABCDE, {
         first: 2,
@@ -103,7 +267,7 @@ describe('connectionFromArray()', () => {
         pageInfo: {
           startCursor: cursorC,
           endCursor: cursorD,
-          hasPreviousPage: false,
+          hasPreviousPage: true,
           hasNextPage: true,
         },
       });
@@ -119,7 +283,7 @@ describe('connectionFromArray()', () => {
         pageInfo: {
           startCursor: cursorC,
           endCursor: cursorE,
-          hasPreviousPage: false,
+          hasPreviousPage: true,
           hasNextPage: false,
         },
       });
@@ -136,7 +300,7 @@ describe('connectionFromArray()', () => {
           startCursor: cursorB,
           endCursor: cursorC,
           hasPreviousPage: true,
-          hasNextPage: false,
+          hasNextPage: true,
         },
       });
     });
@@ -152,7 +316,7 @@ describe('connectionFromArray()', () => {
           startCursor: cursorA,
           endCursor: cursorC,
           hasPreviousPage: false,
-          hasNextPage: false,
+          hasNextPage: true,
         },
       });
     });
@@ -168,13 +332,16 @@ describe('connectionFromArray()', () => {
         pageInfo: {
           startCursor: cursorB,
           endCursor: cursorC,
-          hasPreviousPage: false,
+          hasPreviousPage: true,
           hasNextPage: true,
         },
       });
     });
 
     it('respects first and after and before, too many', () => {
+      // `hasNextPage=false` because the spec says:
+      // "If first is set: [...] If edges contains more than first elements return true, otherwise false."
+      // and after the cursors have been applied, the array contains 3 elements <= first (4)
       const c = connectionFromArray(arrayABCDE, {
         first: 4,
         after: cursorA,
@@ -185,13 +352,16 @@ describe('connectionFromArray()', () => {
         pageInfo: {
           startCursor: cursorB,
           endCursor: cursorD,
-          hasPreviousPage: false,
+          hasPreviousPage: true,
           hasNextPage: false,
         },
       });
     });
 
     it('respects first and after and before, exactly right', () => {
+      // `hasNextPage=false` because the spec says:
+      // "If first is set: [...] If edges contains more than first elements return true, otherwise false."
+      // and after the cursors have been applied, the array contains 3 elements <= first (3)
       const c = connectionFromArray(arrayABCDE, {
         first: 3,
         after: cursorA,
@@ -202,7 +372,7 @@ describe('connectionFromArray()', () => {
         pageInfo: {
           startCursor: cursorB,
           endCursor: cursorD,
-          hasPreviousPage: false,
+          hasPreviousPage: true,
           hasNextPage: false,
         },
       });
@@ -220,12 +390,15 @@ describe('connectionFromArray()', () => {
           startCursor: cursorC,
           endCursor: cursorD,
           hasPreviousPage: true,
-          hasNextPage: false,
+          hasNextPage: true,
         },
       });
     });
 
     it('respects last and after and before, too many', () => {
+      // `hasPreviousPage=false` because the spec says:
+      // "If last is set: [...] If edges contains more than last elements return true, otherwise false."
+      // and after the cursors have been applied, the array contains 3 elements <= last (4)
       const c = connectionFromArray(arrayABCDE, {
         last: 4,
         after: cursorA,
@@ -237,12 +410,15 @@ describe('connectionFromArray()', () => {
           startCursor: cursorB,
           endCursor: cursorD,
           hasPreviousPage: false,
-          hasNextPage: false,
+          hasNextPage: true,
         },
       });
     });
 
     it('respects last and after and before, exactly right', () => {
+      // `hasPreviousPage=false` because the spec says:
+      // "If last is set: [...] If edges contains more than last elements return true, otherwise false."
+      // and after the cursors have been applied, the array contains 3 elements <= last (3)
       const c = connectionFromArray(arrayABCDE, {
         last: 3,
         after: cursorA,
@@ -253,6 +429,169 @@ describe('connectionFromArray()', () => {
         pageInfo: {
           startCursor: cursorB,
           endCursor: cursorD,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+    });
+
+    it('respects first and last', () => {
+      let c = connectionFromArray(arrayABCDE, {
+        first: 2,
+        last: 1,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeB],
+        pageInfo: {
+          startCursor: cursorB,
+          endCursor: cursorB,
+          hasPreviousPage: true,
+          hasNextPage: true,
+        },
+      });
+
+      // `hasPreviousPage=true` might seem weird but this is what the spec says:
+      // "If last is set: [...] If edges contains more than last elements return true, otherwise false."
+      // and the array contains 5 elements > last (2)
+      c = connectionFromArray(arrayABCDE, {
+        first: 2,
+        last: 2,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: true,
+          hasNextPage: true,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 2,
+        last: 10,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 100,
+        last: 2,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorD,
+          endCursor: cursorE,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 100,
+        last: 10,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+    });
+
+    it('respects first and before', () => {
+      let c = connectionFromArray(arrayABCDE, {
+        first: 2,
+        before: cursorC,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 2,
+        before: cursorE,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        first: 10,
+        before: cursorC,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+    });
+
+    it('respects last and after', () => {
+      let c = connectionFromArray(arrayABCDE, {
+        last: 2,
+        after: cursorA,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorD,
+          endCursor: cursorE,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        last: 2,
+        after: cursorC,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorD,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        last: 10,
+        after: cursorC,
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorD,
+          endCursor: cursorE,
           hasPreviousPage: false,
           hasNextPage: false,
         },
@@ -298,7 +637,10 @@ describe('connectionFromArray()', () => {
     });
 
     it('returns all elements if cursors are on the outside', () => {
-      const allEdges = {
+      let c = connectionFromArray(arrayABCDE, {
+        before: offsetToCursor(6),
+      });
+      expect(c).to.deep.equal({
         edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
         pageInfo: {
           startCursor: cursorA,
@@ -306,21 +648,52 @@ describe('connectionFromArray()', () => {
           hasPreviousPage: false,
           hasNextPage: false,
         },
-      };
+      });
 
-      expect(
-        connectionFromArray(arrayABCDE, { before: offsetToCursor(6) }),
-      ).to.deep.equal(allEdges);
-      expect(
-        connectionFromArray(arrayABCDE, { before: offsetToCursor(-1) }),
-      ).to.deep.equal(allEdges);
+      // `hasNextPage=false` because the spec says:
+      // "If before is set: If the server can efficiently determine that elements exist following `before`, return true."
+      // and `before` is before the beginning of the array so there are elements after.
+      c = connectionFromArray(arrayABCDE, {
+        before: offsetToCursor(-1),
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
 
-      expect(
-        connectionFromArray(arrayABCDE, { after: offsetToCursor(6) }),
-      ).to.deep.equal(allEdges);
-      expect(
-        connectionFromArray(arrayABCDE, { after: offsetToCursor(-1) }),
-      ).to.deep.equal(allEdges);
+      // `hasPreviousPage=true` because the spec says:
+      // "If after is set: If the server can efficiently determine that elements exist prior to `after`, return true"
+      // and `after` is after the end of the array so there are elements before.
+      c = connectionFromArray(arrayABCDE, {
+        after: offsetToCursor(6),
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+
+      c = connectionFromArray(arrayABCDE, {
+        after: offsetToCursor(-1),
+      });
+      expect(c).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
     });
 
     it('returns no elements if cursors cross', () => {
@@ -333,8 +706,8 @@ describe('connectionFromArray()', () => {
         pageInfo: {
           startCursor: null,
           endCursor: null,
-          hasPreviousPage: false,
-          hasNextPage: false,
+          hasPreviousPage: true,
+          hasNextPage: true,
         },
       });
     });
@@ -404,7 +777,7 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorB,
         endCursor: cursorC,
-        hasPreviousPage: false,
+        hasPreviousPage: true,
         hasNextPage: true,
       },
     });
@@ -427,7 +800,7 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorB,
         endCursor: cursorC,
-        hasPreviousPage: false,
+        hasPreviousPage: true,
         hasNextPage: true,
       },
     });
@@ -450,7 +823,7 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorC,
         endCursor: cursorC,
-        hasPreviousPage: false,
+        hasPreviousPage: true,
         hasNextPage: true,
       },
     });
@@ -473,7 +846,7 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorC,
         endCursor: cursorC,
-        hasPreviousPage: false,
+        hasPreviousPage: true,
         hasNextPage: true,
       },
     });
@@ -496,7 +869,7 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorD,
         endCursor: cursorE,
-        hasPreviousPage: false,
+        hasPreviousPage: true,
         hasNextPage: false,
       },
     });
@@ -519,8 +892,8 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorC,
         endCursor: cursorD,
-        hasPreviousPage: false,
-        hasNextPage: true,
+        hasPreviousPage: true,
+        hasNextPage: false,
       },
     });
   });
@@ -542,8 +915,8 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorD,
         endCursor: cursorD,
-        hasPreviousPage: false,
-        hasNextPage: true,
+        hasPreviousPage: true,
+        hasNextPage: false,
       },
     });
   });
