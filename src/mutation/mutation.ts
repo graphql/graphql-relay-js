@@ -14,7 +14,11 @@ import type {
   ThunkObjMap,
 } from 'graphql';
 
-type MutationFn<TInput = any, TOutput = unknown, TContext = any> = (object: TInput, ctx: TContext, info: GraphQLResolveInfo) => TOutput;
+type MutationFn<TInput = any, TOutput = unknown, TContext = any> = (
+  object: TInput,
+  ctx: TContext,
+  info: GraphQLResolveInfo,
+) => TOutput;
 
 /**
  * A description of a mutation consumable by mutationWithClientMutationId
@@ -44,9 +48,13 @@ interface MutationConfig<TInput = any, TOutput = unknown, TContext = any> {
  * Returns a GraphQLFieldConfig for the mutation described by the
  * provided MutationConfig.
  */
-export function mutationWithClientMutationId<TInput = any, TOutput = unknown, TContext = any>(
+export function mutationWithClientMutationId<
+  TInput = any,
+  TOutput = unknown,
+  TContext = any,
+>(
   config: MutationConfig<TInput, TOutput, TContext>,
-): GraphQLFieldConfig<unknown, unknown> {
+): GraphQLFieldConfig<unknown, TContext> {
   const { name, inputFields, outputFields, mutateAndGetPayload } = config;
   const augmentedInputFields = () => ({
     ...resolveObjMapThunk(inputFields),
