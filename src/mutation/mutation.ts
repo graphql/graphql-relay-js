@@ -41,7 +41,7 @@ interface MutationConfig<TInput = any, TOutput = unknown, TContext = any> {
   extensions?: GraphQLFieldExtensions<any, any>;
   inputFields: ThunkObjMap<GraphQLInputFieldConfig>;
   outputFields: ThunkObjMap<GraphQLFieldConfig<TOutput, TContext>>;
-  mutateAndGetPayload: MutationFn<TInput, TOutput, TContext>;
+  mutateAndGetPayload: MutationFn<TInput, Promise<TOutput> | TOutput, TContext>;
 }
 
 /**
