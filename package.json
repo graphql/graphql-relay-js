@@ -1,6 +1,6 @@
 {
   "name": "graphql-relay",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "A library to help construct a graphql-js server supporting react-relay.",
   "license": "MIT",
   "private": true,
