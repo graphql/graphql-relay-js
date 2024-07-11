@@ -11,7 +11,7 @@ cd npmDist
 npm publish --tag=next
 ```
 
-Then test it by installing `graphql-realy@next` from npm...
+Then test it by installing `graphql-relay@next` from npm...
 
 All good? Publish:
 
