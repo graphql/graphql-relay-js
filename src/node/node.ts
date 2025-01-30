@@ -98,7 +98,7 @@ export function toGlobalId(type: string, id: string | number): string {
  */
 export function fromGlobalId(globalId: string): ResolvedGlobalId {
   const unbasedGlobalId = unbase64(globalId);
-  const delimiterPos = unbasedGlobalId.indexOf(':');
+  const delimiterPos = unbasedGlobalId.lastIndexOf(':');
   return {
     type: unbasedGlobalId.substring(0, delimiterPos),
     id: unbasedGlobalId.substring(delimiterPos + 1),
