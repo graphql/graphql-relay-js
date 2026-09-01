@@ -1,7 +1,7 @@
 name: CI
 on: [push, pull_request]
 env:
-  NODE_VERSION_USED_FOR_DEVELOPMENT: 16
+  NODE_VERSION_USED_FOR_DEVELOPMENT: 22
 jobs:
   lint:
     name: Lint source files
@@ -112,7 +112,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version_to_setup: [12, 14, 15]
+        node_version_to_setup: [22, 24]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
