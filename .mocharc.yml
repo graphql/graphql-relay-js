@@ -3,4 +3,4 @@ check-leaks: true
 require:
   - 'resources/ts-register.js'
 node-option:
-  - 'no-require-module'
+  - 'no-experimental-require-module'
