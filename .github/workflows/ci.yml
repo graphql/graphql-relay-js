@@ -1,7 +1,7 @@
 name: CI
 on: [push, pull_request]
 env:
-  NODE_VERSION_USED_FOR_DEVELOPMENT: 16
+  NODE_VERSION_USED_FOR_DEVELOPMENT: 22
 jobs:
   lint:
     name: Lint source files
@@ -108,11 +108,12 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   test:
-    name: Run tests on Node v${{ matrix.node_version_to_setup }}
+    name: Run tests on Node v${{ matrix.node_version_to_setup }} / graphql v${{ matrix.graphql_version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version_to_setup: [12, 14, 15]
+        node_version_to_setup: [22, 24]
+        graphql_version: ['16.2.0', '17.0.2']
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -132,6 +133,9 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+
+      - name: Install graphql v${{ matrix.graphql_version }}
+        run: npm install --no-save graphql@${{ matrix.graphql_version }}
 
       - name: Run Tests
         run: npm run testonly
