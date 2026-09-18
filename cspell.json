@@ -18,6 +18,9 @@
     "unbase",
     "unbased",
 
+    // Used by the release workflow
+    "OIDC",
+
     // Different words used inside tests
 
     "corellian",

@@ -1,0 +1,155 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      dist_tag:
+        description: 'npm dist-tag to publish under'
+        required: true
+        default: 'next'
+        type: choice
+        options:
+          - next
+          - latest
+permissions: {}
+jobs:
+  build:
+    name: Build npm package
+    # Keep this guard on every job for defense-in-depth in case job dependencies are refactored.
+    if: ${{ !github.event.repository.fork && github.repository == 'graphql/graphql-relay-js' }}
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.metadata.outputs.version }}
+      should_publish: ${{ steps.metadata.outputs.should_publish }}
+    permissions:
+      contents: read # for actions/checkout
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: '.node-version'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # A tag that disagrees with package.json means someone tagged by hand or
+      # pushed a stale tag; publishing that would ship a mislabelled version.
+      - name: Check tag matches package.json version
+        if: github.event_name == 'push'
+        run: |
+          pkg_version="$(node -p 'require("./package.json").version')"
+          tag_version="${GITHUB_REF_NAME#v}"
+          if [ "${pkg_version}" != "${tag_version}" ]; then
+            echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version ${pkg_version}"
+            exit 1
+          fi
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Read release metadata
+        id: metadata
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+          if npm view "graphql-relay@${version}" version > /dev/null 2>&1; then
+            echo "graphql-relay@${version} is already published. Skipping."
+            echo "should_publish=false" >> "${GITHUB_OUTPUT}"
+          else
+            echo "graphql-relay@${version} is not published yet."
+            echo "should_publish=true" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Build npm package
+        if: steps.metadata.outputs.should_publish == 'true'
+        run: npm run build
+
+      - name: Upload npmDist package
+        if: steps.metadata.outputs.should_publish == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: npmDist
+          path: ./npmDist
+
+  publish-npm:
+    name: Publish npm package
+    needs: build
+    # Keep this guard on every job for defense-in-depth in case job dependencies are refactored.
+    if: ${{ !github.event.repository.fork && github.repository == 'graphql/graphql-relay-js' && needs.build.outputs.should_publish == 'true' }}
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: read # for actions/checkout
+      id-token: write # for npm trusted publishing via OIDC
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Trusted publishing needs npm >= 11.5.1, which is newer than the npm
+      # bundled with some Node releases. '.node-version' is pinned accordingly.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Download npmDist package
+        uses: actions/download-artifact@v4
+        with:
+          name: npmDist
+          path: ./npmDist
+
+      - name: Publish to npm
+        working-directory: ./npmDist
+        env:
+          DIST_TAG: ${{ github.event.inputs.dist_tag || 'next' }}
+        run: npm publish --provenance --tag "${DIST_TAG}"
+
+  create-release:
+    name: Create release
+    needs: [build, publish-npm]
+    # Keep this guard on every job for defense-in-depth in case job dependencies are refactored.
+    if: ${{ !github.event.repository.fork && github.repository == 'graphql/graphql-relay-js' && needs.build.outputs.should_publish == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # for creating GitHub release
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DIST_TAG: ${{ github.event.inputs.dist_tag || 'next' }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          tag="v${VERSION}"
+
+          if gh release view "${tag}" > /dev/null 2>&1; then
+            echo "GitHub release ${tag} already exists. Skipping release creation."
+            exit 0
+          fi
+
+          # Only mark the GitHub release as 'latest' when npm's 'latest'
+          # dist-tag is moving too, so the two stay in agreement.
+          latest_flag="--latest=false"
+          if [ "${DIST_TAG}" = "latest" ]; then
+            latest_flag="--latest"
+          fi
+
+          gh release create "${tag}" \
+            --verify-tag \
+            --title "${tag}" \
+            --generate-notes \
+            "${latest_flag}"
