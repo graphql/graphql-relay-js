@@ -41,13 +41,12 @@ A version containing a `-` is treated as a prerelease and published under the
 `next` dist-tag instead of `latest`, so a release can be rehearsed with a version
 like `0.11.1-rc.0`.
 
+Release notes are generated from the `PR: *` labels by
+`resources/gen-changelog.js` and attached to the GitHub release - there is no
+`CHANGELOG.md` file. A merged PR missing its label fails the release before
+anything reaches npm, so add the label and re-run.
+
 If a publish fails partway through, re-run the workflow. It re-checks npm before
 doing anything, so re-runs are safe.
-
-Finally generate the CHANGELOG:
-
-```sh
-node resources/gen-changelog.js
-```
 
 [trusted publishing]: https://docs.npmjs.com/trusted-publishers

@@ -16,10 +16,14 @@ jobs:
       should_publish: ${{ steps.metadata.outputs.should_publish }}
     permissions:
       contents: read # for actions/checkout
+      pull-requests: read # for gen-changelog.js
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
+          # gen-changelog.js shells out to 'git rev-list' against release tags,
+          # so it needs full history rather than the default shallow clone.
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup Node.js
@@ -76,6 +80,22 @@ jobs:
           name: npmDist
           path: ./npmDist
 
+      # Generated here rather than in the publish job so that a PR missing its
+      # 'PR: *' label fails the release before anything reaches npm. Needs the
+      # dependencies installed above, since resources/utils.js requires prettier.
+      - name: Generate release notes
+        if: steps.metadata.outputs.should_publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node resources/gen-changelog.js > ./release-notes.md
+
+      - name: Upload release notes
+        if: steps.metadata.outputs.should_publish == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes
+          path: ./release-notes.md
+
   publish:
     name: Publish to npm and create release
     needs: build
@@ -107,6 +127,12 @@ jobs:
           name: npmDist
           path: ./npmDist
 
+      - name: Download release notes
+        uses: actions/download-artifact@v4
+        with:
+          name: release-notes
+          path: .
+
       - name: Publish to npm
         working-directory: ./npmDist
         env:
@@ -131,5 +157,5 @@ jobs:
           gh release create "${tag}" \
             --target "${GITHUB_SHA}" \
             --title "${tag}" \
-            --generate-notes \
+            --notes-file ./release-notes.md \
             "${latest_flag}"
