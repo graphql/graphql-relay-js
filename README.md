@@ -39,7 +39,7 @@ Helper functions are provided for both building the GraphQL types for connection
 - `offsetToCursor` takes the index of a member object in an array and returns an opaque cursor for use in the mutation payload.
 - `cursorToOffset` takes an opaque cursor (created with `offsetToCursor`) and returns the corresponding array index.
 
-An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
+An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.ts):
 
 ```js
 var { connectionType: ShipConnection } = connectionDefinitions({
@@ -73,7 +73,7 @@ Helper functions are provided for both building the GraphQL types for nodes and 
 - `globalIdField` creates the configuration for an `id` field on a node.
 - `pluralIdentifyingRootField` creates a field that accepts a list of non-ID identifiers (like a username) and maps them to their corresponding objects.
 
-An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
+An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.ts):
 
 ```js
 var { nodeInterface, nodeField } = nodeDefinitions(
@@ -110,7 +110,7 @@ A helper function is provided for building mutations with single inputs and clie
 
 - `mutationWithClientMutationId` takes a name, input fields, output fields, and a mutation method to map from the input fields to the output fields, performing the mutation along the way. It then creates and returns a field configuration that can be used as a top-level field on the mutation type.
 
-An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.js):
+An example usage of these methods from the [test schema](src/__tests__/starWarsSchema.ts):
 
 ```js
 var shipMutation = mutationWithClientMutationId({

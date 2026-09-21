@@ -247,7 +247,7 @@ const shipMutation = mutationWithClientMutationId({
   outputFields: {
     ship: {
       type: shipType,
-      resolve: (payload) => getShip(payload.shipId),
+      resolve: (payload: any) => getShip(payload.shipId),
     },
     faction: {
       type: factionType,
