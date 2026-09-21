@@ -1,27 +1,18 @@
 name: Release
 on:
   push:
-    tags:
-      - 'v*'
-  workflow_dispatch:
-    inputs:
-      dist_tag:
-        description: 'npm dist-tag to publish under'
-        required: true
-        default: 'next'
-        type: choice
-        options:
-          - next
-          - latest
+    branches:
+      - main
 permissions: {}
 jobs:
   build:
-    name: Build npm package
+    name: Check version and build package
     # Keep this guard on every job for defense-in-depth in case job dependencies are refactored.
     if: ${{ !github.event.repository.fork && github.repository == 'graphql/graphql-relay-js' }}
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.metadata.outputs.version }}
+      dist_tag: ${{ steps.metadata.outputs.dist_tag }}
       should_publish: ${{ steps.metadata.outputs.should_publish }}
     permissions:
       contents: read # for actions/checkout
@@ -37,36 +28,42 @@ jobs:
           cache: npm
           node-version-file: '.node-version'
 
-      - name: Install Dependencies
-        run: npm ci
-
-      # A tag that disagrees with package.json means someone tagged by hand or
-      # pushed a stale tag; publishing that would ship a mislabelled version.
-      - name: Check tag matches package.json version
-        if: github.event_name == 'push'
-        run: |
-          pkg_version="$(node -p 'require("./package.json").version')"
-          tag_version="${GITHUB_REF_NAME#v}"
-          if [ "${pkg_version}" != "${tag_version}" ]; then
-            echo "::error::Tag ${GITHUB_REF_NAME} does not match package.json version ${pkg_version}"
-            exit 1
-          fi
-
-      - name: Run tests
-        run: npm run test
-
       - name: Read release metadata
         id: metadata
         run: |
           version="$(node -p 'require("./package.json").version')"
           echo "version=${version}" >> "${GITHUB_OUTPUT}"
-          if npm view "graphql-relay@${version}" version > /dev/null 2>&1; then
-            echo "graphql-relay@${version} is already published. Skipping."
+
+          # A prerelease must never take the 'latest' dist-tag.
+          case "${version}" in
+            *-*) dist_tag='next' ;;
+            *) dist_tag='latest' ;;
+          esac
+          echo "dist_tag=${dist_tag}" >> "${GITHUB_OUTPUT}"
+
+          # Publishing is driven entirely by whether this version is already on
+          # npm, so ordinary merges to main are a no-op and re-runs are safe.
+          # 'npm view pkg versions' returns a bare string when only one version
+          # exists, hence the array coercion.
+          versions_json="$(npm view graphql-relay versions --json)"
+          if jq -e --arg v "${version}" \
+            '(if type == "array" then . else [.] end) | index($v)' \
+            > /dev/null <<< "${versions_json}"
+          then
+            echo "graphql-relay@${version} is already published. Nothing to do."
             echo "should_publish=false" >> "${GITHUB_OUTPUT}"
           else
             echo "graphql-relay@${version} is not published yet."
             echo "should_publish=true" >> "${GITHUB_OUTPUT}"
           fi
+
+      - name: Install Dependencies
+        if: steps.metadata.outputs.should_publish == 'true'
+        run: npm ci
+
+      - name: Run tests
+        if: steps.metadata.outputs.should_publish == 'true'
+        run: npm run test
 
       - name: Build npm package
         if: steps.metadata.outputs.should_publish == 'true'
@@ -79,17 +76,19 @@ jobs:
           name: npmDist
           path: ./npmDist
 
-  publish-npm:
-    name: Publish npm package
+  publish:
+    name: Publish to npm and create release
     needs: build
     # Keep this guard on every job for defense-in-depth in case job dependencies are refactored.
     if: ${{ !github.event.repository.fork && github.repository == 'graphql/graphql-relay-js' && needs.build.outputs.should_publish == 'true' }}
     runs-on: ubuntu-latest
-    environment: release
     permissions:
-      contents: read # for actions/checkout
+      contents: write # for creating the tag and GitHub release
       id-token: write # for npm trusted publishing via OIDC
     steps:
+      # This job holds the OIDC token, so it deliberately never runs 'npm ci':
+      # no dependency lifecycle scripts execute while the token is available.
+      # It only publishes the artifact the build job already produced.
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
@@ -111,45 +110,26 @@ jobs:
       - name: Publish to npm
         working-directory: ./npmDist
         env:
-          DIST_TAG: ${{ github.event.inputs.dist_tag || 'next' }}
+          DIST_TAG: ${{ needs.build.outputs.dist_tag }}
         run: npm publish --provenance --tag "${DIST_TAG}"
 
-  create-release:
-    name: Create release
-    needs: [build, publish-npm]
-    # Keep this guard on every job for defense-in-depth in case job dependencies are refactored.
-    if: ${{ !github.event.repository.fork && github.repository == 'graphql/graphql-relay-js' && needs.build.outputs.should_publish == 'true' }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write # for creating GitHub release
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: Create release
+      - name: Create GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DIST_TAG: ${{ github.event.inputs.dist_tag || 'next' }}
           VERSION: ${{ needs.build.outputs.version }}
+          DIST_TAG: ${{ needs.build.outputs.dist_tag }}
         run: |
           tag="v${VERSION}"
 
-          if gh release view "${tag}" > /dev/null 2>&1; then
-            echo "GitHub release ${tag} already exists. Skipping release creation."
-            exit 0
+          latest_flag='--latest=false'
+          if [ "${DIST_TAG}" = 'latest' ]; then
+            latest_flag='--latest'
           fi
 
-          # Only mark the GitHub release as 'latest' when npm's 'latest'
-          # dist-tag is moving too, so the two stay in agreement.
-          latest_flag="--latest=false"
-          if [ "${DIST_TAG}" = "latest" ]; then
-            latest_flag="--latest"
-          fi
-
+          # '--target' creates the tag at the commit that was actually built,
+          # so a tag can never disagree with what was published.
           gh release create "${tag}" \
-            --verify-tag \
+            --target "${GITHUB_SHA}" \
             --title "${tag}" \
             --generate-notes \
             "${latest_flag}"

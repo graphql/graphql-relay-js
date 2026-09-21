@@ -16,36 +16,38 @@ generation reads these labels and throws if a merged PR is missing one:
 
 ## Publishing
 
-Releases are published by the `Release` workflow, which builds the package and
-publishes it to npm using [trusted publishing][], so no npm token is involved.
-Pushing a `v*` tag is what starts it.
+Releases are cut by the `Release` workflow. Merging to `main` is the only gate:
+the workflow checks whether the version in `package.json` is already on npm and
+publishes it if it is not. Ordinary merges are therefore a no-op, and a release
+is just a merged version bump.
+
+Publishing uses [trusted publishing][], so no npm token is involved. The workflow
+builds the package, publishes it with provenance, creates the `vX.Y.Z` tag, and
+opens a GitHub release.
+
+To cut a release, open a PR that bumps the version and merge it:
 
 ```sh
+git checkout -b release-VERSION_NUMBER
 npm install
-npm version patch # or minor or major
-git push --follow-tags
+npm version VERSION_NUMBER --no-git-tag-version
+git commit --all --message VERSION_NUMBER
 ```
 
-That tags the release and triggers the workflow, which runs the test suite,
-builds the package, publishes it to npm under the `next` dist-tag with
-provenance, and creates a GitHub release.
+Label the PR `PR: internal 🏠` and merge once CI is green. That is the whole
+release - do not tag or run `npm publish` by hand.
 
-Then test it by installing `graphql-relay@next` from npm...
+A version containing a `-` is treated as a prerelease and published under the
+`next` dist-tag instead of `latest`, so a release can be rehearsed with a version
+like `0.11.1-rc.0`.
 
-All good? Promote it to `latest`:
-
-```sh
-npm dist-tags add graphql-relay@VERSION_NUMBER latest
-```
+If a publish fails partway through, re-run the workflow. It re-checks npm before
+doing anything, so re-runs are safe.
 
 Finally generate the CHANGELOG:
 
 ```sh
 node resources/gen-changelog.js
 ```
-
-The workflow can also be started manually from the Actions tab, which lets you
-choose whether to publish under `next` or straight to `latest`. It refuses to
-publish a version that is already on npm, so it is safe to re-run.
 
 [trusted publishing]: https://docs.npmjs.com/trusted-publishers
