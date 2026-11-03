@@ -323,6 +323,53 @@ describe('connectionFromArray()', () => {
       ).to.deep.equal(allEdges);
     });
 
+    it('ignores cursors on the outside when computing page info', () => {
+      expect(
+        connectionFromArray(arrayABCDE, {
+          first: 5,
+          before: offsetToCursor(6),
+        }),
+      ).to.deep.equal({
+        edges: [edgeA, edgeB, edgeC, edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorE,
+          hasPreviousPage: false,
+          hasNextPage: false,
+        },
+      });
+
+      expect(
+        connectionFromArray(arrayABCDE, {
+          first: 2,
+          before: offsetToCursor(-1),
+        }),
+      ).to.deep.equal({
+        edges: [edgeA, edgeB],
+        pageInfo: {
+          startCursor: cursorA,
+          endCursor: cursorB,
+          hasPreviousPage: false,
+          hasNextPage: true,
+        },
+      });
+
+      expect(
+        connectionFromArray(arrayABCDE, {
+          last: 2,
+          after: offsetToCursor(6),
+        }),
+      ).to.deep.equal({
+        edges: [edgeD, edgeE],
+        pageInfo: {
+          startCursor: cursorD,
+          endCursor: cursorE,
+          hasPreviousPage: true,
+          hasNextPage: false,
+        },
+      });
+    });
+
     it('returns no elements if cursors cross', () => {
       const c = connectionFromArray(arrayABCDE, {
         before: cursorC,
@@ -519,6 +566,29 @@ describe('connectionFromArraySlice()', () => {
       pageInfo: {
         startCursor: cursorC,
         endCursor: cursorD,
+        hasPreviousPage: false,
+        hasNextPage: true,
+      },
+    });
+  });
+
+  it('works with an undersized array slice and an invalid cursor', () => {
+    const c = connectionFromArraySlice(
+      arrayABCDE.slice(0, 2),
+      {
+        first: 2,
+        before: 'invalid',
+      },
+      {
+        sliceStart: 0,
+        arrayLength: 5,
+      },
+    );
+    expect(c).to.deep.equal({
+      edges: [edgeA, edgeB],
+      pageInfo: {
+        startCursor: cursorA,
+        endCursor: cursorB,
         hasPreviousPage: false,
         hasNextPage: true,
       },
