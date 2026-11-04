@@ -58,14 +58,18 @@ export function connectionFromArraySlice<T>(
   let startOffset = Math.max(sliceStart, 0);
   let endOffset = Math.min(sliceEnd, arrayLength);
 
+  let lowerBound = 0;
   const afterOffset = getOffsetWithDefault(after, -1);
   if (0 <= afterOffset && afterOffset < arrayLength) {
     startOffset = Math.max(startOffset, afterOffset + 1);
+    lowerBound = afterOffset + 1;
   }
 
-  const beforeOffset = getOffsetWithDefault(before, endOffset);
+  let upperBound = arrayLength;
+  const beforeOffset = getOffsetWithDefault(before, arrayLength);
   if (0 <= beforeOffset && beforeOffset < arrayLength) {
     endOffset = Math.min(endOffset, beforeOffset);
+    upperBound = beforeOffset;
   }
 
   if (typeof first === 'number') {
@@ -96,8 +100,6 @@ export function connectionFromArraySlice<T>(
 
   const firstEdge = edges[0];
   const lastEdge = edges[edges.length - 1];
-  const lowerBound = after != null ? afterOffset + 1 : 0;
-  const upperBound = before != null ? beforeOffset : arrayLength;
   return {
     edges,
     pageInfo: {
